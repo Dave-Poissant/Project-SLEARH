@@ -1,23 +1,32 @@
 from tkinter import *
+from tkinter import messagebox
+
 
 class application(Frame):
-
-    def say_hi(self):
-        print("hi there, everyone!")
-
     def createWidgets(self):
-        self.QUIT = Button(self)
-        self.QUIT["text"] = "QUIT"
-        self.QUIT["fg"] = "red"
-        self.QUIT["command"] = self.quit
+        self.options_label = Label(self, text="Options:")
+        self.options_label.pack()
 
-        self.QUIT.pack({"side": "left"})
+        self.stop_button = Button(self)
+        self.stop_button["text"] = "stop"
+        self.stop_button["command"] = self.say_stoped
+        self.stop_button.pack()
 
-        self.hi_there = Button(self)
-        self.hi_there["text"] = "Hello",
-        self.hi_there["command"] = self.say_hi
+        self.pause_button = Button(self)
+        self.pause_button["text"] = "pause",
+        self.pause_button["command"] = self.say_paused
+        self.pause_button.pack(side=LEFT, pady=5, padx=5)
 
-        self.hi_there.pack({"side": "left"})
+    def connect(self, widget, signal, event):
+        widget.bind(signal, event)
+
+    def say_stoped(self):
+        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        messagebox.showinfo("Stoped", "Hand has been stoped.")
+
+    def say_paused(self):
+        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        messagebox.showinfo("Paused", "Hand has been paused.")
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
