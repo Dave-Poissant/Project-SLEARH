@@ -21,21 +21,41 @@ class application(Frame):
         self.pause_button["command"] = self.say_paused
         self.pause_button.pack(side=LEFT)
 
-        hand_control_frame.pack(side=LEFT)
+        hand_control_frame.grid(row=2, column=1, columnspan=2)
 
     def create_options_frame(self):
         options_frame = Frame(self)
-        option_label_frame = Frame(options_frame)
-        option_label_frame.pack(side=TOP)
 
-        self.options_label = Label(option_label_frame, text="Options:")
-        self.options_label.pack(side=LEFT)
+        # Configuration and placement for the "Options:" label
+        self.options_label = Label(options_frame, text="Options:")
+        self.options_label.grid(row=0, column=0, pady=2)
 
+        # Configuration and placement for the "Purpose:" section
+        self.purpose_label = Label(options_frame, text="Purpose:")
+        self.purpose_label.grid(row=1, column=1, pady=2)
+        options_purpose_choices_frame = Frame(options_frame)
+        options_purpose_choices_frame.grid(row=2, column=1, padx=2)
+        self.purpose_choices_education = Radiobutton(options_purpose_choices_frame, text="Education")
+        self.purpose_choices_education.grid(row=0, column=0)
+        self.purpose_choices_quiz = Radiobutton(options_purpose_choices_frame, text="Quiz")
+        self.purpose_choices_quiz.grid(row=0, column=1)
+
+        # Configuration and placement for the "Mode:" section
+        self.mode_label = Label(options_frame, text="Mode:")
+        self.mode_label.grid(row=3, column=1, pady=2)
+        options_mode_choices_frame = Frame(options_frame)
+        options_mode_choices_frame.grid(row=4, column=1, padx=2)
+        self.mode_choices_automatic = Radiobutton(options_mode_choices_frame, text="Automatic")
+        self.mode_choices_automatic.grid(row=0, column=0)
+        self.mode_choices_quiz = Radiobutton(options_mode_choices_frame, text="Quiz")
+        self.mode_choices_quiz.grid(row=0, column=1)
+
+        # Configuration and placement for the Glider section
         self.next_letter_speed_glider = Scale(options_frame, label="Second(s) passed on one sign", orient=HORIZONTAL,
                                               to=5.0, from_=1.0, tickinterval=0.25, length=169)
-        self.next_letter_speed_glider.pack(side=TOP, pady=10)
+        self.next_letter_speed_glider.grid(row=5, column=1, pady=2)
 
-        options_frame.pack(side=TOP)
+        options_frame.grid(row=1, column=0)
 
     def create_widgets(self):
         self.create_options_frame()
@@ -56,6 +76,5 @@ class application(Frame):
 if __name__ == "__main__":
     root = Tk("")
     app = application(master=root)
-    root.geometry('640x640')
     app.mainloop()
     root.destroy()
