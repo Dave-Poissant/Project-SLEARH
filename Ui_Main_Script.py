@@ -8,20 +8,63 @@ class application(Frame):
         self.pack()
         self.create_widgets()
 
+    def create_hand_state_frame(self):
+        hand_state_frame = Frame(self)
+        hand_state_frame.grid(row=0, column=0)
+
+        self.connection_state_info_label = Label(hand_state_frame, text="Connection state: ")
+        self.connection_state_info_label.grid(row=0, column=0)
+        self.connection_actual_state_label = Label(hand_state_frame, text="not connected", fg="red")
+        self.connection_actual_state_label.grid(row=0, column=1)
+
+        self.hand_action_state_info_label = Label(hand_state_frame, text="Hand's process state: ")
+        self.hand_action_state_info_label.grid(row=1, column=0)
+        self.hand_actual_action_state_label = Label(hand_state_frame, text="ready", fg="green")
+        self.hand_actual_action_state_label.grid(row=1, column=1)
+
+    def create_current_hand_command_frame(self):
+        current_hand_command_frame = Frame(self)
+        current_hand_command_frame.grid(row=0, column=1)
+
+        self.current_hand_command_label = Label(current_hand_command_frame, text="Current command:")
+        self.current_hand_command_label.grid(row=0, column=0)
+
+        temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke"
+                                        r"\Session4\Projet\Project-SLEARH\Image_Library\temporary_img.png")
+        # temporary_img1 = temporary_img.subsample(2, 2)
+        self.temporary_img_ui = Label(current_hand_command_frame, image=temporary_img)
+        self.temporary_img_ui.image = temporary_img
+        self.temporary_img_ui.grid(row=1, column=0, columnspan=3)
+
     def create_hand_control_frame(self):
         hand_control_frame = Frame(self)
 
-        self.stop_button = Button(hand_control_frame)
+        text_entry_frame = Frame(hand_control_frame)
+        text_entry_frame.grid(row=1, column=0)
+        self.text_entry_label = Label(hand_control_frame, text="Enter text here:", anchor=W)
+        self.text_entry_label.grid(row=0, column=0)
+        self.text_entry = Entry(text_entry_frame)
+        self.text_entry.grid(row=1, column=0, sticky=W, padx=10)
+
+        hand_control_buttons_frame = Frame(hand_control_frame)
+        hand_control_buttons_frame.grid(row=0, column=1, padx=50)
+
+        self.stop_button = Button(hand_control_buttons_frame)
         self.stop_button["text"] = "stop"
         self.stop_button["command"] = self.say_stoped
-        self.stop_button.pack(side=LEFT)
+        self.stop_button.grid(row=1, column=1)
 
-        self.pause_button = Button(hand_control_frame)
+        self.pause_button = Button(hand_control_buttons_frame)
         self.pause_button["text"] = "pause",
         self.pause_button["command"] = self.say_paused
-        self.pause_button.pack(side=LEFT)
+        self.pause_button.grid(row=1, column=0)
 
-        hand_control_frame.grid(row=2, column=1, columnspan=2)
+        self.send_button = Button(hand_control_buttons_frame)
+        self.send_button["text"] = "send"
+        self.send_button["command"] = self.send_text
+        self.send_button.grid(row=0, column=0, columnspan=2)
+
+        hand_control_frame.grid(row=2, column=0, columnspan=2, pady=20)
 
     def create_options_frame(self):
         options_frame = Frame(self)
@@ -58,11 +101,18 @@ class application(Frame):
         options_frame.grid(row=1, column=0)
 
     def create_widgets(self):
+        self.create_hand_state_frame()
         self.create_options_frame()
         self.create_hand_control_frame()
+        self.create_current_hand_command_frame()
 
     def connect(self, widget, signal, event):
         widget.bind(signal, event)
+
+    def send_text(self):
+        # TODO: Add sending message to the TextAnalyser and sending message to the arduino here (and wait for the
+        #  "message received" before showing info)
+        messagebox.showinfo("Sended", "Text is being analyse.")
 
     def say_stoped(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
