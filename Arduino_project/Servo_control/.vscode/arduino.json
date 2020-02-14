@@ -1,0 +1,6 @@
+{
+    "port": "<port_name>",
+    "board": "arduino:avr:<type>",
+    "configuration": "cpu=<cpu_type>",
+    "sketch": "<file_directory>\\<file_name>.ino"
+}
