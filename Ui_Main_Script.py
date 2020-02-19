@@ -1,33 +1,61 @@
 from tkinter import *
 from tkinter import messagebox
+from enum import Enum
+
+
+class ModeEnum(Enum):
+    Automatic = 1
+    Step = 2
+
+
+class PurposeEnum(Enum):
+    Education = 1
+    Quiz = 2
 
 
 class application(Frame):
+    __mode_option_state__ = ModeEnum.Automatic
+    __purpose_option_state__ = PurposeEnum.Education
+
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack()
         self.create_widgets()
 
+    def get_mode_option_state(self):
+        return self.__mode_option_state__
+
+    def get_purpose_option_state(self):
+        return self.__purpose_option_state__
+
+    def set_mode_option_state(self, new_value):
+        if new_value == ModeEnum.Automatic or ModeEnum.Step:
+            self.__mode_option_state__ = new_value
+
+    def set_purpose_option_state(self, new_value):
+        if new_value == PurposeEnum.Education or PurposeEnum.Quiz:
+            self.__purpose_option_state__ = new_value
+
     def create_hand_state_frame(self):
         hand_state_frame = Frame(self)
-        hand_state_frame.grid(row=0, column=0)
+        hand_state_frame.grid(row=0, column=0, stick=W)
 
         self.connection_state_info_label = Label(hand_state_frame, text="Connection state: ")
-        self.connection_state_info_label.grid(row=0, column=0)
+        self.connection_state_info_label.grid(row=0, column=0, stick=W)
         self.connection_actual_state_label = Label(hand_state_frame, text="not connected", fg="red")
         self.connection_actual_state_label.grid(row=0, column=1)
 
         self.hand_action_state_info_label = Label(hand_state_frame, text="Hand's process state: ")
-        self.hand_action_state_info_label.grid(row=1, column=0)
+        self.hand_action_state_info_label.grid(row=1, column=0, stick=W)
         self.hand_actual_action_state_label = Label(hand_state_frame, text="ready", fg="green")
         self.hand_actual_action_state_label.grid(row=1, column=1)
 
     def create_current_hand_command_frame(self):
         current_hand_command_frame = Frame(self)
-        current_hand_command_frame.grid(row=0, column=1)
+        current_hand_command_frame.grid(row=1, column=1)
 
         self.current_hand_command_label = Label(current_hand_command_frame, text="Current command:")
-        self.current_hand_command_label.grid(row=0, column=0)
+        self.current_hand_command_label.grid(row=0, column=0, stick=W)
 
         temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke"
                                         r"\Session4\Projet\Project-SLEARH\Image_Library\temporary_img.png")
@@ -39,24 +67,27 @@ class application(Frame):
     def create_hand_control_frame(self):
         hand_control_frame = Frame(self)
 
+        self.line_between_control_options_canvas = Canvas(hand_control_frame, bg='black', height=1.5, width=556)
+        self.line_between_control_options_canvas.grid(stick=W, row=0, column=0, columnspan=3)
+
         text_entry_frame = Frame(hand_control_frame)
-        text_entry_frame.grid(row=1, column=0)
+        text_entry_frame.grid(row=2, column=0)
         self.text_entry_label = Label(hand_control_frame, text="Enter text here:", anchor=W)
-        self.text_entry_label.grid(row=0, column=0)
-        self.text_entry = Entry(text_entry_frame)
-        self.text_entry.grid(row=1, column=0, sticky=W, padx=10)
+        self.text_entry_label.grid(row=1, column=0, stick=W)
+        self.text_entry = Entry(text_entry_frame, width=60)
+        self.text_entry.grid(row=0, column=0, sticky=W, padx=10)
 
         hand_control_buttons_frame = Frame(hand_control_frame)
-        hand_control_buttons_frame.grid(row=0, column=1, padx=50)
+        hand_control_buttons_frame.grid(row=1, column=1, padx=50)
 
         self.stop_button = Button(hand_control_buttons_frame)
         self.stop_button["text"] = "stop"
-        self.stop_button["command"] = self.say_stoped
-        self.stop_button.grid(row=1, column=1)
+        self.stop_button["command"] = self.do_stop
+        self.stop_button.grid(row=1, column=1, pady=5)
 
         self.pause_button = Button(hand_control_buttons_frame)
         self.pause_button["text"] = "pause",
-        self.pause_button["command"] = self.say_paused
+        self.pause_button["command"] = self.do_pause
         self.pause_button.grid(row=1, column=0)
 
         self.send_button = Button(hand_control_buttons_frame)
@@ -64,7 +95,7 @@ class application(Frame):
         self.send_button["command"] = self.send_text
         self.send_button.grid(row=0, column=0, columnspan=2)
 
-        hand_control_frame.grid(row=2, column=0, columnspan=2, pady=20)
+        hand_control_frame.grid(row=2, column=0, columnspan=2, pady=20, stick=W)
 
     def create_options_frame(self):
         options_frame = Frame(self)
@@ -75,30 +106,42 @@ class application(Frame):
 
         # Configuration and placement for the "Purpose:" section
         self.purpose_label = Label(options_frame, text="Purpose:")
-        self.purpose_label.grid(row=1, column=1, pady=2)
+        self.purpose_label.grid(row=1, column=0, pady=2, stick=W)
         options_purpose_choices_frame = Frame(options_frame)
         options_purpose_choices_frame.grid(row=2, column=1, padx=2)
-        self.purpose_choices_education = Radiobutton(options_purpose_choices_frame, text="Education")
+        self.purpose_choices_education = Radiobutton(options_purpose_choices_frame, text="Education",
+                                                     var=self.__purpose_option_state__, value=PurposeEnum.Education,
+                                                     command=self.send_new_purpose_option)
+        self.purpose_choices_education.select()
         self.purpose_choices_education.grid(row=0, column=0)
-        self.purpose_choices_quiz = Radiobutton(options_purpose_choices_frame, text="Quiz")
+        self.purpose_choices_quiz = Radiobutton(options_purpose_choices_frame, text="Quiz",
+                                                var=self.__purpose_option_state__, value=PurposeEnum.Quiz,
+                                                command=self.send_new_purpose_option)
+        self.purpose_choices_quiz.deselect()
         self.purpose_choices_quiz.grid(row=0, column=1)
 
         # Configuration and placement for the "Mode:" section
         self.mode_label = Label(options_frame, text="Mode:")
-        self.mode_label.grid(row=3, column=1, pady=2)
+        self.mode_label.grid(row=3, column=0, pady=2, stick=W)
         options_mode_choices_frame = Frame(options_frame)
         options_mode_choices_frame.grid(row=4, column=1, padx=2)
-        self.mode_choices_automatic = Radiobutton(options_mode_choices_frame, text="Automatic")
+        self.mode_choices_automatic = Radiobutton(options_mode_choices_frame, text="Automatic",
+                                                  var=self.__mode_option_state__, value=ModeEnum.Automatic,
+                                                  command=self.send_new_mode_option)
+        self.mode_choices_automatic.select()
         self.mode_choices_automatic.grid(row=0, column=0)
-        self.mode_choices_quiz = Radiobutton(options_mode_choices_frame, text="Quiz")
-        self.mode_choices_quiz.grid(row=0, column=1)
+        self.mode_choices_step = Radiobutton(options_mode_choices_frame, text="Step", var=self.__mode_option_state__,
+                                             value=ModeEnum.Step, command=self.send_new_mode_option)
+        self.mode_choices_step.deselect()
+        self.mode_choices_step.grid(row=0, column=1)
 
         # Configuration and placement for the Glider section
         self.next_letter_speed_glider = Scale(options_frame, label="Second(s) passed on one sign", orient=HORIZONTAL,
                                               to=5.0, from_=1.0, tickinterval=0.25, length=169)
+        self.next_letter_speed_glider["command"] = self.send_new_speed_on_letter
         self.next_letter_speed_glider.grid(row=5, column=1, pady=2)
 
-        options_frame.grid(row=1, column=0)
+        options_frame.grid(row=1, column=0, stick=W)
 
     def create_widgets(self):
         self.create_hand_state_frame()
@@ -112,15 +155,28 @@ class application(Frame):
     def send_text(self):
         # TODO: Add sending message to the TextAnalyser and sending message to the arduino here (and wait for the
         #  "message received" before showing info)
-        messagebox.showinfo("Sended", "Text is being analyse.")
+        message_to_send = self.text_entry.get()
+        messagebox.showinfo("Sended", message_to_send)
 
-    def say_stoped(self):
+    def do_stop(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
         messagebox.showinfo("Stoped", "Hand has been stoped.")
 
-    def say_paused(self):
+    def do_pause(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
         messagebox.showinfo("Paused", "Hand has been paused.")
+
+    def send_new_speed_on_letter(self, new_time_value):
+        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        print("New on_letter_time_value: " + new_time_value)
+
+    def send_new_mode_option(self):
+        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        messagebox.showinfo("New mode", "Mode option has been changed to " + str(self.get_mode_option_state()))
+
+    def send_new_purpose_option(self):
+        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        messagebox.showinfo("New purpose", "Purpose option has been changed to " + str(self.get_purpose_option_state()))
 
 
 if __name__ == "__main__":

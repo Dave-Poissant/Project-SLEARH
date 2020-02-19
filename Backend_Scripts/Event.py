@@ -1,4 +1,3 @@
-
 import EventType
 
 class Event:
