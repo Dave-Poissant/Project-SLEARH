@@ -1,10 +1,9 @@
-
-from EventQueue import EventQueue
-from EventType import EventType
 import time
 import Configuration
 import threading
 import Logger
+from EventQueue import EventQueue
+from EventType import EventType
 
 class EventHandler:
 
