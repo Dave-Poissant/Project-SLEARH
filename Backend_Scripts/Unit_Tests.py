@@ -2,9 +2,11 @@ import Configuration
 import TextAnalyser
 import EventHandler
 import time
-from EventType import EventType
 import Logger
 import os
+from Event import Event
+from EventType import EventType
+
 
 config = Configuration.Instance
 textAnalyser = TextAnalyser.TextAnalyser()
@@ -26,9 +28,9 @@ def run():
     failed = 0
     passed = 0
 
-    Logger.Log("Unit tests:", 0, Logger.Color.UNDERLINE)
+    Logger.Log(Logger.Color.BOLD.value + "Unit tests:" + Logger.Color.ENDC.value, 0, Logger.Color.UNDERLINE)
 
-    active_tests = [queue_dequeue,  queue_status, valid_char, invalid_char, semi_auto, auto, wait_time]
+    active_tests = [queue_dequeue,  queue_status, valid_char, invalid_char, semi_auto, auto, wait_time, high_priority]
 
     for func in active_tests:
         if func():
@@ -169,23 +171,43 @@ def wait_time():
     config.set_wait_time(test_wait_time)
     sucess = sucess and config.get_wait_time() == test_wait_time
 
-    #Logger.Log(str(sucess) + ' wait time: ' + str(config.get_wait_time()), 0)
+    Logger.Log(str(sucess) + ' wait time: ' + str(config.get_wait_time()), 0.5)
     textAnalyser.parse_char(valid_string[0] + valid_string[0])
 
     original_length = e_Handler.get_queue().get_length()
     config.toggle_semi_auto()
 
 
-    for _ in range(0, test_wait_time):
+    for i in range(0, test_wait_time):
         sucess = sucess and e_Handler.get_queue().get_length() == original_length
-        #Logger.Log('Success: ' + str(sucess) + ' - waited : ' + str(i) + 's expected length: '  + str(original_length) + ' and got length: ' + str(e_Handler.get_queue().get_length()), 0)
+        Logger.Log('Success: ' + str(sucess) + ' - waited : ' + str(i) + 's expected length: '  + str(original_length) + ' and got length: ' + str(e_Handler.get_queue().get_length()), 0.5)
         time.sleep(1)
 
     time.sleep(1)
     sucess = sucess and e_Handler.get_queue().get_length() == original_length - 1
-    #Logger.Log('Success: ' + str(sucess) + ' - waited : ' + str(test_wait_time) + 's expected length: '  + str(original_length - 1) + ' and got length: ' + str(e_Handler.get_queue().get_length()), 0)
+    Logger.Log('Success: ' + str(sucess) + ' - waited : ' + str(test_wait_time) + 's expected length: '  + str(original_length - 1) + ' and got length: ' + str(e_Handler.get_queue().get_length()), 0.5)
 
     return print_result('Wait time', sucess)
+
+def high_priority():
+    e_Handler.clear_queue()
+    sucess = True
+
+    if not config.is_semi_auto():
+        config.toggle_semi_auto()
+
+    textAnalyser.parse_char(valid_string)
+    textAnalyser.push_event(Event('first', EventType.letter, True))
+    textAnalyser.push_event(Event('last', EventType.letter, False))
+    
+    sucess = sucess and e_Handler.get_queue().first().get_name() == 'first' and e_Handler.get_queue().last().get_name() == 'last'
+
+    Logger.Log('Excpected "first" got "' +  str(e_Handler.get_queue().first().get_name()), 0.5)
+    Logger.Log('Excpected "last" got "' +  str(e_Handler.get_queue().last().get_name()), 0.5)
+
+    return print_result("High priority", sucess)
+    
+
 
 
 

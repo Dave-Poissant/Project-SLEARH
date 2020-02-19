@@ -44,6 +44,13 @@ class EventQueue:
                 return self._queue[0]
         return None
 
+    #Return the next event in the queue
+    def last(self):
+        with self._lock:
+            if not len(self._queue) == 0:
+                return self._queue[-1]
+        return None
+
     def add(self, event):
         with self._lock:
             #If event is 'High priority' it will be added at the beggining of the queue

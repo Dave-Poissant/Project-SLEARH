@@ -1,11 +1,11 @@
-
 import TextAnalyser
 import EventHandler
 import Configuration
-from Event import Event
-from EventType import EventType
 import time
 import Unit_Tests
+from Event import Event
+from EventType import EventType
+
     
 def func():
     config = Configuration.Instance
@@ -31,5 +31,6 @@ def func():
 def main():
     Unit_Tests.run()
     #func()
-    
+
+
 main()
