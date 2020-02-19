@@ -1,4 +1,4 @@
-import Configuration
+from Backend_Scripts import Configuration
 import os
 from enum import Enum
 

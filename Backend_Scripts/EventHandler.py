@@ -1,14 +1,14 @@
 import time
-import Configuration
+from Backend_Scripts import Configuration
 import threading
-import Logger
-from EventQueue import EventQueue
-from EventType import EventType
+from Backend_Scripts import Logger
+from Backend_Scripts import EventQueue
+from Backend_Scripts import EventType
 
 class EventHandler:
 
     def __init__(self):
-        self._queue = EventQueue()
+        self._queue = EventQueue.EventQueue()
         self._thread = threading.Thread(target=self.private_thread)
         self.trigger = True
         self.__start_thread__()
@@ -45,14 +45,14 @@ class EventHandler:
         if event is None:
             return
             
-        if event.is_type(EventType.invalid_letter): # Invalid letter event
+        if event.is_type(EventType.EventType.invalid_letter): # Invalid letter event
             Logger.Log("'" + event.get_name() + "' is not a valid character\n", 1)
 
             #TODO : handle events of type 'invalid_letter'
 
             self._queue.dequeue()
 
-        elif event.is_type(EventType.letter): # Letter event
+        elif event.is_type(EventType.EventType.letter): # Letter event
 
             #Only execute if in auto mode or if trigger is true
             if self.trigger: 
@@ -60,12 +60,12 @@ class EventHandler:
 
                 #TODO : handle events of type 'letter'
 
+                self._queue.dequeue()
+
                 if Configuration.Instance.is_semi_auto(): # Reset the trigger if in semi automatic mode
                     self.trigger = False
                 else:
-                    time.sleep(Configuration.Instance.get_wait_time()) # Delay between letters in automatic mode
-
-                self._queue.dequeue()
+                    time.sleep(int(Configuration.Instance.get_wait_time())) # Delay between letters in automatic mode
 
             elif not self.trigger_warned:
                 if not self._queue.is_empty():

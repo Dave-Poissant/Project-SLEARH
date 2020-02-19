@@ -1,11 +1,11 @@
-import Configuration
-import TextAnalyser
-import EventHandler
+from Backend_Scripts import Configuration
+from Backend_Scripts import TextAnalyser
+from Backend_Scripts import EventHandler
 import time
-import Logger
+from Backend_Scripts import Logger
 import os
-from Event import Event
-from EventType import EventType
+from Backend_Scripts import Event
+from Backend_Scripts import EventType
 
 
 config = Configuration.Instance
@@ -77,7 +77,7 @@ def valid_char():
     textAnalyser.parse_char(valid_string)
 
     while not e_Handler.get_queue().is_empty() and sucess:
-        sucess = sucess and e_Handler.get_queue().first().is_type(EventType.letter)
+        sucess = sucess and e_Handler.get_queue().first().is_type(EventType.EventType.letter)
         e_Handler.get_queue().dequeue()
     
     return print_result("Valid characters", sucess)
@@ -92,7 +92,7 @@ def invalid_char():
     textAnalyser.parse_char("*/#)(")
 
     while e_Handler.get_queue().get_length() > 0 and sucess:
-        sucess = sucess and e_Handler.get_queue().first().is_type(EventType.invalid_letter)
+        sucess = sucess and e_Handler.get_queue().first().is_type(EventType.EventType.invalid_letter)
         e_Handler.get_queue().dequeue()
 
     return print_result("Invalid characters", sucess)
@@ -197,8 +197,8 @@ def high_priority():
         config.toggle_semi_auto()
 
     textAnalyser.parse_char(valid_string)
-    textAnalyser.push_event(Event('first', EventType.letter, True))
-    textAnalyser.push_event(Event('last', EventType.letter, False))
+    textAnalyser.push_event(Event.Event('first', EventType.EventType.letter, True))
+    textAnalyser.push_event(Event.Event('last', EventType.EventType.letter, False))
     
     sucess = sucess and e_Handler.get_queue().first().get_name() == 'first' and e_Handler.get_queue().last().get_name() == 'last'
 

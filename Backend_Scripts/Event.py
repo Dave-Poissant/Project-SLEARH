@@ -1,4 +1,4 @@
-import EventType
+from Backend_Scripts import EventType
 
 class Event:
 
