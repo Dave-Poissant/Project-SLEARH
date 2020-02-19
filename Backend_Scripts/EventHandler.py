@@ -13,6 +13,7 @@ class EventHandler:
         self.trigger = True
         self.__start_thread__()
         self.trigger_warned = False
+        self.should_run = True
         
     def __start_thread__(self):
         self._thread.start()
@@ -78,11 +79,14 @@ class EventHandler:
         else:
             Logger.Log("Event type is invalid\n", 2)
 
-
     def private_thread(self):
-        while True:
+        while self.should_run:
             if not self._queue.is_empty():
                 self.execute_event(self._queue.first())
+
+    def end_thread(self):
+        self.should_run = False
+        self._thread.join()
 
 
 Instance = EventHandler()

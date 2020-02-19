@@ -4,6 +4,7 @@ from Backend_Scripts import EventHandler
 from tkinter import *
 from tkinter import messagebox
 from enum import Enum
+import serial
 
 class ModeEnum(Enum):
     Automatic = 1
@@ -60,7 +61,8 @@ class application(Frame):
         self.current_hand_command_label = Label(current_hand_command_frame, text="Current command:")
         self.current_hand_command_label.grid(row=0, column=0, stick=W)
 
-        temporary_img = PhotoImage(file=r"C:\Genie Robotique\GroS4\Projet SLEARH\Project-SLEARH\Image_Library\temporary_img.png")
+        temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke\Session4"
+                                        r"\Projet\Project-SLEARH\Image_Library\temporary_img.png")
         # temporary_img1 = temporary_img.subsample(2, 2)
         self.temporary_img_ui = Label(current_hand_command_frame, image=temporary_img)
         self.temporary_img_ui.image = temporary_img
@@ -214,3 +216,4 @@ if __name__ == "__main__":
     app = application(master=root)
     app.mainloop()
     root.destroy()
+    EventHandler.end_thread()
