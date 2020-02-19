@@ -1,7 +1,10 @@
+from Backend_Scripts import TextAnalyser
+from Backend_Scripts import Configuration
+from Backend_Scripts import EventHandler
 from tkinter import *
 from tkinter import messagebox
 from enum import Enum
-
+import serial
 
 class ModeEnum(Enum):
     Automatic = 1
@@ -14,13 +17,14 @@ class PurposeEnum(Enum):
 
 
 class application(Frame):
-    __mode_option_state__ = ModeEnum.Automatic
-    __purpose_option_state__ = PurposeEnum.Education
+
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack()
         self.create_widgets()
+        self.__mode_option_state__ = IntVar()
+        self.__purpose_option_state__ = IntVar()
 
     def get_mode_option_state(self):
         return self.__mode_option_state__
@@ -57,8 +61,8 @@ class application(Frame):
         self.current_hand_command_label = Label(current_hand_command_frame, text="Current command:")
         self.current_hand_command_label.grid(row=0, column=0, stick=W)
 
-        temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke"
-                                        r"\Session4\Projet\Project-SLEARH\Image_Library\temporary_img.png")
+        temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke\Session4"
+                                        r"\Projet\Project-SLEARH\Image_Library\temporary_img.png")
         # temporary_img1 = temporary_img.subsample(2, 2)
         self.temporary_img_ui = Label(current_hand_command_frame, image=temporary_img)
         self.temporary_img_ui.image = temporary_img
@@ -99,6 +103,8 @@ class application(Frame):
 
     def create_options_frame(self):
         options_frame = Frame(self)
+        self.set_purpose_option_state(PurposeEnum.Education)
+        self.set_mode_option_state(ModeEnum.Automatic)
 
         # Configuration and placement for the "Options:" label
         self.options_label = Label(options_frame, text="Options:")
@@ -127,17 +133,20 @@ class application(Frame):
         options_mode_choices_frame.grid(row=4, column=1, padx=2)
         self.mode_choices_automatic = Radiobutton(options_mode_choices_frame, text="Automatic",
                                                   var=self.__mode_option_state__, value=ModeEnum.Automatic,
-                                                  command=self.send_new_mode_option)
+                                                  command=self.set_mode_option_automatic)
+                                                  #command=self.send_new_mode_option)
         self.mode_choices_automatic.select()
         self.mode_choices_automatic.grid(row=0, column=0)
         self.mode_choices_step = Radiobutton(options_mode_choices_frame, text="Step", var=self.__mode_option_state__,
-                                             value=ModeEnum.Step, command=self.send_new_mode_option)
+                                             value=ModeEnum.Step, 
+                                             command=self.set_mode_option_step)
+                                             #command=self.send_new_mode_option)
         self.mode_choices_step.deselect()
         self.mode_choices_step.grid(row=0, column=1)
 
         # Configuration and placement for the Glider section
         self.next_letter_speed_glider = Scale(options_frame, label="Second(s) passed on one sign", orient=HORIZONTAL,
-                                              to=5.0, from_=1.0, tickinterval=0.25, length=169)
+                                              to=10.0, from_=1.0, tickinterval=0.25, length=169)
         self.next_letter_speed_glider["command"] = self.send_new_speed_on_letter
         self.next_letter_speed_glider.grid(row=5, column=1, pady=2)
 
@@ -156,10 +165,12 @@ class application(Frame):
         # TODO: Add sending message to the TextAnalyser and sending message to the arduino here (and wait for the
         #  "message received" before showing info)
         message_to_send = self.text_entry.get()
+        TextAnalyser.instance.parse_char(message_to_send)
         messagebox.showinfo("Sended", message_to_send)
 
     def do_stop(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        EventHandler.Instance.clear_queue()
         messagebox.showinfo("Stoped", "Hand has been stoped.")
 
     def do_pause(self):
@@ -168,10 +179,29 @@ class application(Frame):
 
     def send_new_speed_on_letter(self, new_time_value):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        Configuration.Instance.set_wait_time(new_time_value)
         print("New on_letter_time_value: " + new_time_value)
+
+    def set_mode_option_step(self):
+        self.set_mode_option_state(ModeEnum.Step)
+        self.send_new_mode_option()
+
+    def set_mode_option_automatic(self):
+        self.set_mode_option_state(ModeEnum.Automatic)
+        self.send_new_mode_option()
 
     def send_new_mode_option(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+
+        if self.get_mode_option_state() == ModeEnum.Automatic:
+            if Configuration.Instance.is_semi_auto():
+                Configuration.Instance.toggle_semi_auto()
+            else:
+                return
+        elif not Configuration.Instance.is_semi_auto():
+            Configuration.Instance.toggle_semi_auto()
+        else: return
+        
         messagebox.showinfo("New mode", "Mode option has been changed to " + str(self.get_mode_option_state()))
 
     def send_new_purpose_option(self):
@@ -180,7 +210,10 @@ class application(Frame):
 
 
 if __name__ == "__main__":
+
+    Configuration.Instance.set_debug(TRUE, 1)
     root = Tk("")
     app = application(master=root)
     app.mainloop()
     root.destroy()
+    EventHandler.end_thread()

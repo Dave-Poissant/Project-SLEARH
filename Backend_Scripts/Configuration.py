@@ -1,13 +1,13 @@
-import Logger
-import EventHandler
-from Mode import Mode
+from Backend_Scripts import Logger
+from Backend_Scripts import EventHandler
+from Backend_Scripts import Mode
 
 
 class Configuration:
 
     def __init__(self):
-        self._available_chars = ["a", "b", "c", "D"]
-        self._mode = Mode.standard
+        self._available_chars = ["a", "b", "c", "D", "é", "t"]
+        self._mode = Mode.Mode.standard
         self._semi_auto = False
         self._wait_time = 2 #seconds - Wait time between letter exectition
         self.debug = False

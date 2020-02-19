@@ -1,6 +1,6 @@
 import threading
-import Event
-import Logger
+from Backend_Scripts import Event
+from Backend_Scripts import Logger
 
 class EventQueue:
 

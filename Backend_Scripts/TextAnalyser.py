@@ -1,8 +1,8 @@
-import Configuration
-import EventHandler
-import Logger
-from Event import Event
-from EventType import EventType
+from Backend_Scripts import Configuration
+from Backend_Scripts import EventHandler
+from Backend_Scripts import Logger
+from Backend_Scripts import Event
+from Backend_Scripts import EventType
 
 class TextAnalyser:
 
@@ -19,12 +19,13 @@ class TextAnalyser:
             if not char.isspace(): #skip char if it's a whitespace
                 if self.is_char_valid(char) or self.is_char_valid(char.upper()):
                     Logger.Log("char parsed: " + char + " (valid)\n", 3)
-                    self.push_event(Event(char, EventType.letter))
+                    self.push_event(Event.Event(char, EventType.EventType.letter))
                 else:
                     Logger.Log("char parsed: " + char + " (invalid)\n", 3)
-                    self.push_event(Event(char, EventType.invalid_letter, True))
+                    self.push_event(Event.Event(char, EventType.EventType.invalid_letter, True))
 
     # Check if a char is available
     def is_char_valid(self, char):
         return char in Configuration.Instance.get_available_chars()
 
+instance = TextAnalyser()

@@ -1,10 +1,10 @@
-import TextAnalyser
-import EventHandler
-import Configuration
+from Backend_Scripts import TextAnalyser
+from Backend_Scripts import EventHandler
+from Backend_Scripts import Configuration
 import time
-import Unit_Tests
-from Event import Event
-from EventType import EventType
+from Backend_Scripts import Unit_Tests
+from Backend_Scripts import Event
+from Backend_Scripts import EventType
 
     
 def func():
@@ -29,8 +29,8 @@ def func():
     config.toggle_semi_auto()
 
 def main():
-    Unit_Tests.run()
-    #func()
+    #Unit_Tests.run()
+    func()
 
-
-main()
+if __name__ == "__main__":
+    main()
