@@ -2,6 +2,7 @@
 #include <string.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include <ArduinoJson.h>
 
 //Section to change when adding servos or characters
 #define NB_LETTERS  6 //Number of letters managed
@@ -54,11 +55,11 @@ int lastCommand = ' ';
 int command = ' ';
 int adjustedCommand = ' ';
 
-bool state = NOT_READY;
+bool state = READY;
 
 
 void setup() {
-  //Serial.begin(BAUD);
+  Serial.begin(BAUD);
   //while(! Serial);
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);  // Analog servos run at ~60Hz updates. 
@@ -84,10 +85,12 @@ void loop() {
 
     state = READY;
     //sendState(state);
-    delay(100);
   }
 
-  if(state = READY){
+  //if(state == READY){
+  //  StaticJsonDocument<500> doc;
+  //  DeserializationError error = deserializeJson(doc, Serial);
+    //Serial.println(msg);
     /*
     if(listen() == true){
       state = NOT_READY;
@@ -96,8 +99,10 @@ void loop() {
       character to ascii
     }
     */
-  }
+  //}
 
+  sendMsg();
+  delay(500);
 }
 
 int servoOut(int character){
@@ -180,4 +185,48 @@ int test(){
   return testResult;
 }
 
+void sendMsg(){
+  /* Envoit du message Json sur le port seriel */
+  StaticJsonDocument<500> doc;
+  // Elements du message
 
+  doc["com_state"] = state;
+
+
+  // Serialisation
+  serializeJson(doc, Serial);
+  // Envoit
+  Serial.println();
+}
+
+void readMsg(){
+  // Lecture du message Json
+  StaticJsonDocument<500> doc;
+  JsonVariant parse_msg;
+
+  // Lecture sur le port Seriel
+  DeserializationError error = deserializeJson(doc, Serial);
+
+  // Si erreur dans le message
+  if (error) {
+    Serial.print("deserialize() failed: ");
+    Serial.println(error.c_str());
+    return;
+  }
+  
+  // Analyse des éléments du message message
+  parse_msg = doc["pulsePWM"];
+  if(!parse_msg.isNull()){
+     //pulsePWM_ = doc["pulsePWM"].as<float>();
+  }
+
+  parse_msg = doc["pulseTime"];
+  if(!parse_msg.isNull()){
+     //pulseTime_ = doc["pulseTime"].as<float>();
+  }
+
+  parse_msg = doc["pulse"];
+  if(!parse_msg.isNull()){
+     //shouldPulse_ = doc["pulse"];
+  }
+}
