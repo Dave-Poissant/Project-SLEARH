@@ -101,6 +101,7 @@ void loop() {
     */
   //}
 
+  // Sending message just to test communication
   sendMsg();
   delay(500);
 }
