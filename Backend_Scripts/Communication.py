@@ -1,8 +1,10 @@
 import sys
 import glob
 import serial
+import serial.tools.list_ports
 
 good_com_port = "COM7"
+
 
 def serial_ports():
     """ Lists serial port names
@@ -13,7 +15,8 @@ def serial_ports():
             A list of the serial ports available on the system
     """
     if sys.platform.startswith('win'):
-        ports = ['COM%s' % (i + 1) for i in range(256)]
+        ports = list(serial.tools.list_ports.comports())
+        # ports = ['COM%s' % (i + 1) for i in range(256)]
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         # this excludes your current terminal "/dev/tty"
         ports = glob.glob('/dev/tty[A-Za-z]*')
@@ -24,12 +27,13 @@ def serial_ports():
 
     result = []
     for port in ports:
-        try:
-            s = serial.Serial(port)
-            s.close()
-            result.append(port)
-        except (OSError, serial.SerialException):
-            pass
+        if "Arduino" in port[1]:
+            try:
+                s = serial.Serial(port[0])
+                s.close()
+                result.append(port[0])
+            except (OSError, serial.SerialException):
+                pass
     return result
 
 
@@ -55,14 +59,19 @@ class Communication:
                     s.write(bytes(message, "utf-8"))
                 s.close()
 
-    def find_port(self):
-        return serial_ports()
-
 
 if __name__ == "__main__":
     com = Communication()
+    ser = None
     while True:
-        ser = serial.Serial("COM7", baudrate=9600)
+        ports = serial_ports()
+        if len(ports) < 1:
+            print("No Arduino found !")
+        elif len(ports) > 1:
+            print("More than one Arduino found, using first at: " + ports[0])
+        else:
+            print("Arduino found at: " + ports[0])
+            ser = serial.Serial(ports[0], baudrate=9600)
         msg = 'b'
 
         try:
@@ -70,11 +79,10 @@ if __name__ == "__main__":
             print(incoming)
         except Exception as e:
             print(e)
-        ser.close()
-        # com.update_stream('char', msg)
 
-        # print(str(com.read_stream('char')))
-        # print(serial_ports())
-        # com.send_stream('char', msg)
-        # ports = serial.tools.list_ports.comports()
-        # print("number of ports: " + str(len(ports)))
+        try:
+            ser.write(bytes(msg, "utf-8"))
+        except Exception as e:
+            print(e)
+
+        ser.close()

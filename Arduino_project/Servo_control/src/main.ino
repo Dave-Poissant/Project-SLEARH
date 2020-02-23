@@ -2,7 +2,7 @@
 #include <string.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include <ArduinoJson.h>
+#include <CommunicationArduino.h>
 
 //Section to change when adding servos or characters
 #define NB_LETTERS  6 //Number of letters managed
@@ -22,8 +22,9 @@
 #define RING                  6
 #define LITTLE                8
 
-#define NOT_READY             0
-#define READY                 1
+
+#define NOT_READY_TO_COM      false
+#define READY_TO_COM          true
 
 //Creating a structure for every character
 struct character{
@@ -55,10 +56,15 @@ int lastCommand = ' ';
 int command = ' ';
 int adjustedCommand = ' ';
 
-bool state = READY;
+// Communication variables
+bool blinkState = false;
+bool comState = NOT_READY_TO_COM;
+CommunicationArduino comObject = CommunicationArduino();
 
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+
   Serial.begin(BAUD);
   //while(! Serial);
   pwm.begin();
@@ -75,34 +81,38 @@ void setup() {
 
 void loop() {
 
-  if(state == NOT_READY){
-    adjustedCommand = adjustCommand(command);
-    test();
-    if(newCommand && adjustedCommand != ' '){
+  if(comState == NOT_READY_TO_COM){
+    //adjustedCommand = adjustCommand(command);
+    //test();
+    /*if(newCommand && adjustedCommand != ' '){
       newCommand = 0;
       servoOut(adjustedCommand);
-    }
+    }*/
 
-    state = READY;
-    //sendState(state);
+    comState = READY_TO_COM;
+    comObject.sendState(comState);
   }
 
-  //if(state == READY){
-  //  StaticJsonDocument<500> doc;
-  //  DeserializationError error = deserializeJson(doc, Serial);
-    //Serial.println(msg);
-    /*
-    if(listen() == true){
-      state = NOT_READY;
-      sendState(state);
-      commande = char;
-      character to ascii
+  if(comState == READY_TO_COM){
+    int newCommandInAscii = comObject.readCommand();
+    if( newCommandInAscii != toAscii(' ')){
+      comState = NOT_READY_TO_COM;
+      comObject.sendState(comState);
+      digitalWrite(LED_BUILTIN, LOW);
     }
-    */
-  //}
+    else
+    {
+      {
+        comState = NOT_READY_TO_COM;
+        comObject.sendState(comState);
+        digitalWrite(LED_BUILTIN, HIGH);
+      }
+    }
+    
+  }
 
   // Sending message just to test communication
-  sendMsg();
+  // comObject.sendState(comState);
   delay(500);
 }
 
@@ -184,50 +194,4 @@ int test(){
     servoOut(adjustedCommand);
   }
   return testResult;
-}
-
-void sendMsg(){
-  /* Envoit du message Json sur le port seriel */
-  StaticJsonDocument<500> doc;
-  // Elements du message
-
-  doc["com_state"] = state;
-
-
-  // Serialisation
-  serializeJson(doc, Serial);
-  // Envoit
-  Serial.println();
-}
-
-void readMsg(){
-  // Lecture du message Json
-  StaticJsonDocument<500> doc;
-  JsonVariant parse_msg;
-
-  // Lecture sur le port Seriel
-  DeserializationError error = deserializeJson(doc, Serial);
-
-  // Si erreur dans le message
-  if (error) {
-    Serial.print("deserialize() failed: ");
-    Serial.println(error.c_str());
-    return;
-  }
-  
-  // Analyse des éléments du message message
-  parse_msg = doc["pulsePWM"];
-  if(!parse_msg.isNull()){
-     //pulsePWM_ = doc["pulsePWM"].as<float>();
-  }
-
-  parse_msg = doc["pulseTime"];
-  if(!parse_msg.isNull()){
-     //pulseTime_ = doc["pulseTime"].as<float>();
-  }
-
-  parse_msg = doc["pulse"];
-  if(!parse_msg.isNull()){
-     //shouldPulse_ = doc["pulse"];
-  }
 }
