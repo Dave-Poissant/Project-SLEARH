@@ -3,70 +3,105 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 #include <CommunicationArduino.h>
+#include "SoftTimer/SoftTimer.h"
 
-//Section to change when adding servos or characters
-#define NB_LETTERS  6 //Number of letters managed
-#define NB_MOTORS   10 // Number of active motors
-#define NB_FINGERS  5 // Number of active fingers
+// Section to change when adding servos or characters:
+#define NB_LETTERS            6                           //Number of letters managed
+#define NB_MOTORS             10                          // Number of active motors
+#define NB_FINGERS            5                           // Number of active fingers
 
-//The next defined are the different articulated positions for a finger
+// The next defined are the different articulated positions for a finger:
 #define VERTICAL              0
 #define HORIZONTAL            1
 #define A90_DEGREE            2
-#define FULLY_INCLINED        3   //Value obtained from testing
+#define FULLY_INCLINED        3                           //Value obtained from testing
 
-//The next defined are the diffrent finger implemented
+// The next defined are the diffrent finger implemented:
 #define THUMB                 0
 #define INDEX                 2
 #define MIDDLE                4
 #define RING                  6
 #define LITTLE                8
 
+// The next defined are the different communication states:
+#define NOT_READY_TO_SEND     false
+#define READY_TO_SEND         true
+#define NOT_READY_TO_READ     false
+#define READY_TO_READ         true
 
-#define NOT_READY_TO_COM      false
-#define READY_TO_COM          true
+#define SEND_UPDATE_PERIODE   200                         // sent of Read state Periode (ms)
+#define READ_UPDATE_PERIODE   1000                        // read of Serial Periode (ms)
+#define BAUD                  9600                        // Baud rate for Arduino mega 2560
 
-//Creating a structure for every character
-struct character{
-  int id;
-  int pattern[NB_FINGERS];
-  int angle[NB_FINGERS];
-} charact[NB_LETTERS];
+#define NOT_INCLINED          25                          //Angle for a straigth finger
+#define INCLINED              140                         //Angle for an inclined finger
 
-//End of the section to change when adding servos or characters
-
-#define NOT_INCLINED 25  //Angle for a straigth finger
-#define INCLINED     140   //Angle for an inclined finger
-
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();  //Setting up the pwm object with the default address for the driver (0x40)
-
-#define width 2 //Constante. 
-#define BAUD 9600 // Baud rate for Arduino mega 2560
+#define width                 2                           //Constante. 
 #define MIN_PULSE_WIDTH       650
 #define MAX_PULSE_WIDTH       2350
 #define DEFAULT_PULSE_WIDTH   1500
 #define FREQUENCY             50
 
+
+// ----------------------------- Function prototypes ---------------------------------
+
+void sendTimerCallback();                                 // callback to update the send Serial.read state
+void readTimerCallback();                                 // callback to update the send Serial.read state
+
+int servoOut(int character);
+int moveFinger(int finger, int moveOption);
+
+int pulseWidth(int angle);
+
+int adjustCommand(int command);
+
+int test();
+
+// ------------------------------- Other variables -----------------------------------
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();  // Setting up the pwm object with the default address for the driver (0x40)
+
+// Communication variables:
+CommunicationArduino comObject = CommunicationArduino();  // Only instance of CommunicationArduino class, to send and read from python UI
+volatile bool shouldSend = NOT_READY_TO_SEND;             // flag to send a message
+volatile bool shouldRead = NOT_READY_TO_READ;             // flag to read a message
+bool messageReceived = false;                             // flag to show if the arduino as already received a message (temporary) 
+SoftTimer timerSendMsg;                                   // send messages timer
+SoftTimer timerReadMsg;                                   // read messages timer (temporary)
+
 // twelve servo objects can be created on most boards
-// our servo # counter
+// our servo # counter:
 uint8_t servonum = 1;
 
-bool newCommand = false; //Normaly initialized to 0. Set to 1 for testing purposes.
+// command variables:
+bool newCommand = false;                                  //Normaly initialized to 0. Set to 1 for testing purposes.
 int lastCommand = ' ';
 int command = ' ';
 int adjustedCommand = ' ';
 
-// Communication variables
-bool blinkState = false;
-bool comState = NOT_READY_TO_COM;
-CommunicationArduino comObject = CommunicationArduino();
+// Creating a structure for every character:
+struct character{
+  int id;
+  int pattern[NB_FINGERS];
+  int angle[NB_FINGERS];
+} charact[NB_LETTERS];
+// End of the section to change when adding servos or characters
+
+bool blinkState = false;                                  // built-in LED's blinkState
 
 
+// -------------------------------------Setup ----------------------------------------
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
-
   Serial.begin(BAUD);
-  //while(! Serial);
+
+  timerSendMsg.setDelay(SEND_UPDATE_PERIODE);
+  timerSendMsg.setCallback(sendTimerCallback);
+  timerSendMsg.enable();
+
+  timerReadMsg.setDelay(READ_UPDATE_PERIODE);
+  timerReadMsg.setCallback(readTimerCallback);
+  timerReadMsg.enable();
+
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);  // Analog servos run at ~60Hz updates. 
 
@@ -81,40 +116,46 @@ void setup() {
 
 void loop() {
 
-  if(comState == NOT_READY_TO_COM){
-    //adjustedCommand = adjustCommand(command);
-    //test();
-    /*if(newCommand && adjustedCommand != ' '){
-      newCommand = 0;
-      servoOut(adjustedCommand);
-    }*/
-
-    comState = READY_TO_COM;
-    comObject.sendState(comState);
+  if(shouldSend)
+  {
+    comObject.sendState(shouldRead);
   }
 
-  if(comState == READY_TO_COM){
+  if(shouldRead == NOT_READY_TO_READ){
+    //adjustedCommand = adjustCommand(command);
+    //test();
+    //if(newCommand && adjustedCommand != ' '){
+    //  newCommand = 0;
+    //  servoOut(adjustedCommand);
+    //}
+  }
+
+  if(shouldRead == READY_TO_READ){
     int newCommandInAscii = comObject.readCommand();
-    if( newCommandInAscii != toAscii(' ')){
-      comState = NOT_READY_TO_COM;
-      comObject.sendState(comState);
+    if(newCommandInAscii == toAscii('a'))
+    {
+      shouldRead = NOT_READY_TO_READ;
+      digitalWrite(LED_BUILTIN, HIGH);
+    }
+    else if(newCommandInAscii == toAscii('b'))
+    {
+      shouldRead = NOT_READY_TO_READ;
       digitalWrite(LED_BUILTIN, LOW);
     }
     else
     {
-      {
-        comState = NOT_READY_TO_COM;
-        comObject.sendState(comState);
-        digitalWrite(LED_BUILTIN, HIGH);
-      }
+      shouldRead = READY_TO_READ;
     }
     
   }
 
-  // Sending message just to test communication
-  // comObject.sendState(comState);
-  delay(500);
+  timerSendMsg.update();
+  timerReadMsg.update();
+  delay(FREQUENCY);
 }
+
+void sendTimerCallback(){shouldSend = true;}
+void readTimerCallback(){shouldRead = true;}
 
 int servoOut(int character){
   for(int j=0;j<NB_FINGERS; j++){

@@ -20,7 +20,6 @@ public:
 
         doc["com_state"] = state;
 
-
         // Serialisation
         serializeJson(doc, Serial);
         // Envoit
@@ -32,50 +31,25 @@ public:
         // Lecture du message Json
         StaticJsonDocument<500> doc;
         JsonVariant parse_msg;
-        char newCommand = ' ';
+        int newCommand = toAscii(' ');
 
         // Lecture sur le port Seriel
         DeserializationError error = deserializeJson(doc, Serial);
 
         // Si erreur dans le message
         if (error) {
-            //Serial.print("deserialize() failed: ");
-            //Serial.println(error.c_str());
-            return toAscii(newCommand);
+            return newCommand;
         }
-        
+        // digitalWrite(LED_BUILTIN, LOW);
+
         // Analyse des éléments du message message
         parse_msg = doc["command"];
         if(!parse_msg.isNull()){
-            newCommand = doc["command"].as<char>();
+            newCommand = doc["command"].as<int>();
         }
 
         return toAscii(newCommand);
     };
-
-    /*bool verifyConnection()
-    {
-        StaticJsonDocument<500> doc;
-        JsonVariant parse_msg;
-
-        // Elements du message
-        doc["fromarduino"] = true;
-        // Serialisation
-        serializeJson(doc, Serial);
-        // Envoit
-        Serial.println();
-
-        // Lecture sur le port Seriel
-        DeserializationError error = deserializeJson(doc, Serial);
-
-        // Si erreur dans le message
-        if (error) {
-            Serial.print("deserialize() failed: ");
-            Serial.println(error.c_str());
-            return false;
-        }
-        doc["fromraspberry"] = false;
-    };*/
 };
 
 #endif // COMMUNICATIONARDUINO

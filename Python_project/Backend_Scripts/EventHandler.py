@@ -5,16 +5,17 @@ from Backend_Scripts import Logger
 from Backend_Scripts import EventQueue
 from Backend_Scripts import EventType
 
+
 class EventHandler:
 
     def __init__(self):
+        self.should_run = True
         self._queue = EventQueue.EventQueue()
         self._thread = threading.Thread(target=self.private_thread)
         self.trigger = True
         self.__start_thread__()
         self.trigger_warned = False
-        self.should_run = True
-        
+
     def __start_thread__(self):
         self._thread.start()
 
@@ -75,7 +76,6 @@ class EventHandler:
                     Logger.Log("Queue Empty...\n", 1)
                 self.trigger_warned = True
 
-
         else:
             Logger.Log("Event type is invalid\n", 2)
 
@@ -90,4 +90,3 @@ class EventHandler:
 
 
 Instance = EventHandler()
-

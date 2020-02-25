@@ -1,10 +1,12 @@
 from Backend_Scripts import TextAnalyser
 from Backend_Scripts import Configuration
 from Backend_Scripts import EventHandler
+from Backend_Scripts import Communication
 from tkinter import *
 from tkinter import messagebox
 from enum import Enum
 import serial
+
 
 class ModeEnum(Enum):
     Automatic = 1
@@ -17,7 +19,6 @@ class PurposeEnum(Enum):
 
 
 class application(Frame):
-
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
@@ -61,8 +62,8 @@ class application(Frame):
         self.current_hand_command_label = Label(current_hand_command_frame, text="Current command:")
         self.current_hand_command_label.grid(row=0, column=0, stick=W)
 
-        temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke\Session4"
-                                        r"\Projet\Project-SLEARH\Image_Library\temporary_img.png")
+        temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke\Session4\Projet\Project-SLEARH\Python_project"
+                                        r"\Image_Library\temporary_img.png")
         # temporary_img1 = temporary_img.subsample(2, 2)
         self.temporary_img_ui = Label(current_hand_command_frame, image=temporary_img)
         self.temporary_img_ui.image = temporary_img
@@ -99,6 +100,16 @@ class application(Frame):
         self.send_button["command"] = self.send_text
         self.send_button.grid(row=0, column=0, columnspan=2)
 
+        self.move_motor_1 = Button(hand_control_buttons_frame)
+        self.move_motor_1["text"] = "move 1"
+        self.move_motor_1["command"] = self.send_movement_motor_1
+        self.move_motor_1.grid(row=2, column=0)
+
+        self.move_motor_2 = Button(hand_control_buttons_frame)
+        self.move_motor_2["text"] = "move 2"
+        self.move_motor_2["command"] = self.send_movement_motor_2
+        self.move_motor_2.grid(row=2, column=1)
+
         hand_control_frame.grid(row=2, column=0, columnspan=2, pady=20, stick=W)
 
     def create_options_frame(self):
@@ -134,13 +145,13 @@ class application(Frame):
         self.mode_choices_automatic = Radiobutton(options_mode_choices_frame, text="Automatic",
                                                   var=self.__mode_option_state__, value=ModeEnum.Automatic,
                                                   command=self.set_mode_option_automatic)
-                                                  #command=self.send_new_mode_option)
+        # command=self.send_new_mode_option)
         self.mode_choices_automatic.select()
         self.mode_choices_automatic.grid(row=0, column=0)
         self.mode_choices_step = Radiobutton(options_mode_choices_frame, text="Step", var=self.__mode_option_state__,
-                                             value=ModeEnum.Step, 
+                                             value=ModeEnum.Step,
                                              command=self.set_mode_option_step)
-                                             #command=self.send_new_mode_option)
+        # command=self.send_new_mode_option)
         self.mode_choices_step.deselect()
         self.mode_choices_step.grid(row=0, column=1)
 
@@ -160,6 +171,14 @@ class application(Frame):
 
     def connect(self, widget, signal, event):
         widget.bind(signal, event)
+
+    def send_movement_motor_1(self):
+        Communication.Instance.update_stream(ord('a'))
+        Communication.Instance.send_stream()
+
+    def send_movement_motor_2(self):
+        Communication.Instance.update_stream(ord('b'))
+        Communication.Instance.send_stream()
 
     def send_text(self):
         # TODO: Add sending message to the TextAnalyser and sending message to the arduino here (and wait for the
@@ -191,8 +210,6 @@ class application(Frame):
         self.send_new_mode_option()
 
     def send_new_mode_option(self):
-        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
-
         if self.get_mode_option_state() == ModeEnum.Automatic:
             if Configuration.Instance.is_semi_auto():
                 Configuration.Instance.toggle_semi_auto()
@@ -200,8 +217,9 @@ class application(Frame):
                 return
         elif not Configuration.Instance.is_semi_auto():
             Configuration.Instance.toggle_semi_auto()
-        else: return
-        
+        else:
+            return
+
         messagebox.showinfo("New mode", "Mode option has been changed to " + str(self.get_mode_option_state()))
 
     def send_new_purpose_option(self):
@@ -210,10 +228,8 @@ class application(Frame):
 
 
 if __name__ == "__main__":
-
-    Configuration.Instance.set_debug(TRUE, 1)
+    Configuration.Instance.set_debug(TRUE, 3)
     root = Tk("")
     app = application(master=root)
     app.mainloop()
-    root.destroy()
-    EventHandler.end_thread()
+    EventHandler.Instance.end_thread()
