@@ -5,7 +5,10 @@ from Backend_Scripts import Communication
 from tkinter import *
 from tkinter import messagebox
 from enum import Enum
-import serial
+import os
+
+current_directory = os.getcwd()
+image_directory = str(current_directory) + "\\Image_Library\\temporary_img.png"
 
 
 class ModeEnum(Enum):
@@ -62,8 +65,7 @@ class application(Frame):
         self.current_hand_command_label = Label(current_hand_command_frame, text="Current command:")
         self.current_hand_command_label.grid(row=0, column=0, stick=W)
 
-        temporary_img = PhotoImage(file=r"C:\Users\davep\Unisherbrooke\Session4\Projet\Project-SLEARH\Python_project"
-                                        r"\Image_Library\temporary_img.png")
+        temporary_img = PhotoImage(file=image_directory)
         # temporary_img1 = temporary_img.subsample(2, 2)
         self.temporary_img_ui = Label(current_hand_command_frame, image=temporary_img)
         self.temporary_img_ui.image = temporary_img
