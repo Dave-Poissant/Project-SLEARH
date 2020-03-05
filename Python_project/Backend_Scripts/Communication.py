@@ -4,6 +4,7 @@ import serial
 import serial.tools.list_ports
 import time
 import json
+import threading
 
 
 def serial_ports():
@@ -38,11 +39,23 @@ def serial_ports():
 
 
 class Communication:
+    
     def __init__(self):
         self.__stream__ = {}
+        self.should_run = True
         self.__port_name__ = None
         self.__port__ = None
-        self.connect_port()
+        self.find_port()
+        self.__private_thread__ = threading.Thread(target=self.__communication_thread__)
+        self.__private_thread__.setDaemon(True)
+        self.__start_thread__()
+        
+    def __start_thread__(self):
+        self.__private_thread__.start()
+
+    def end_thread(self):
+        self.should_run = False
+        self.__private_thread__.join()
 
     def update_stream(self, value):
         self.__stream__ = {
@@ -65,53 +78,102 @@ class Communication:
 
     def send_stream(self):
         encoded_message = json.dumps(self.__stream__)
-        print(encoded_message)
+
+        try:
+            print(str(encoded_message) + " on port " + str(self.__port__.name))
+        except:
+            print(str(encoded_message) + " on port None")
+
+
         try:
             self.__port__.write(bytes(str(encoded_message), "utf-8"))
-        except serial.SerialException or FileNotFoundError:
-            self.connect_port()
-            self.send_stream()
+            print("Write success")
+        except serial.SerialException or FileNotFoundError as e:
+            # print(str(e) + "\nReconnecting...")
+            # self.connect_port()
+            # self.send_stream()
+            print("Could not send.")
 
     def find_port(self):
         all_port = serial_ports()
+        print(str(all_port))
         if len(all_port) < 1:
-            print("No Arduino found !")
+            if self.__port__ is not None:
+                print("No Arduino found !")
+                self.__port_name__ = None
+                self.__port__ = None
+            return False
+
         elif len(all_port) > 1:
-            print("More than one Arduino found, using first at: " + all_port[0])
-            self.__port_name__ = all_port[0]
+            if self.__port__ is None or str(self.__port__.name) != str(all_port[0]):
+                print("More than one Arduino found, using first at: " + all_port[0])
+                self.__port_name__ = all_port[0]
         else:
-            print("Arduino found at: " + all_port[0])
-            self.__port_name__ = all_port[0]
+            if self.__port__ is None or not str(self.__port__.name) == str(all_port[0]):
+                print("Arduino found at: " + all_port[0])
+                self.__port_name__ = all_port[0]
+
+        if self.__port__ is None:
+            self.connect_port()
+        return  True
 
     def connect_port(self):
-        self.find_port()
-        while self.__port_name__ is None:
+        try:
+            self.__port__ = serial.Serial(self.__port_name__, baudrate=9600)
+        except:
             self.find_port()
+            self.connect_port()
+        print("Connected to " + str(self.__port__.name))
 
-        self.__port__ = serial.Serial(self.__port_name__, baudrate=9600)
+    def __communication_thread__(self):
+        wasConnected = None
+        while self.should_run:
+
+            all_port = serial_ports()
+
+
+            try:
+                self.__port__().write()
+                port_exists = True
+            except:
+                port_exists = False
+            print("exist: " + str(port_exists))
+
+            # print("all ports: " + str(all_port))
+            # r not self.__port__.name in all_port
+            if self.__port__ is None or port_exists:
+                if wasConnected or wasConnected is None:
+                    print("Disconnected")
+                    wasConnected = False
+            else:
+                if not wasConnected or wasConnected is None:
+                    print("Connected to " + str(self.__port__.name))
+                    wasConnected = True
+
+            time.sleep(0.01)
 
 
 Instance = Communication()
-# msg = 1
+msg = 1
 
-# if __name__ == "__main__":
-#     while True:
-#         # if msg == 0:
-#         #     msg = 1
-#         # else:
-#         #     msg = 0
-#
-#         try:
-#             incoming = Instance.read_stream()
-#             print(str(type(incoming)))
-#             print("Im printin this: " + incoming)
-#         except Exception as e:
-#             print(e)
-#
-#         # try:
-#         #     ser.write(bytes(str(msg), "utf-8"))
-#         # except Exception as e:
-#         #     print(e)
-#
-#         # ser.close()
-#         # time.sleep(1)
+if __name__ == "__main__":
+    while True:
+        # if msg == 0:
+        #     msg = 1
+        # else:
+        #     msg = 0
+
+        try:
+            incoming = Instance.read_stream()
+            print(str(type(incoming)))
+            print("Im printin this: " + incoming)
+        except Exception as e:
+            print(e)
+
+        # try:
+        #     ser.write(bytes(str(msg), "utf-8"))
+        # except Exception as e:
+        #     print(e)
+
+        # ser.close()
+        # time.sleep(1)
