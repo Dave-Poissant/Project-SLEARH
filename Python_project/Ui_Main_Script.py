@@ -230,8 +230,9 @@ class application(Frame):
 
 
 if __name__ == "__main__":
-    Configuration.Instance.set_debug(TRUE, 3)
+    Configuration.Instance.set_debug(TRUE, 1)
     root = Tk("")
     app = application(master=root)
     app.mainloop()
     EventHandler.Instance.end_thread()
+    Communication.Instance.end_thread()
