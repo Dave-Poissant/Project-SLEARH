@@ -4,6 +4,7 @@ import threading
 from Backend_Scripts import Logger
 from Backend_Scripts import EventQueue
 from Backend_Scripts import EventType
+from Backend_Scripts import Communication
 
 
 class EventHandler:
@@ -60,7 +61,12 @@ class EventHandler:
             if self.trigger: 
                 Logger.Log("Executing letter '" + event.get_name() + "'...\n", 2)
 
+                Communication.Instance.update_stream(ord(event.get_name()))
+                Communication.Instance.send_stream()
                 #TODO : handle events of type 'letter'
+                
+                while not Communication.Instance.read_stream(): #Wait for the Arduino to send a ready state
+                    time.sleep(0.1)
 
                 self._queue.dequeue()
 
