@@ -29,27 +29,25 @@ def serial_ports():
     result = []
     for port in ports:
         if "Arduino" in port[1]:
-            try:
-                s = serial.Serial(port[0])
-                s.close()
-                result.append(port[0])
-            except (OSError, serial.SerialException):
-                pass
+            result.append(port[0])
+
     return result
 
 
 class Communication:
-    
+
     def __init__(self):
         self.__stream__ = {}
         self.should_run = True
         self.__port_name__ = None
         self.__port__ = None
-        self.find_port()
         self.__private_thread__ = threading.Thread(target=self.__communication_thread__)
         self.__private_thread__.setDaemon(True)
         self.__start_thread__()
-        
+
+        # class Connection_Observer:
+        #     def
+
     def __start_thread__(self):
         self.__private_thread__.start()
 
@@ -84,7 +82,6 @@ class Communication:
         except:
             print(str(encoded_message) + " on port None")
 
-
         try:
             self.__port__.write(bytes(str(encoded_message), "utf-8"))
             print("Write success")
@@ -96,7 +93,6 @@ class Communication:
 
     def find_port(self):
         all_port = serial_ports()
-        print(str(all_port))
         if len(all_port) < 1:
             if self.__port__ is not None:
                 print("No Arduino found !")
@@ -113,67 +109,55 @@ class Communication:
                 print("Arduino found at: " + all_port[0])
                 self.__port_name__ = all_port[0]
 
-        if self.__port__ is None:
+        if self.__port__ is None and self.__port_name__ is not None:
             self.connect_port()
-        return  True
+        return True
 
     def connect_port(self):
         try:
             self.__port__ = serial.Serial(self.__port_name__, baudrate=9600)
-        except:
+        except serial.SerialException or FileNotFoundError:
             self.find_port()
             self.connect_port()
         print("Connected to " + str(self.__port__.name))
 
     def __communication_thread__(self):
-        wasConnected = None
         while self.should_run:
 
-            all_port = serial_ports()
+            if self.find_port():
+                if self.__port__.isOpen():
+                    port_exists = True
+                else:
+                    port_exists = False
+                print("exist: " + str(port_exists))
 
-
-            try:
-                self.__port__().write()
-                port_exists = True
-            except:
-                port_exists = False
-            print("exist: " + str(port_exists))
-
-            # print("all ports: " + str(all_port))
-            # r not self.__port__.name in all_port
-            if self.__port__ is None or port_exists:
-                if wasConnected or wasConnected is None:
-                    print("Disconnected")
-                    wasConnected = False
             else:
-                if not wasConnected or wasConnected is None:
-                    print("Connected to " + str(self.__port__.name))
-                    wasConnected = True
+                print("Exist: False")
 
-            time.sleep(0.01)
+            time.sleep(0.5)
 
 
 Instance = Communication()
 msg = 1
 
-if __name__ == "__main__":
-    while True:
-        # if msg == 0:
-        #     msg = 1
-        # else:
-        #     msg = 0
-
-        try:
-            incoming = Instance.read_stream()
-            print(str(type(incoming)))
-            print("Im printin this: " + incoming)
-        except Exception as e:
-            print(e)
-
-        # try:
-        #     ser.write(bytes(str(msg), "utf-8"))
-        # except Exception as e:
-        #     print(e)
-
-        # ser.close()
-        # time.sleep(1)
+# if __name__ == "__main__":
+#     while True:
+#         # if msg == 0:
+#         #     msg = 1
+#         # else:
+#         #     msg = 0
+#
+#         try:
+#             incoming = Instance.read_stream()
+#             print(str(type(incoming)))
+#             print("Im printin this: " + incoming)
+#         except Exception as e:
+#             print(e)
+#
+#         # try:
+#         #     ser.write(bytes(str(msg), "utf-8"))
+#         # except Exception as e:
+#         #     print(e)
+#
+#         # ser.close()
+#         # time.sleep(1)
