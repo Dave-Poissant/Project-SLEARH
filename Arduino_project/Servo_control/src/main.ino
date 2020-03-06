@@ -57,14 +57,13 @@ void setup() {
   pwm.setPWMFreq(FREQUENCY);  // Analog servos run at ~60Hz updates. 
 }
 
-void loop(){
+/*void loop(){
   servo.test();
   //delay(LOOP_DELAY);
-}
+}*/
 
-/*
+
 void loop() {
-  servo.test();
   if(shouldSend)
   {
     comObject.sendState(shouldRead);
@@ -109,4 +108,3 @@ void loop() {
 
 void sendTimerCallback(){shouldSend = true;}
 void readTimerCallback(){shouldRead = true;}
-*/
