@@ -44,6 +44,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(BAUD);
 
+/*
   timerSendMsg.setDelay(SEND_UPDATE_PERIODE);
   timerSendMsg.setCallback(sendTimerCallback);
   timerSendMsg.enable();
@@ -51,11 +52,17 @@ void setup() {
   timerReadMsg.setDelay(READ_UPDATE_PERIODE);
   timerReadMsg.setCallback(readTimerCallback);
   timerReadMsg.enable();
-
+*/
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);  // Analog servos run at ~60Hz updates. 
 }
 
+void loop(){
+  servo.test();
+  //delay(LOOP_DELAY);
+}
+
+/*
 void loop() {
   servo.test();
   if(shouldSend)
@@ -102,3 +109,4 @@ void loop() {
 
 void sendTimerCallback(){shouldSend = true;}
 void readTimerCallback(){shouldRead = true;}
+*/

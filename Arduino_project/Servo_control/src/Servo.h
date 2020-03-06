@@ -5,7 +5,7 @@
 #include <Adafruit_PWMServoDriver.h>
 
 // Section to change when adding servos or characters:
-#define NB_LETTERS            7                           //Number of letters managed
+#define NB_LETTERS            10                           //Number of letters managed
 #define NB_MOTORS             10                          // Number of active motors
 #define NB_FINGERS            5                           // Number of active fingers
 
@@ -22,8 +22,8 @@
 #define RING                  6
 #define LITTLE                8
 
-#define NOT_INCLINED          70                          //Angle for a straigth finger
-#define INCLINED              170                         //Angle for an inclined finger
+#define NOT_INCLINED          50                          //Angle for a straigth finger
+#define INCLINED              150                         //Angle for an inclined finger
 
 #define width                 2                           //Constante. 
 #define MIN_PULSE_WIDTH       650
@@ -50,13 +50,19 @@ public:
     Servo(){
         int lastCommand = ' ';
         // Defining every character with the dedicated structure.
-        charact[0] = {('a'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
-        charact[1] = {('b'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
+        charact[0] = {('0'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
+        charact[1] = {('1'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
         charact[2] = {('2'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,VERTICAL,VERTICAL,FULLY_INCLINED,FULLY_INCLINED}};
         charact[3] = {('3'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{VERTICAL,VERTICAL,VERTICAL,FULLY_INCLINED,FULLY_INCLINED}};
         charact[4] = {('4'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,VERTICAL,VERTICAL,VERTICAL,VERTICAL}};
         charact[5] = {('5'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{VERTICAL,VERTICAL,VERTICAL,VERTICAL,VERTICAL}};
-        charact[6] = {('6'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,FULLY_INCLINED,VERTICAL,FULLY_INCLINED,FULLY_INCLINED}};
+        charact[6] = {('a'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
+        charact[7] = {('b'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{HORIZONTAL,VERTICAL,VERTICAL,VERTICAL,VERTICAL}};
+        charact[8] = {('c'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{A90_DEGREE,A90_DEGREE,A90_DEGREE,A90_DEGREE,A90_DEGREE}};
+        charact[9] = {('d'),{INDEX,MIDDLE,RING,LITTLE,THUMB},{VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
+        //charact[10] = {('e'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{HORIZONTAL,VERTICAL,VERTICAL,VERTICAL,VERTICAL}};
+        
+        
     }
 
     bool servoOut(int character, int increment){
@@ -134,15 +140,28 @@ public:
 
     int test(){
         bool testResult = 0;
-        //servoOut('0');
-        //servoOut('5');
         /*
-        for(int i=0;i<NB_LETTERS;i++){
-            command = charact[i].id;
-            adjustedCommand = adjustCommand(command);
-            servoOut(adjustedCommand);
+        for(int i=0;i<NB_FINGERS; i++){
+            //pwm.setPWM(i, 0, pulseWidth(50));
+            servoOut('b',i);
+            delay(100);
         }
         */
+        //servoOut('5');
+        
+        for(int i=0;i<NB_LETTERS;i++){
+            int command = charact[i].id;
+            for(int increment=0;increment<NB_FINGERS; increment++){
+                servoOut(command,increment);
+                delay(200);
+            }
+            delay(1000);
+            Serial.println(command);
+            Serial.println(charact[i].id);
+            Serial.println("");
+            //servoOut(adjustedCommand,0);
+        }
+        
         return testResult;
     }
 };
