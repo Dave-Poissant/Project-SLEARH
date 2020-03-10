@@ -21,6 +21,20 @@ class PurposeEnum(Enum):
     Quiz = 2
 
 
+class Ui_Connection_Listener:
+
+    def __init__(self, master=None):
+        self.app = master
+
+    def change_connected_state(self, state):
+        if state:
+            self.app.connection_actual_state_label["text"] = "connected"
+            self.app.connection_actual_state_label["fg"] = "green"
+        else:
+            self.app.connection_actual_state_label["text"] = "not connected"
+            self.app.connection_actual_state_label["fg"] = "red"
+
+
 class application(Frame):
 
     def __init__(self, master=None):
@@ -29,6 +43,16 @@ class application(Frame):
         self.create_widgets()
         self.__mode_option_state__ = IntVar()
         self.__purpose_option_state__ = IntVar()
+        Communication.Instance.set_ui_adress(self)
+        Communication.Instance.start_thread()
+
+    def change_connected_state(self, state):
+        if state:
+            self.connection_actual_state_label["text"] = "connected"
+            self.connection_actual_state_label["fg"] = "green"
+        else:
+            self.connection_actual_state_label["text"] = "not connected"
+            self.connection_actual_state_label["fg"] = "red"
 
     def get_mode_option_state(self):
         return self.__mode_option_state__
@@ -230,7 +254,7 @@ class application(Frame):
 
 
 if __name__ == "__main__":
-    Configuration.Instance.set_debug(TRUE, 1)
+    Configuration.Instance.set_debug(TRUE, 3)
     root = Tk("")
     app = application(master=root)
     app.mainloop()

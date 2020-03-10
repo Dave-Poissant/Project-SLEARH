@@ -5,6 +5,7 @@ import serial.tools.list_ports
 import time
 import json
 import threading
+from Ui_Main_Script import Ui_Connection_Listener
 
 
 def serial_ports():
@@ -41,19 +42,24 @@ class Communication:
         self.should_run = True
         self.__port_name__ = None
         self.__port__ = None
+        self.ui_adress = None
         self.__private_thread__ = threading.Thread(target=self.__communication_thread__)
         self.__private_thread__.setDaemon(True)
-        self.__start_thread__()
 
-        # class Connection_Observer:
-        #     def
+    def set_ui_adress(self, adress):
+        self.ui_adress = adress
 
-    def __start_thread__(self):
+    def __change_connected_state__(self, state):
+        pass
+        # self.connection_observer.change_connected_state(state)
+
+    def start_thread(self):
         self.__private_thread__.start()
 
     def end_thread(self):
         self.should_run = False
         self.__private_thread__.join()
+        print("Communication thread joined")
 
     def update_stream(self, value):
         self.__stream__ = {
@@ -62,7 +68,9 @@ class Communication:
 
     def read_stream(self):
         try:
+            print("yo")
             encoded_message = self.__port__.readline().decode("utf-8")
+            print("yo2")
             encoded_message = encoded_message.split(":")
             first_part_encoded_message = encoded_message[0].split('"')
             second_part_encoded_message = encoded_message[1].split('}')
@@ -122,23 +130,41 @@ class Communication:
         print("Connected to " + str(self.__port__.name))
 
     def __communication_thread__(self):
+        was_connected = None
         while self.should_run:
 
             if self.find_port():
                 if self.__port__.isOpen():
-                    port_exists = True
+                    if not was_connected:
+                        self.ui_adress.change_connected_state(True)
+                        # pass
+                        # self.__change_connected_state__(True)
+                    else:
+                        pass
+                    was_connected = True
                 else:
-                    port_exists = False
-                print("exist: " + str(port_exists))
+                    self.ui_adress.change_connected_state(False)
+                    # self.__change_connected_state__(False)
+                    was_connected = False
+                # print("exist: " + str(port_exists))
 
             else:
+                self.ui_adress.change_connected_state(False)
+                # self.__change_connected_state__(False)
+                was_connected = False
                 print("Exist: False")
 
             time.sleep(0.5)
 
 
+class Connection_Observer:
+
+    def change_connected_state(self, state):
+        pass
+
+
 Instance = Communication()
-msg = 1
+# msg = 1
 
 # if __name__ == "__main__":
 #     while True:

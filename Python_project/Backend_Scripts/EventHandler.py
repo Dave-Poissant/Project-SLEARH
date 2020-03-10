@@ -65,8 +65,8 @@ class EventHandler:
                 Communication.Instance.send_stream()
                 #TODO : handle events of type 'letter'
                 
-                while not Communication.Instance.read_stream(): #Wait for the Arduino to send a ready state
-                    time.sleep(0.1)
+                while not Communication.Instance.read_stream():  # Wait for the Arduino to send a ready state
+                    time.sleep(0.5)
 
                 self._queue.dequeue()
 
@@ -93,6 +93,7 @@ class EventHandler:
     def end_thread(self):
         self.should_run = False
         self._thread.join()
+        print("Event thread joined")
 
 
 Instance = EventHandler()
