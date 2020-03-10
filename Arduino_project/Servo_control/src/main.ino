@@ -44,11 +44,11 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(BAUD);
 
-/*
+
   timerSendMsg.setDelay(SEND_UPDATE_PERIODE);
   timerSendMsg.setCallback(sendTimerCallback);
   timerSendMsg.enable();
-
+/*
   timerReadMsg.setDelay(READ_UPDATE_PERIODE);
   timerReadMsg.setCallback(readTimerCallback);
   timerReadMsg.enable();

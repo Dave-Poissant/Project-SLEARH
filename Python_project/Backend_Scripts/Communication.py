@@ -5,7 +5,6 @@ import serial.tools.list_ports
 import time
 import json
 import threading
-from Ui_Main_Script import Ui_Connection_Listener
 
 
 def serial_ports():
@@ -68,9 +67,7 @@ class Communication:
 
     def read_stream(self):
         try:
-            print("yo")
             encoded_message = self.__port__.readline().decode("utf-8")
-            print("yo2")
             encoded_message = encoded_message.split(":")
             first_part_encoded_message = encoded_message[0].split('"')
             second_part_encoded_message = encoded_message[1].split('}')
@@ -94,9 +91,6 @@ class Communication:
             self.__port__.write(bytes(str(encoded_message), "utf-8"))
             print("Write success")
         except serial.SerialException or FileNotFoundError as e:
-            # print(str(e) + "\nReconnecting...")
-            # self.connect_port()
-            # self.send_stream()
             print("Could not send.")
 
     def find_port(self):
@@ -137,53 +131,19 @@ class Communication:
                 if self.__port__.isOpen():
                     if not was_connected:
                         self.ui_adress.change_connected_state(True)
-                        # pass
-                        # self.__change_connected_state__(True)
                     else:
                         pass
                     was_connected = True
                 else:
                     self.ui_adress.change_connected_state(False)
-                    # self.__change_connected_state__(False)
                     was_connected = False
-                # print("exist: " + str(port_exists))
 
             else:
                 self.ui_adress.change_connected_state(False)
-                # self.__change_connected_state__(False)
                 was_connected = False
                 print("Exist: False")
 
             time.sleep(0.5)
 
 
-class Connection_Observer:
-
-    def change_connected_state(self, state):
-        pass
-
-
 Instance = Communication()
-# msg = 1
-
-# if __name__ == "__main__":
-#     while True:
-#         # if msg == 0:
-#         #     msg = 1
-#         # else:
-#         #     msg = 0
-#
-#         try:
-#             incoming = Instance.read_stream()
-#             print(str(type(incoming)))
-#             print("Im printin this: " + incoming)
-#         except Exception as e:
-#             print(e)
-#
-#         # try:
-#         #     ser.write(bytes(str(msg), "utf-8"))
-#         # except Exception as e:
-#         #     print(e)
-#
-#         # ser.close()
-#         # time.sleep(1)
