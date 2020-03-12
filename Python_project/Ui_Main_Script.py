@@ -29,16 +29,23 @@ class application(Frame):
         self.create_widgets()
         self.__mode_option_state__ = IntVar()
         self.__purpose_option_state__ = IntVar()
+        EventHandler.Instance.set_ui_adress(self)
         Communication.Instance.set_ui_adress(self)
         Communication.Instance.start_thread()
 
     def change_connected_state(self, state):
         if state:
-            self.connection_actual_state_label["text"] = "connected"
-            self.connection_actual_state_label["fg"] = "green"
+            try:
+                self.connection_actual_state_label["text"] = "connected"
+                self.connection_actual_state_label["fg"] = "green"
+            except:
+                return
         else:
-            self.connection_actual_state_label["text"] = "not connected"
-            self.connection_actual_state_label["fg"] = "red"
+            try:
+                self.connection_actual_state_label["text"] = "not connected"
+                self.connection_actual_state_label["fg"] = "red"
+            except:
+                return
 
     def get_mode_option_state(self):
         return self.__mode_option_state__
@@ -195,14 +202,19 @@ class application(Frame):
     def send_text(self):
         # TODO: Add sending message to the TextAnalyser and sending message to the arduino here (and wait for the
         #  "message received" before showing info)
-        message_to_send = self.text_entry.get()
-        TextAnalyser.instance.parse_char(message_to_send)
-        messagebox.showinfo("Sended", message_to_send)
+        if self.connection_actual_state_label["text"] == "not connected":
+            self.no_connection_window()
+        else:
+            message_to_send = self.text_entry.get()
+            self.text_entry.delete(0, END)
+            self.text_entry.config(state="disabled")
+            TextAnalyser.instance.parse_char(message_to_send)
+            messagebox.showinfo("Sent", message_to_send)
 
     def do_stop(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
         EventHandler.Instance.clear_queue()
-        messagebox.showinfo("Stoped", "Hand has been stoped.")
+        messagebox.showinfo("Stopped", "Hand has been stopped.")
 
     def do_pause(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
@@ -238,11 +250,22 @@ class application(Frame):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
         messagebox.showinfo("New purpose", "Purpose option has been changed to " + str(self.get_purpose_option_state()))
 
+    def no_connection_window(self):
+        messagebox.showinfo("Warning!", "No connection to the hand.")
+
+    def enable_entry(self):
+        self.text_entry.config(state="normal")
+
+
+def on_closing():
+    EventHandler.Instance.end_thread()
+    Communication.Instance.end_thread()
+    root.destroy()
+
 
 if __name__ == "__main__":
     Configuration.Instance.set_debug(TRUE, 1)
     root = Tk("")
     app = application(master=root)
+    root.protocol("WM_DELETE_WINDOW", on_closing)
     app.mainloop()
-    EventHandler.Instance.end_thread()
-    Communication.Instance.end_thread()

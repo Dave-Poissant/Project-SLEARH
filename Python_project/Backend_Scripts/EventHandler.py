@@ -16,6 +16,10 @@ class EventHandler:
         self.trigger = True
         self.__start_thread__()
         self.trigger_warned = False
+        self.ui_adress = None
+
+    def set_ui_adress(self, adress):
+        self.ui_adress = adress
 
     def __start_thread__(self):
         self._thread.start()
@@ -72,9 +76,16 @@ class EventHandler:
                         ready = True
                     elif string_state == "false":
                         ready = False
+                    elif string_state == "none":
+                        self._queue.clear_queue()
+                        self.ui_adress.no_connection_window()
+                        self.ui_adress.enable_entry()
+                        break
                     time.sleep(0.1)
 
                 self._queue.dequeue()
+                if self._queue.is_empty():
+                    self.ui_adress.enable_entry()
 
                 if Configuration.Instance.is_semi_auto():  # Reset the trigger if in semi automatic mode
                     self.trigger = False

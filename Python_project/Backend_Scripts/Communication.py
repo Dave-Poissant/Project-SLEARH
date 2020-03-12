@@ -48,10 +48,6 @@ class Communication:
     def set_ui_adress(self, adress):
         self.ui_adress = adress
 
-    def __change_connected_state__(self, state):
-        pass
-        # self.connection_observer.change_connected_state(state)
-
     def start_thread(self):
         self.__private_thread__.start()
 
@@ -67,14 +63,21 @@ class Communication:
 
     def read_stream(self):
         try:
-            encoded_message = self.__port__.readline().decode("utf-8")
-            encoded_message = encoded_message.split(":")
-            first_part_encoded_message = encoded_message[0].split('"')
-            second_part_encoded_message = encoded_message[1].split('}')
-            dict_encoded_message = {first_part_encoded_message[1]: second_part_encoded_message[0]}
-            message = json.dumps(dict_encoded_message)
-            incoming_message = json.loads(message)
-            return incoming_message["com_state"]
+            if self.__port__ is not None:
+                encoded_message = self.__port__.readline().decode("utf-8")
+                try:
+                    encoded_message = encoded_message.split(":")
+                    first_part_encoded_message = encoded_message[0].split('"')
+                    second_part_encoded_message = encoded_message[1].split('}')
+                    dict_encoded_message = {first_part_encoded_message[1]: second_part_encoded_message[0]}
+                    message = json.dumps(dict_encoded_message)
+                    incoming_message = json.loads(message)
+                    return incoming_message["com_state"]
+                except IndexError as e:
+                    print("")
+                    return "none"
+            else:
+                return "none"
         except serial.SerialException or FileNotFoundError:
             self.connect_port()
             return self.read_stream()
@@ -88,10 +91,13 @@ class Communication:
             print(str(encoded_message) + " on port None")
 
         try:
-            self.__port__.write(bytes(str(encoded_message), "utf-8"))
-            print("Write success")
-        except serial.SerialException or FileNotFoundError as e:
-            print("Could not send.")
+            if self.__port__ is not None:
+                self.__port__.write(bytes(str(encoded_message), "utf-8"))
+                print("Write success")
+            else:
+                print("Write failed, no connection")
+        except serial.SerialException or FileNotFoundError or AttributeError as e:
+            print("Could not send, because: " + e + ".")
 
     def find_port(self):
         all_port = serial_ports()
