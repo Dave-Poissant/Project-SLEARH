@@ -47,6 +47,20 @@ class application(Frame):
             except:
                 return
 
+    def change_hand_ready_state(self, state):
+        if state:
+            try:
+                self.hand_actual_action_state_label["text"] = "ready"
+                self.hand_actual_action_state_label["fg"] = "green"
+            except:
+                return
+        else:
+            try:
+                self.hand_actual_action_state_label["text"] = "not ready"
+                self.hand_actual_action_state_label["fg"] = "red"
+            except:
+                return
+
     def get_mode_option_state(self):
         return self.__mode_option_state__
 
@@ -83,7 +97,6 @@ class application(Frame):
         self.current_hand_command_label.grid(row=0, column=0, stick=W)
 
         temporary_img = PhotoImage(file=image_directory)
-        # temporary_img1 = temporary_img.subsample(2, 2)
         self.temporary_img_ui = Label(current_hand_command_frame, image=temporary_img)
         self.temporary_img_ui.image = temporary_img
         self.temporary_img_ui.grid(row=1, column=0, columnspan=3)

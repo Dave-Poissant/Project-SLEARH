@@ -137,6 +137,7 @@ class Communication:
                 if self.__port__.isOpen():
                     if not was_connected:
                         self.ui_adress.change_connected_state(True)
+                        self.ui_adress.change_hand_ready_state(True)
                     else:
                         pass
                     was_connected = True
@@ -146,6 +147,7 @@ class Communication:
 
             else:
                 self.ui_adress.change_connected_state(False)
+                self.ui_adress.change_hand_ready_state(False)
                 was_connected = False
                 print("Exist: False")
 
