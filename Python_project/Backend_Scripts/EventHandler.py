@@ -61,6 +61,7 @@ class EventHandler:
             if self._queue.is_empty():
                 self.ui_adress.enable_entry()
                 self.ui_adress.change_hand_ready_state(True)
+                self.ui_adress.change_state_picture(False, '')
 
         elif event.is_type(EventType.EventType.letter):  # Letter event
 
@@ -70,6 +71,7 @@ class EventHandler:
 
                 Communication.Instance.update_stream(ord(event.get_name()))
                 Communication.Instance.send_stream()
+                self.ui_adress.change_state_picture(True, event.get_name())
                 self.ui_adress.change_hand_ready_state(False)
                 # TODO : handle events of type 'letter'
 
@@ -85,6 +87,7 @@ class EventHandler:
                         self.ui_adress.no_connection_window()
                         self.ui_adress.enable_entry()
                         self.ui_adress.change_hand_ready_state(True)
+                        self.ui_adress.change_state_picture(False, '')
                         break
                     time.sleep(0.1)
 
@@ -92,6 +95,7 @@ class EventHandler:
                 if self._queue.is_empty():
                     self.ui_adress.enable_entry()
                     self.ui_adress.change_hand_ready_state(True)
+                    self.ui_adress.change_state_picture(False, '')
 
                 if Configuration.Instance.is_semi_auto():  # Reset the trigger if in semi automatic mode
                     self.trigger = False

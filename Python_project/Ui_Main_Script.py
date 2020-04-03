@@ -8,7 +8,9 @@ from enum import Enum
 import os
 
 current_directory = os.getcwd()
-image_directory = str(current_directory) + "\\Image_Library\\temporary_img.png"
+images_directory = str(current_directory) + "\\Image_Library\\"
+quiz_purpose_img_dir = "Quiz_purpose_img\\sign_"
+education_purpose_img_dir = "Education_purpose_img\\letter_"
 
 
 class ModeEnum(Enum):
@@ -61,6 +63,39 @@ class application(Frame):
             except:
                 return
 
+    def change_state_picture(self, accepted_command, command):
+        if self.__purpose_option_state__ == PurposeEnum.Education:
+            if accepted_command:
+                if os.path.exists(images_directory+education_purpose_img_dir+str(command)):
+                    current_operation_img = PhotoImage(file=images_directory+education_purpose_img_dir+str(command))
+                    self.temporary_img_ui.configure(image=current_operation_img)
+                    self.temporary_img_ui.image = current_operation_img
+                else:
+                    no_img_found_img = PhotoImage(file=images_directory + "no_img_found_img.png")
+                    self.temporary_img_ui.configure(image=no_img_found_img)
+                    self.temporary_img_ui.image = no_img_found_img
+
+            else:
+                no_current_operation_img = PhotoImage(file=images_directory + "no_operation_img.png")
+                self.temporary_img_ui.configure(image=no_current_operation_img)
+                self.temporary_img_ui.image = no_current_operation_img
+
+        elif self.__purpose_option_state__ == PurposeEnum.Quiz:
+            if accepted_command:
+                if os.path.exists(images_directory+quiz_purpose_img_dir+str(command)):
+                    current_operation_img = PhotoImage(file=images_directory+quiz_purpose_img_dir+str(command))
+                    self.temporary_img_ui.configure(image=current_operation_img)
+                    self.temporary_img_ui.image = current_operation_img
+                else:
+                    no_img_found_img = PhotoImage(file=images_directory + "no_img_found_img.png")
+                    self.temporary_img_ui.configure(image=no_img_found_img)
+                    self.temporary_img_ui.image = no_img_found_img
+
+            else:
+                no_current_operation_img = PhotoImage(file=images_directory + "no_operation_img.png")
+                self.temporary_img_ui.configure(image=no_current_operation_img)
+                self.temporary_img_ui.image = no_current_operation_img
+
     def get_mode_option_state(self):
         return self.__mode_option_state__
 
@@ -96,9 +131,9 @@ class application(Frame):
         self.current_hand_command_label = Label(current_hand_command_frame, text="Current command:")
         self.current_hand_command_label.grid(row=0, column=0, stick=W)
 
-        temporary_img = PhotoImage(file=image_directory)
-        self.temporary_img_ui = Label(current_hand_command_frame, image=temporary_img)
-        self.temporary_img_ui.image = temporary_img
+        no_current_operation_img = PhotoImage(file=images_directory+"no_operation_img.png")
+        self.temporary_img_ui = Label(current_hand_command_frame, image=no_current_operation_img)
+        self.temporary_img_ui.image = no_current_operation_img
         self.temporary_img_ui.grid(row=1, column=0, columnspan=3)
 
     def create_hand_control_frame(self):
