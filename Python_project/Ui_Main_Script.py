@@ -6,12 +6,29 @@ from tkinter import *
 from tkinter import messagebox
 from enum import Enum
 import os
+import glob
+
 
 current_directory = os.getcwd()
-images_directory = str(current_directory) + "\\Image_Library\\"
-quiz_purpose_img_dir = "Quiz_purpose_img\\sign_"
-education_purpose_img_dir = "Education_purpose_img\\letter_"
+images_directory = None
+quiz_purpose_img_dir = None
+education_purpose_img_dir = None
 
+if sys.platform.startswith('win'):
+    images_directory = str(current_directory) + "\\Image_Library\\"
+    quiz_purpose_img_dir = "Quiz_purpose_img\\sign_"
+    education_purpose_img_dir = "Education_purpose_img\\letter_"
+elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+    images_directory = str(current_directory) + "/Image_Library/"
+    quiz_purpose_img_dir = "Quiz_purpose_img/sign_"
+    education_purpose_img_dir = "Education_purpose_img/letter_"
+elif sys.platform.startswith('darwin'):
+    images_directory = str(current_directory) + "/Image_Library/"
+    quiz_purpose_img_dir = "Quiz_purpose_img/sign_"
+    education_purpose_img_dir = "Education_purpose_img/letter_"
+    ports = glob.glob('/dev/tty.*')
+else:
+    raise EnvironmentError('Unsupported platform')
 
 class ModeEnum(Enum):
     Automatic = 1
