@@ -330,7 +330,7 @@ def on_closing():
 
 if __name__ == "__main__":
     Configuration.Instance.set_debug(TRUE, 1)
-    root = Tk("")
+    root = Tk()
     app = application(master=root)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     app.mainloop()
