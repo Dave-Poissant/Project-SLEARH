@@ -45,16 +45,16 @@ Software;
   - Install the PySerial library with:
     $ sudo apt-get install pyserial
   - If you're connected to your RPi via VMWare or ssh, run this command:
-    $ export DISPLAY=:0
+    - $ export DISPLAY=:0
   - Create your project directory where you want it on your RPi:
-    $ cd <PATH TO YOUR DIRECTORY>
-    $ mkdir <PROJECT LOCAL DIRECTORY NAME>
-    $ cd <PROJECT LOCAL DIRECTORY NAME>
-    $ git clone <THE PROJECT'S LINK>
-    $ git pull
+    - $ cd <PATH TO YOUR DIRECTORY>
+    - $ mkdir <PROJECT LOCAL DIRECTORY NAME>
+    - $ cd <PROJECT LOCAL DIRECTORY NAME>
+    - $ git clone <THE PROJECT'S LINK>
+    - $ git pull
   - The project should now be copied locally onto your RPi;
   
   - Now go to the project's Ui_Main_script.py path on your RPi and run the program through a terminal:
-    $ python Ui_Main_Script.py
+    - $ python Ui_Main_Script.py
   
 # Now Have Fun !
