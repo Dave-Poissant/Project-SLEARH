@@ -47,10 +47,10 @@ Software;
   - If you're connected to your RPi via VMWare or ssh, run this command:
     - $ export DISPLAY=:0
   - Create your project directory where you want it on your RPi:
-    - $ cd <PATH TO YOUR DIRECTORY>
-    - $ mkdir <PROJECT LOCAL DIRECTORY NAME>
-    - $ cd <PROJECT LOCAL DIRECTORY NAME>
-    - $ git clone <THE PROJECT'S LINK>
+    - $ cd "DIRECTORY PATH"
+    - $ mkdir "PROJECT NAME"
+    - $ cd "PROJECT NAME"
+    - $ git clone "THE PROJECT'S LINK"
     - $ git pull
   - The project should now be copied locally onto your RPi;
   
