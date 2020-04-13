@@ -30,9 +30,12 @@ class TextAnalyser:
         elif Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz:
             if len(_str) > 1:
                 Logger.Log("Too many character! Please enter a single letter for Quiz mode")
+                return False
             else:
                 Logger.Log("Quiz answer pushed (" + _str + ")", 2)
                 self.push_event(Event.Event(_str, EventType.EventType.quiz_answer))
+
+        return True
 
     # Check if a char is available
     def is_char_valid(self, char):

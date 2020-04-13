@@ -59,7 +59,7 @@ class EventHandler:
 
                 Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
                 Communication.Instance.send_stream()
-                self.ui_adress.change_state_picture(True, event.get_name())
+                self.ui_adress.change_state_picture(True, Quiz.Instance.get_current_letter())
                 self.ui_adress.change_hand_ready_state(False)
 
                 self.wait_arduino_ready_state()
@@ -67,27 +67,29 @@ class EventHandler:
                 self.ui_adress.enable_entry()
                 self.ui_adress.change_hand_ready_state(True)
 
-                if event is None:
-                    return
+            if event is None:
+                return
 
-                if not event.is_type(EventType.EventType.quiz_answer):
-                    Logger.Log("'" + str(event.get_type()) + "' is not a valid event type\n", 1)
+            if not event.is_type(EventType.EventType.quiz_answer):
+                Logger.Log("'" + str(event.get_type()) + "' is not a valid event type\n", 1)
+            else:
+                if Quiz.Instance.validate_answer(event.get_name()): #Send new letter to hand if is valid answer
+                    Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
+                    Communication.Instance.send_stream()
+                    self.ui_adress.change_state_picture(True, Quiz.Instance.get_current_letter())
+                    self.ui_adress.change_hand_ready_state(False)
+
+                    self.wait_arduino_ready_state()
+
+                    self.ui_adress.enable_entry()
+                    self.ui_adress.change_hand_ready_state(True)
                 else:
-                    if Quiz.Instance.validate_answer(event.get_name()): #Send new letter to hand if is valid answer
-                        Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
-                        Communication.Instance.send_stream()
-                        self.ui_adress.change_state_picture(True, event.get_name())
-                        self.ui_adress.change_hand_ready_state(False)
+                    #TODO: Handle invalid quiz answer
+                    self.ui_adress.enable_entry()
+                    self.ui_adress.change_hand_ready_state(True)
+                    pass
 
-                        self.wait_arduino_ready_state()
-
-                        self.ui_adress.enable_entry()
-                        self.ui_adress.change_hand_ready_state(True)
-                    else:
-                        #TODO: Handle invalid quiz answer
-                        pass
-
-                self._queue.dequeue()
+            self._queue.dequeue()
 
 
         elif Configuration.Instance.get_purpose() == Purpose.Purpose.Education: #Eduction Purpose

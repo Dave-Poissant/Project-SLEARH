@@ -31,6 +31,7 @@ class Quiz:
 
     def _random_letter(self):
         is_same_as_last = True
+        rnd_letter = None
 
         while is_same_as_last:
             rnd_int = random.randint(0, len(Configuration.Instance._available_chars) - 1)

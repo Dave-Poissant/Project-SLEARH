@@ -84,8 +84,8 @@ class application(Frame):
     def change_state_picture(self, accepted_command, command):
         if self.__purpose_option_state__ == PurposeEnum.Education:
             if accepted_command:
-                if os.path.exists(images_directory+education_purpose_img_dir+str(command)):
-                    current_operation_img = PhotoImage(file=images_directory+education_purpose_img_dir+str(command))
+                if os.path.exists(images_directory+education_purpose_img_dir+str(command)+".png"):
+                    current_operation_img = PhotoImage(file=images_directory+education_purpose_img_dir+str(command)+".png")
                     self.temporary_img_ui.configure(image=current_operation_img)
                     self.temporary_img_ui.image = current_operation_img
                 else:
@@ -100,8 +100,8 @@ class application(Frame):
 
         elif self.__purpose_option_state__ == PurposeEnum.Quiz:
             if accepted_command:
-                if os.path.exists(images_directory+quiz_purpose_img_dir+str(command)):
-                    current_operation_img = PhotoImage(file=images_directory+quiz_purpose_img_dir+str(command))
+                if os.path.exists(images_directory+quiz_purpose_img_dir+str(command)+".png"):
+                    current_operation_img = PhotoImage(file=images_directory+quiz_purpose_img_dir+str(command)+".png")
                     self.temporary_img_ui.configure(image=current_operation_img)
                     self.temporary_img_ui.image = current_operation_img
                 else:
@@ -274,8 +274,11 @@ class application(Frame):
             message_to_send = self.text_entry.get()
             self.text_entry.delete(0, END)
             self.text_entry.config(state="disabled")
-            TextAnalyser.instance.parse_char(message_to_send)
-            messagebox.showinfo("Sent", message_to_send)
+            if TextAnalyser.instance.parse_char(message_to_send):
+                messagebox.showinfo("Sent", message_to_send)
+            else:
+                messagebox.showinfo("Invalid input", "Enter only one character for a quiz answer")
+                self.text_entry.config(state="normal")
 
     def do_stop(self):
         # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
