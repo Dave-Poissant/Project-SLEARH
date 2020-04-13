@@ -5,6 +5,8 @@ from Backend_Scripts import Logger
 from Backend_Scripts import EventQueue
 from Backend_Scripts import EventType
 from Backend_Scripts import Communication
+from Backend_Scripts import Purpose
+from Backend_Scripts import Quiz
 
 
 class EventHandler:
@@ -49,47 +51,52 @@ class EventHandler:
         self._queue.add(_event)
 
     def execute_event(self, event):
-        if event is None:
-            return
-            
-        if event.is_type(EventType.EventType.invalid_letter):  # Invalid letter event
-            Logger.Log("'" + event.get_name() + "' is not a valid character\n", 1)
 
-            # TODO : handle events of type 'invalid_letter'
+        if Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz: #Quiz Purpose
 
-            self._queue.dequeue()
-            if self._queue.is_empty():
-                self.ui_adress.enable_entry()
-                self.ui_adress.change_hand_ready_state(True)
-                self.ui_adress.change_state_picture(False, '')
+            if Quiz.Instance.get_current_letter() is None:
+                Quiz.Instance.get_new_letter()
 
-        elif event.is_type(EventType.EventType.letter):  # Letter event
-
-            # Only execute if in auto mode or if trigger is true
-            if self.trigger: 
-                Logger.Log("Executing letter '" + event.get_name() + "'...\n", 2)
-
-                Communication.Instance.update_stream(ord(event.get_name()))
+                Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
                 Communication.Instance.send_stream()
                 self.ui_adress.change_state_picture(True, event.get_name())
                 self.ui_adress.change_hand_ready_state(False)
-                # TODO : handle events of type 'letter'
 
-                ready = False
-                while not ready:  # Wait for the Arduino to send a ready state
-                    string_state = Communication.Instance.read_stream()
-                    if string_state == "true":
-                        ready = True
-                    elif string_state == "false":
-                        ready = False
-                    elif string_state == "none":
-                        self._queue.clear_queue()
-                        self.ui_adress.no_connection_window()
+                self.wait_arduino_ready_state()
+
+                self.ui_adress.enable_entry()
+                self.ui_adress.change_hand_ready_state(True)
+
+                if event is None:
+                    return
+
+                if not event.is_type(EventType.EventType.quiz_answer):
+                    Logger.Log("'" + str(event.get_type()) + "' is not a valid event type\n", 1)
+                else:
+                    if Quiz.Instance.validate_answer(event.get_name()): #Send new letter to hand if is valid answer
+                        Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
+                        Communication.Instance.send_stream()
+                        self.ui_adress.change_state_picture(True, event.get_name())
+                        self.ui_adress.change_hand_ready_state(False)
+
+                        self.wait_arduino_ready_state()
+
                         self.ui_adress.enable_entry()
                         self.ui_adress.change_hand_ready_state(True)
-                        self.ui_adress.change_state_picture(False, '')
-                        break
-                    time.sleep(0.1)
+                    else:
+                        #TODO: Handle invalid quiz answer
+                        pass
+
+                self._queue.dequeue()
+
+
+        elif Configuration.Instance.get_purpose() == Purpose.Purpose.Education: #Eduction Purpose
+
+            if event is None:
+                return
+
+            if event.is_type(EventType.EventType.invalid_letter):  # Invalid letter event
+                Logger.Log("'" + event.get_name() + "' is not a valid character\n", 1)
 
                 self._queue.dequeue()
                 if self._queue.is_empty():
@@ -97,20 +104,57 @@ class EventHandler:
                     self.ui_adress.change_hand_ready_state(True)
                     self.ui_adress.change_state_picture(False, '')
 
-                if Configuration.Instance.is_semi_auto():  # Reset the trigger if in semi automatic mode
-                    self.trigger = False
-                else:
-                    time.sleep(int(Configuration.Instance.get_wait_time()))  # Delay between letters in automatic mode
+            elif event.is_type(EventType.EventType.letter):  # Letter event
 
-            elif not self.trigger_warned:
-                if not self._queue.is_empty():
-                    Logger.Log("Waiting for trigger...\n", 1)
-                else:
-                    Logger.Log("Queue Empty...\n", 1)
-                self.trigger_warned = True
+                # Only execute if in auto mode or if trigger is true
+                if self.trigger:
+                    Logger.Log("Executing letter '" + event.get_name() + "'...\n", 2)
 
-        else:
-            Logger.Log("Event type is invalid\n", 2)
+                    Communication.Instance.update_stream(ord(event.get_name()))
+                    Communication.Instance.send_stream()
+                    self.ui_adress.change_state_picture(True, event.get_name())
+                    self.ui_adress.change_hand_ready_state(False)
+
+                    self.wait_arduino_ready_state()
+
+                    self._queue.dequeue()
+                    if self._queue.is_empty():
+                        self.ui_adress.enable_entry()
+                        self.ui_adress.change_hand_ready_state(True)
+                        self.ui_adress.change_state_picture(False, '')
+
+                    if Configuration.Instance.is_semi_auto():  # Reset the trigger if in semi automatic mode
+                        self.trigger = False
+                    else:
+                        time.sleep(int(Configuration.Instance.get_wait_time()))  # Delay between letters in automatic mode
+
+                elif not self.trigger_warned:
+                    if not self._queue.is_empty():
+                        Logger.Log("Waiting for trigger...\n", 1)
+                    else:
+                        Logger.Log("Queue Empty...\n", 1)
+                    self.trigger_warned = True
+
+            else:
+                Logger.Log("Event type is invalid\n", 2)
+
+    def wait_arduino_ready_state(self):
+        ready = False
+        while not ready:  # Wait for the Arduino to send a ready state
+            string_state = Communication.Instance.read_stream()
+            if string_state == "true":
+                ready = True
+            elif string_state == "false":
+                ready = False
+            elif string_state == "none":
+                self._queue.clear_queue()
+                self.ui_adress.no_connection_window()
+                self.ui_adress.enable_entry()
+                self.ui_adress.change_hand_ready_state(True)
+                self.ui_adress.change_state_picture(False, '')
+                break
+            time.sleep(0.1)
+
 
     def private_thread(self):
         while self.should_run:

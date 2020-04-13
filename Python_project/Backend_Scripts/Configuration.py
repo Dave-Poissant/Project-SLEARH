@@ -1,13 +1,13 @@
 from Backend_Scripts import Logger
 from Backend_Scripts import EventHandler
-from Backend_Scripts import Mode
+from Backend_Scripts import Purpose
 
 
 class Configuration:
 
     def __init__(self):
         self._available_chars = ["a", "b", "c", "D", "é", "t"]
-        self._mode = Mode.Mode.standard
+        self._purpose = Purpose.Purpose.Education
         self._semi_auto = False
         self._wait_time = 2 #seconds - Wait time between letter exectition
         self.debug = False
@@ -35,10 +35,10 @@ class Configuration:
     def is_semi_auto(self):
         return self._semi_auto
 
-    def set_mode(self, mode):
-        self._mode = mode
+    def set_purpose(self, purpose):
+        self._purpose = purpose
 
-    def get_mode(self):
-        return self._mode
+    def get_purpose(self):
+        return self._purpose
 
 Instance = Configuration()

@@ -2,12 +2,13 @@ from Backend_Scripts import TextAnalyser
 from Backend_Scripts import Configuration
 from Backend_Scripts import EventHandler
 from Backend_Scripts import Communication
+from Backend_Scripts import Purpose
+from Backend_Scripts import Quiz
 from tkinter import *
 from tkinter import messagebox
 from enum import Enum
 import os
 import glob
-
 
 current_directory = os.getcwd()
 images_directory = None
@@ -212,12 +213,12 @@ class application(Frame):
         options_purpose_choices_frame.grid(row=2, column=1, padx=2)
         self.purpose_choices_education = Radiobutton(options_purpose_choices_frame, text="Education",
                                                      var=self.__purpose_option_state__, value=PurposeEnum.Education,
-                                                     command=self.send_new_purpose_option)
+                                                     command=self.set_purpose_option_education)
         self.purpose_choices_education.select()
         self.purpose_choices_education.grid(row=0, column=0)
         self.purpose_choices_quiz = Radiobutton(options_purpose_choices_frame, text="Quiz",
                                                 var=self.__purpose_option_state__, value=PurposeEnum.Quiz,
-                                                command=self.send_new_purpose_option)
+                                                command=self.set_purpose_option_quiz)
         self.purpose_choices_quiz.deselect()
         self.purpose_choices_quiz.grid(row=0, column=1)
 
@@ -298,6 +299,14 @@ class application(Frame):
         self.set_mode_option_state(ModeEnum.Automatic)
         self.send_new_mode_option()
 
+    def set_purpose_option_education(self):
+        self.set_purpose_option_state(PurposeEnum.Education)
+        self.send_new_purpose_option()
+
+    def set_purpose_option_quiz(self):
+        self.set_purpose_option_state(PurposeEnum.Quiz)
+        self.send_new_purpose_option()
+
     def send_new_mode_option(self):
         if self.get_mode_option_state() == ModeEnum.Automatic:
             if Configuration.Instance.is_semi_auto():
@@ -312,7 +321,18 @@ class application(Frame):
         messagebox.showinfo("New mode", "Mode option has been changed to " + str(self.get_mode_option_state()))
 
     def send_new_purpose_option(self):
-        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+        if self.get_purpose_option_state() == PurposeEnum.Quiz:
+            if Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz:
+                return
+            else:
+                Configuration.Instance.set_purpose(Purpose.Purpose.Quiz)
+                Quiz.Instance.reset()
+        elif self.get_purpose_option_state() == PurposeEnum.Education:
+            if Configuration.Instance.get_purpose() == Purpose.Purpose.Education:
+                return
+            else:
+                Configuration.Instance.set_purpose(Purpose.Purpose.Education)
+
         messagebox.showinfo("New purpose", "Purpose option has been changed to " + str(self.get_purpose_option_state()))
 
     def no_connection_window(self):
