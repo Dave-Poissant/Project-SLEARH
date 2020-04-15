@@ -53,6 +53,37 @@ class application(Frame):
         Communication.Instance.set_ui_adress(self)
         Communication.Instance.start_thread()
 
+    # TODO: Next button (next step in education and next question in quiz), good/wrong answer, update quiz score
+    
+    # def wait_arduino_ready_state(self):
+    #     ready = False
+    #     while not ready:  # Wait for the Arduino to send a ready state
+    #         string_state = Communication.Instance.read_stream()
+    #         if string_state == "true":
+    #             ready = True
+    #         elif string_state == "false":
+    #             ready = False
+    #         elif string_state == "none":
+    #             self._queue.clear_queue()
+    #             self.ui_adress.no_connection_window()
+    #             self.ui_adress.enable_entry()
+    #             self.ui_adress.change_hand_ready_state(True)
+    #             self.ui_adress.change_state_picture(False, '')
+    #             break
+    #         time.sleep(0.1)
+
+    # Quiz.Instance.get_new_letter()
+    #
+    # Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
+    # Communication.Instance.send_stream()
+    # self.ui_adress.change_state_picture(True, Quiz.Instance.get_current_letter())
+    # self.ui_adress.change_hand_ready_state(False)
+    #
+    # self.wait_arduino_ready_state()
+    #
+    # self.ui_adress.enable_entry()
+    # self.ui_adress.change_hand_ready_state(True)
+
     def change_connected_state(self, state):
         if state:
             try:
@@ -171,14 +202,14 @@ class application(Frame):
         hand_control_buttons_frame.grid(row=1, column=1, padx=50)
 
         self.stop_button = Button(hand_control_buttons_frame)
-        self.stop_button["text"] = "stop"
-        self.stop_button["command"] = self.do_stop
+        self.stop_button["text"] = "clear"
+        self.stop_button["command"] = self.clear_actions
         self.stop_button.grid(row=1, column=1, pady=5)
 
-        self.pause_button = Button(hand_control_buttons_frame)
-        self.pause_button["text"] = "pause",
-        self.pause_button["command"] = self.do_pause
-        self.pause_button.grid(row=1, column=0)
+        # self.pause_button = Button(hand_control_buttons_frame)
+        # self.pause_button["text"] = "pause",
+        # self.pause_button["command"] = self.do_pause
+        # self.pause_button.grid(row=1, column=0)
 
         self.send_button = Button(hand_control_buttons_frame)
         self.send_button["text"] = "send"
@@ -266,8 +297,6 @@ class application(Frame):
         Communication.Instance.send_stream()
 
     def send_text(self):
-        # TODO: Add sending message to the TextAnalyser and sending message to the arduino here (and wait for the
-        #  "message received" before showing info)
         if self.connection_actual_state_label["text"] == "not connected":
             self.no_connection_window()
         else:
@@ -280,19 +309,12 @@ class application(Frame):
                 messagebox.showinfo("Invalid input", "Enter only one character for a quiz answer")
                 self.text_entry.config(state="normal")
 
-    def do_stop(self):
-        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
+    def clear_actions(self):
         EventHandler.Instance.clear_queue()
-        messagebox.showinfo("Stopped", "Hand has been stopped.")
-
-    def do_pause(self):
-        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
-        messagebox.showinfo("Paused", "Hand has been paused.")
+        messagebox.showinfo("Warning !", "All actions have been cleared.")
 
     def send_new_speed_on_letter(self, new_time_value):
-        # TODO: Add sending message to the arduino here (and wait for the "message received" before showing info)
         Configuration.Instance.set_wait_time(new_time_value)
-        print("New on_letter_time_value: " + new_time_value)
 
     def set_mode_option_step(self):
         self.set_mode_option_state(ModeEnum.Step)

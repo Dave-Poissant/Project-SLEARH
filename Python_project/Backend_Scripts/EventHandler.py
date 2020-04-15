@@ -83,8 +83,9 @@ class EventHandler:
 
                     self.ui_adress.enable_entry()
                     self.ui_adress.change_hand_ready_state(True)
+                    # TODO: Handle valid quiz answer (UI)
                 else:
-                    #TODO: Handle invalid quiz answer
+                    # TODO: Handle invalid quiz answer (UI)
                     self.ui_adress.enable_entry()
                     self.ui_adress.change_hand_ready_state(True)
                     pass
@@ -120,10 +121,7 @@ class EventHandler:
                     self.wait_arduino_ready_state()
 
                     self._queue.dequeue()
-                    if self._queue.is_empty():
-                        self.ui_adress.enable_entry()
-                        self.ui_adress.change_hand_ready_state(True)
-                        self.ui_adress.change_state_picture(False, '')
+
 
                     if Configuration.Instance.is_semi_auto():  # Reset the trigger if in semi automatic mode
                         self.trigger = False
@@ -136,6 +134,11 @@ class EventHandler:
                     else:
                         Logger.Log("Queue Empty...\n", 1)
                     self.trigger_warned = True
+
+                if self._queue.is_empty():
+                    self.ui_adress.enable_entry()
+                    self.ui_adress.change_hand_ready_state(True)
+                    self.ui_adress.change_state_picture(False, '')
 
             else:
                 Logger.Log("Event type is invalid\n", 2)
