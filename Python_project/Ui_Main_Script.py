@@ -9,6 +9,7 @@ from tkinter import messagebox
 from enum import Enum
 import os
 import glob
+import time
 
 current_directory = os.getcwd()
 images_directory = None
@@ -31,6 +32,7 @@ elif sys.platform.startswith('darwin'):
 else:
     raise EnvironmentError('Unsupported platform')
 
+
 class ModeEnum(Enum):
     Automatic = 1
     Step = 2
@@ -46,43 +48,15 @@ class application(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack()
-        self.create_widgets()
         self.__mode_option_state__ = IntVar()
         self.__purpose_option_state__ = IntVar()
+        self.create_widgets()
+        Quiz.Instance.set_ui_adress(self)
         EventHandler.Instance.set_ui_adress(self)
         Communication.Instance.set_ui_adress(self)
         Communication.Instance.start_thread()
 
     # TODO: Next button (next step in education and next question in quiz), good/wrong answer, update quiz score
-    
-    # def wait_arduino_ready_state(self):
-    #     ready = False
-    #     while not ready:  # Wait for the Arduino to send a ready state
-    #         string_state = Communication.Instance.read_stream()
-    #         if string_state == "true":
-    #             ready = True
-    #         elif string_state == "false":
-    #             ready = False
-    #         elif string_state == "none":
-    #             self._queue.clear_queue()
-    #             self.ui_adress.no_connection_window()
-    #             self.ui_adress.enable_entry()
-    #             self.ui_adress.change_hand_ready_state(True)
-    #             self.ui_adress.change_state_picture(False, '')
-    #             break
-    #         time.sleep(0.1)
-
-    # Quiz.Instance.get_new_letter()
-    #
-    # Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
-    # Communication.Instance.send_stream()
-    # self.ui_adress.change_state_picture(True, Quiz.Instance.get_current_letter())
-    # self.ui_adress.change_hand_ready_state(False)
-    #
-    # self.wait_arduino_ready_state()
-    #
-    # self.ui_adress.enable_entry()
-    # self.ui_adress.change_hand_ready_state(True)
 
     def change_connected_state(self, state):
         if state:
@@ -201,30 +175,20 @@ class application(Frame):
         hand_control_buttons_frame = Frame(hand_control_frame)
         hand_control_buttons_frame.grid(row=1, column=1, padx=50)
 
-        self.stop_button = Button(hand_control_buttons_frame)
-        self.stop_button["text"] = "clear"
-        self.stop_button["command"] = self.clear_actions
-        self.stop_button.grid(row=1, column=1, pady=5)
-
-        # self.pause_button = Button(hand_control_buttons_frame)
-        # self.pause_button["text"] = "pause",
-        # self.pause_button["command"] = self.do_pause
-        # self.pause_button.grid(row=1, column=0)
+        self.clear_button = Button(hand_control_buttons_frame)
+        self.clear_button["text"] = "clear"
+        self.clear_button["command"] = self.clear_actions
+        self.clear_button.grid(row=1, column=1, pady=5)
 
         self.send_button = Button(hand_control_buttons_frame)
         self.send_button["text"] = "send"
         self.send_button["command"] = self.send_text
         self.send_button.grid(row=0, column=0, columnspan=2)
 
-        self.move_motor_1 = Button(hand_control_buttons_frame)
-        self.move_motor_1["text"] = "move 1"
-        self.move_motor_1["command"] = self.send_movement_motor_1
-        self.move_motor_1.grid(row=2, column=0)
-
-        self.move_motor_2 = Button(hand_control_buttons_frame)
-        self.move_motor_2["text"] = "move 2"
-        self.move_motor_2["command"] = self.send_movement_motor_2
-        self.move_motor_2.grid(row=2, column=1)
+        self.next = Button(hand_control_buttons_frame)
+        self.next["text"] = "next"
+        self.next["command"] = self.next_action
+        self.next.grid(row=1, column=0, pady=5)
 
         hand_control_frame.grid(row=2, column=0, columnspan=2, pady=20, stick=W)
 
@@ -247,11 +211,12 @@ class application(Frame):
                                                      command=self.set_purpose_option_education)
         self.purpose_choices_education.select()
         self.purpose_choices_education.grid(row=0, column=0)
-        self.purpose_choices_quiz = Radiobutton(options_purpose_choices_frame, text="Quiz",
+        self.purpose_choices_quiz = Radiobutton(options_purpose_choices_frame, text="Quiz (Score = 0)",
                                                 var=self.__purpose_option_state__, value=PurposeEnum.Quiz,
                                                 command=self.set_purpose_option_quiz)
         self.purpose_choices_quiz.deselect()
         self.purpose_choices_quiz.grid(row=0, column=1)
+        self.set_purpose_option_education()
 
         # Configuration and placement for the "Mode:" section
         self.mode_label = Label(options_frame, text="Mode:")
@@ -261,13 +226,12 @@ class application(Frame):
         self.mode_choices_automatic = Radiobutton(options_mode_choices_frame, text="Automatic",
                                                   var=self.__mode_option_state__, value=ModeEnum.Automatic,
                                                   command=self.set_mode_option_automatic)
-        # command=self.send_new_mode_option)
         self.mode_choices_automatic.select()
+        self.set_mode_option_automatic()
         self.mode_choices_automatic.grid(row=0, column=0)
         self.mode_choices_step = Radiobutton(options_mode_choices_frame, text="Step", var=self.__mode_option_state__,
                                              value=ModeEnum.Step,
                                              command=self.set_mode_option_step)
-        # command=self.send_new_mode_option)
         self.mode_choices_step.deselect()
         self.mode_choices_step.grid(row=0, column=1)
 
@@ -281,20 +245,26 @@ class application(Frame):
 
     def create_widgets(self):
         self.create_hand_state_frame()
+        self.create_current_hand_command_frame()
         self.create_options_frame()
         self.create_hand_control_frame()
-        self.create_current_hand_command_frame()
 
-    def connect(self, widget, signal, event):
-        widget.bind(signal, event)
-
-    def send_movement_motor_1(self):
-        Communication.Instance.update_stream(ord('a'))
-        Communication.Instance.send_stream()
-
-    def send_movement_motor_2(self):
-        Communication.Instance.update_stream(ord('b'))
-        Communication.Instance.send_stream()
+    def wait_arduino_ready_state(self):
+        ready = False
+        while not ready:  # Wait for the Arduino to send a ready state
+            string_state = Communication.Instance.read_stream()
+            if string_state == "true":
+                ready = True
+            elif string_state == "false":
+                ready = False
+            elif string_state == "none":
+                EventHandler.Instance.clear_queue()
+                self.no_connection_window()
+                self.enable_entry()
+                self.change_hand_ready_state(True)
+                self.change_state_picture(False, '')
+                break
+            time.sleep(0.1)
 
     def send_text(self):
         if self.connection_actual_state_label["text"] == "not connected":
@@ -304,10 +274,33 @@ class application(Frame):
             self.text_entry.delete(0, END)
             self.text_entry.config(state="disabled")
             if TextAnalyser.instance.parse_char(message_to_send):
-                messagebox.showinfo("Sent", message_to_send)
+                if self.get_mode_option_state() == ModeEnum.Step:
+                    EventHandler.Instance.next_letter()
+
+                if self.get_purpose_option_state() == PurposeEnum.Education:
+                    messagebox.showinfo("Sent", message_to_send)
             else:
                 messagebox.showinfo("Invalid input", "Enter only one character for a quiz answer")
                 self.text_entry.config(state="normal")
+
+    def next_action(self):
+        if self.hand_actual_action_state_label["text"] == "ready":
+            if self.__purpose_option_state__ == PurposeEnum.Quiz:
+                Quiz.Instance.get_new_letter()
+
+                Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
+                Communication.Instance.send_stream()
+                self.change_state_picture(True, Quiz.Instance.get_current_letter())
+                self.change_hand_ready_state(False)
+
+                self.wait_arduino_ready_state()
+
+                self.enable_entry()
+                self.change_hand_ready_state(True)
+            else:
+                EventHandler.Instance.next_letter()
+        else:
+            messagebox.showinfo("Warning !", "Hand is not ready.")
 
     def clear_actions(self):
         EventHandler.Instance.clear_queue()
@@ -323,10 +316,12 @@ class application(Frame):
     def set_mode_option_automatic(self):
         self.set_mode_option_state(ModeEnum.Automatic)
         self.send_new_mode_option()
+        self.change_state_picture(False, '')
 
     def set_purpose_option_education(self):
         self.set_purpose_option_state(PurposeEnum.Education)
         self.send_new_purpose_option()
+        self.change_state_picture(False, '')
 
     def set_purpose_option_quiz(self):
         self.set_purpose_option_state(PurposeEnum.Quiz)
@@ -352,19 +347,30 @@ class application(Frame):
             else:
                 Configuration.Instance.set_purpose(Purpose.Purpose.Quiz)
                 Quiz.Instance.reset()
+            messagebox.showinfo("New purpose",
+                                "Purpose option has been changed to quiz. Press next to start the quiz.")
         elif self.get_purpose_option_state() == PurposeEnum.Education:
             if Configuration.Instance.get_purpose() == Purpose.Purpose.Education:
                 return
             else:
                 Configuration.Instance.set_purpose(Purpose.Purpose.Education)
-
-        messagebox.showinfo("New purpose", "Purpose option has been changed to " + str(self.get_purpose_option_state()))
+            self.modify_quiz_score()
+            messagebox.showinfo("New purpose", "Purpose option has been changed to education.")
 
     def no_connection_window(self):
         messagebox.showinfo("Warning!", "No connection to the hand.")
 
     def enable_entry(self):
         self.text_entry.config(state="normal")
+
+    def modify_quiz_score(self):
+        self.purpose_choices_quiz["text"] = "Quiz (Score = " + str(Quiz.Instance.get_score()) + ")"
+
+    def quiz_answer_conclusion(self, answer_verification):
+        if answer_verification:
+            messagebox.showinfo("Well done!", "That was the correct answer.")
+        else:
+            messagebox.showinfo("Wrong!", "That was not the correct answer.")
 
 
 def on_closing():

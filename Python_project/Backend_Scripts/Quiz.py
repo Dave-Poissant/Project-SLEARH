@@ -7,6 +7,10 @@ class Quiz:
         self._current_letter = None
         self._last_letter = None
         self._score = 0
+        self.ui_adress = None
+
+    def set_ui_adress(self, adress):
+        self.ui_adress = adress
 
     def reset(self):
         self._current_letter = None
@@ -15,6 +19,7 @@ class Quiz:
 
     def reset_score(self):
         self._score = 0
+        self.ui_adress.modify_quiz_score()
 
     def get_score(self):
         return self._score

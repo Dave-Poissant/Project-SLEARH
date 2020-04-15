@@ -83,17 +83,16 @@ class EventHandler:
 
                     self.ui_adress.enable_entry()
                     self.ui_adress.change_hand_ready_state(True)
-                    # TODO: Handle valid quiz answer (UI)
+                    self.ui_adress.quiz_answer_conclusion(True)
+                    self.ui_adress.modify_quiz_score()
                 else:
-                    # TODO: Handle invalid quiz answer (UI)
                     self.ui_adress.enable_entry()
                     self.ui_adress.change_hand_ready_state(True)
-                    pass
+                    self.ui_adress.quiz_answer_conclusion(False)
 
             self._queue.dequeue()
 
-
-        elif Configuration.Instance.get_purpose() == Purpose.Purpose.Education: #Eduction Purpose
+        elif Configuration.Instance.get_purpose() == Purpose.Purpose.Education:  # Education Purpose
 
             if event is None:
                 return
@@ -122,8 +121,8 @@ class EventHandler:
 
                     self._queue.dequeue()
 
-
                     if Configuration.Instance.is_semi_auto():  # Reset the trigger if in semi automatic mode
+                        self.ui_adress.change_hand_ready_state(True)
                         self.trigger = False
                     else:
                         time.sleep(int(Configuration.Instance.get_wait_time()))  # Delay between letters in automatic mode
