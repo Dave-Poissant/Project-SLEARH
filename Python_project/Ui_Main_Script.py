@@ -335,12 +335,14 @@ class application(Frame):
                 Configuration.Instance.toggle_semi_auto()
             else:
                 return
+            messagebox.showinfo("New mode", "Mode option has been changed to automatic")
         elif not Configuration.Instance.is_semi_auto():
             Configuration.Instance.toggle_semi_auto()
+            messagebox.showinfo("New mode", "Mode option has been changed to step")
         else:
             return
 
-        messagebox.showinfo("New mode", "Mode option has been changed to " + str(self.get_mode_option_state()))
+
 
     def send_new_purpose_option(self):
         if self.get_purpose_option_state() == PurposeEnum.Quiz:
