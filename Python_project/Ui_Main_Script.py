@@ -56,8 +56,6 @@ class application(Frame):
         Communication.Instance.set_ui_adress(self)
         Communication.Instance.start_thread()
 
-    # TODO: Next button (next step in education and next question in quiz), good/wrong answer, update quiz score
-
     def change_connected_state(self, state):
         if state:
             try:

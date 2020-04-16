@@ -6,7 +6,8 @@ from Backend_Scripts import Purpose
 class Configuration:
 
     def __init__(self):
-        self._available_chars = ["a", "b", "c", "D", "é", "t"]
+        self._available_chars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+                                 "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         self._purpose = Purpose.Purpose.Education
         self._semi_auto = False
         self._wait_time = 2 #seconds - Wait time between letter exectition
