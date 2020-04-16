@@ -276,6 +276,8 @@ class application(Frame):
                     EventHandler.Instance.next_letter()
 
                 if self.get_purpose_option_state() == PurposeEnum.Education:
+                    self.mode_choices_automatic.config(state="disable")
+                    self.mode_choices_step.config(state="disable")
                     messagebox.showinfo("Sent", message_to_send)
             else:
                 messagebox.showinfo("Invalid input", "Enter only one character for a quiz answer")
@@ -360,6 +362,10 @@ class application(Frame):
 
     def enable_entry(self):
         self.text_entry.config(state="normal")
+
+    def enable_modes_radiobuttons(self):
+        self.mode_choices_automatic.config(state="normal")
+        self.mode_choices_step.config(state="normal")
 
     def modify_quiz_score(self):
         self.purpose_choices_quiz["text"] = "Quiz (Score = " + str(Quiz.Instance.get_score()) + ")"

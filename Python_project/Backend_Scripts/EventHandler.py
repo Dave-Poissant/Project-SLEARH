@@ -104,6 +104,7 @@ class EventHandler:
                 if self._queue.is_empty():
                     self.ui_adress.enable_entry()
                     self.ui_adress.change_hand_ready_state(True)
+                    self.ui_adress.enable_modes_radiobuttons()
                     self.ui_adress.change_state_picture(False, '')
 
             elif event.is_type(EventType.EventType.letter):  # Letter event
@@ -137,6 +138,7 @@ class EventHandler:
                 if self._queue.is_empty():
                     self.ui_adress.enable_entry()
                     self.ui_adress.change_hand_ready_state(True)
+                    self.ui_adress.enable_modes_radiobuttons()
                     self.ui_adress.change_state_picture(False, '')
 
             else:
