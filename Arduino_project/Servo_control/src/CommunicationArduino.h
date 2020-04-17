@@ -26,13 +26,14 @@ public:
         Serial.println();
     };
 
-    String readCommand()
+    void readCommand(int *command, int *purpose, int *time)
     {
         // Lecture du message Json
         StaticJsonDocument<500> doc;
         JsonVariant parse_msg;
         int newCommand = toAscii(' ');
         String currentPurpose = "none";
+        int currentPurposeInt = 3;
         int timeOnLetter = 2;
 
         // Lecture sur le port Seriel
@@ -40,7 +41,10 @@ public:
 
         // Si erreur dans le message
         if (error) {
-            return String(newCommand) + "|" + "none" + "|" + String(timeOnLetter);
+            *command = newCommand;
+            *purpose = 3;
+            *time = timeOnLetter;
+            return;
         }
         // digitalWrite(LED_BUILTIN, LOW);
 
@@ -52,9 +56,24 @@ public:
             timeOnLetter = doc["time"].as<int>();
         }
 
-        String returnValue = String(toAscii(newCommand)) + "|" + currentPurpose + "|" + String(timeOnLetter);
+        if(currentPurpose == "educ")
+        {
+            currentPurposeInt = 1;
+        }
+        else if(currentPurpose == "quiz")
+        {
+            currentPurposeInt = 2;
+        }
+        else
+        {
+            currentPurposeInt = 3;
+        }
+        
+        *command = newCommand;
+        *purpose = currentPurposeInt;
+        *time = timeOnLetter;
 
-        return returnValue;
+        return;
     };
 };
 
