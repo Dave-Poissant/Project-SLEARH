@@ -290,7 +290,9 @@ class application(Frame):
             if self.__purpose_option_state__ == PurposeEnum.Quiz:
                 Quiz.Instance.get_new_letter()
 
-                Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
+                Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()),
+                                                     Configuration.Instance.get_purpose_string(),
+                                                     Configuration.Instance.get_wait_time())
                 Communication.Instance.send_stream()
                 self.change_state_picture(True, Quiz.Instance.get_current_letter())
                 self.change_hand_ready_state(False)
