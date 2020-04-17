@@ -14,7 +14,7 @@
 #define SEND_UPDATE_PERIODE   200                         // sent of Read state Periode (ms)
 #define READ_UPDATE_PERIODE   1000                        // read of Serial Periode (ms)
 #define BAUD                  9600                        // Baud rate for Arduino mega 2560
-#define LOOP_DELAY            500                         // time delay between each finger mouvment
+#define LOOP_DELAY            200                         // time delay between each finger mouvment
 
 // ----------------------------- Function prototypes ---------------------------------
 void sendTimerCallback();                                 // callback to update the send Serial.read state
@@ -33,9 +33,12 @@ SoftTimer timerReadMsg;                                   // read messages timer
 Servo servo;
 
 // command variables:
+bool moveDone = false;
+bool reverseDone = false;
 bool newCommand = false;                                  //Normaly initialized to 0. Set to 1 for testing purposes.
 bool blinkState = false;                                  // built-in LED's blinkState
 int increment = 0;
+int decrement = NB_FINGERS-1;
 int command = ' ';
 
 
@@ -44,11 +47,11 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(BAUD);
 
-
+/*
   timerSendMsg.setDelay(SEND_UPDATE_PERIODE);
   timerSendMsg.setCallback(sendTimerCallback);
   timerSendMsg.enable();
-/*
+
   timerReadMsg.setDelay(READ_UPDATE_PERIODE);
   timerReadMsg.setCallback(readTimerCallback);
   timerReadMsg.enable();
@@ -56,14 +59,16 @@ void setup() {
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);  // Analog servos run at ~60Hz updates. 
 }
-
-/*void loop(){
+/*
+void loop(){
   servo.test();
   //delay(LOOP_DELAY);
-}*/
+}
+*/
 
 
 void loop() {
+  //servo.test();
   if(shouldSend)
   {
     comObject.sendState(shouldRead);
@@ -71,8 +76,13 @@ void loop() {
 
   if(shouldRead == NOT_READY_TO_READ){
     if(servo.servoOut(command,increment)){
+      moveDone = true;
+    }
+    if(moveDone && servo.reverseMove(command, decrement)){
+      reverseDone = true;
       shouldRead = READY_TO_READ;
       increment = 0; 
+      decrement = NB_FINGERS-1;
       command = ' ';
     }
     //adjustedCommand = adjustCommand(command);
@@ -80,11 +90,14 @@ void loop() {
     //if(newCommand && adjustedCommand != ' '){
     //  newCommand = 0;
     //  servoOut(adjustedCommand);
-    //}
-    else{increment++;}
+    //}00000000000000
+    if(!moveDone){increment++;}
+    if(moveDone && !reverseDone){decrement--;}
   }
 
   if(shouldRead == READY_TO_READ){
+    moveDone = false;
+    reverseDone = false;
     command = comObject.readCommand();
     if(command == toAscii('a'))
     {

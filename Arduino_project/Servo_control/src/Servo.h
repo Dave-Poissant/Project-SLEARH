@@ -5,7 +5,7 @@
 #include <Adafruit_PWMServoDriver.h>
 
 // Section to change when adding servos or characters:
-#define NB_LETTERS            10                           //Number of letters managed
+#define NB_LETTERS            32                          //Number of characters managed
 #define NB_MOTORS             10                          // Number of active motors
 #define NB_FINGERS            5                           // Number of active fingers
 
@@ -82,20 +82,25 @@ public:
         charact[29] = {('x'),{LITTLE,RING,MIDDLE,INDEX,THUMB},{FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,A90_DEGREE,FULLY_INCLINED}};
         charact[30] = {('y'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,VERTICAL}};
         charact[31] = {('z'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,VERTICAL}};
-
-        
-        
     }
 
     bool servoOut(int character, int increment){
         character = adjustCommand(character);
         int finger = charact[character].pattern[increment];
-        int moveOption = charact[character].angle[increment];
+        int moveOption = VERTICAL;
         moveFinger(finger,moveOption);
         lastCommand = character;
-        if(increment < NB_FINGERS-1){
-            return false;
-        }
+        if(increment < NB_FINGERS-1){return false;}
+        else{return true;}
+    }
+
+    bool reverseMove(int character, int decrement){
+        character = adjustCommand(character);
+        int finger = charact[character].pattern[decrement];
+        int moveOption = charact[character].angle[decrement];
+        moveFinger(finger,moveOption);
+        lastCommand = character;
+        if(decrement > 0){return false;}
         else{return true;}
     }
 
@@ -171,10 +176,15 @@ public:
         */
         //servoOut('5');
         
-        for(int i=0;i<NB_LETTERS;i++){
+        for(int i=0;i<1;i++){
             int command = charact[i].id;
             for(int increment=0;increment<NB_FINGERS; increment++){
                 servoOut(command,increment);
+                delay(200);
+            }
+            delay(1500);
+            for(int decrement=NB_FINGERS-1;decrement>0; decrement--){
+                reverseMove(command,decrement);
                 delay(200);
             }
             delay(1000);
