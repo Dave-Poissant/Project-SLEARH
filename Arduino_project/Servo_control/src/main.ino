@@ -15,10 +15,16 @@
 #define READ_UPDATE_PERIODE   1000                        // read of Serial Periode (ms)
 #define BAUD                  9600                        // Baud rate for Arduino mega 2560
 #define LOOP_DELAY            200                         // time delay between each finger mouvment
+#define TIME_ON_LETTER        1000
+
+#define EDUCATION             0
+#define QUIZ                  1
+#define UNFOUND               2
 
 // ----------------------------- Function prototypes ---------------------------------
 void sendTimerCallback();                                 // callback to update the send Serial.read state
 void readTimerCallback();                                 // callback to update the send Serial.read state
+void resetTimer();                                        // callback to reset time spend on letter
 
 // ------------------------------- Other variables -----------------------------------
 // Communication variables:
@@ -28,6 +34,7 @@ volatile bool shouldRead = NOT_READY_TO_READ;             // flag to read a mess
 bool messageReceived = false;                             // flag to show if the arduino as already received a message (temporary) 
 SoftTimer timerSendMsg;                                   // send messages timer
 SoftTimer timerReadMsg;                                   // read messages timer (temporary)
+SoftTimer timerOnLetter;                                  // Monitors the time spent on each letter before resetting to initial position
 
 // Initiating the Servo class
 Servo servo;
@@ -39,66 +46,93 @@ bool newCommand = false;                                  //Normaly initialized 
 bool blinkState = false;                                  // built-in LED's blinkState
 int increment = 0;
 int decrement = NB_FINGERS-1;
+
+int lastCommand = toAscii(' ');
 int command = ' ';
+int purpose = UNFOUND;
+int timeOnLetter = 1;
+bool timerDone = false;
 
 
-// -------------------------------------Setup ----------------------------------------
+// -------------------------------------Setup----------------------------------------
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(BAUD);
 
-/*
   timerSendMsg.setDelay(SEND_UPDATE_PERIODE);
   timerSendMsg.setCallback(sendTimerCallback);
   timerSendMsg.enable();
 
-  timerReadMsg.setDelay(READ_UPDATE_PERIODE);
-  timerReadMsg.setCallback(readTimerCallback);
-  timerReadMsg.enable();
-*/
+  timerOnLetter.setDelay(TIME_ON_LETTER);
+  timerOnLetter.setCallback(resetTimer);
+  timerOnLetter.enable();
+
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);  // Analog servos run at ~60Hz updates. 
-}
-/*
-void loop(){
-  servo.test();
-  //delay(LOOP_DELAY);
-}
-*/
 
+  /*
+  for(int increment = 0; increment<NB_FINGERS; increment++){
+    servo.servoOut('5',increment);
+  }*/
+}
 
 void loop() {
-  //servo.test();
   if(shouldSend)
   {
     comObject.sendState(shouldRead);
   }
 
   if(shouldRead == NOT_READY_TO_READ){
-    if(servo.servoOut(command,increment)){
-      moveDone = true;
+    if(purpose != QUIZ){
+      if(!moveDone && servo.servoOut(command,increment)){
+        moveDone = true;
+      }
+      if(timerDone){
+        if(moveDone && servo.reverseMove(command, decrement)){
+          reverseDone = true;
+          shouldRead = READY_TO_READ;
+          increment = 0; 
+          decrement = NB_FINGERS-1;
+          lastCommand = command;
+          command = ' ';
+        }
+      }
+      if(!moveDone){increment++;}
+      if(timerDone && moveDone && !reverseDone){decrement--;}
     }
-    if(moveDone && servo.reverseMove(command, decrement)){
-      reverseDone = true;
-      shouldRead = READY_TO_READ;
-      increment = 0; 
-      decrement = NB_FINGERS-1;
-      command = ' ';
+
+    else if(purpose == QUIZ){
+      if(lastCommand != toAscii(' ')){
+        if(!reverseDone && servo.reverseMove(lastCommand, decrement)){
+          reverseDone = true;
+        }
+        if(reverseDone && servo.servoOut(command, increment)){
+          if(timerDone){
+            moveDone = true;
+            shouldRead = READY_TO_READ;
+            increment = 0;
+            decrement = NB_FINGERS-1;
+            lastCommand = command;
+            command = ' ';
+          }
+        }
+      }
+      if(!reverseDone){decrement--;}
+      if(timerDone && reverseDone && !moveDone){increment++;}
     }
-    //adjustedCommand = adjustCommand(command);
-    //test();
-    //if(newCommand && adjustedCommand != ' '){
-    //  newCommand = 0;
-    //  servoOut(adjustedCommand);
-    //}00000000000000
-    if(!moveDone){increment++;}
-    if(moveDone && !reverseDone){decrement--;}
   }
 
   if(shouldRead == READY_TO_READ){
     moveDone = false;
     reverseDone = false;
-    command = comObject.readCommand();
+    comObject.readCommand(&command, &purpose, &timeOnLetter);
+    if(command != toAscii(' ')){
+      shouldRead = NOT_READY_TO_READ;
+      timerOnLetter.setDelay(timeOnLetter*1000);
+      timerOnLetter.enable();
+      timerDone = false;
+    }
+    /*
     if(command == toAscii('a'))
     {
       shouldRead = NOT_READY_TO_READ;
@@ -109,15 +143,17 @@ void loop() {
       shouldRead = NOT_READY_TO_READ;
       digitalWrite(LED_BUILTIN, LOW);
     }
+    */
     else
     {
       shouldRead = READY_TO_READ;
     }
   }
   timerSendMsg.update();
+  timerOnLetter.update();
   //timerReadMsg.update();
   delay(LOOP_DELAY);
 }
 
 void sendTimerCallback(){shouldSend = true;}
-void readTimerCallback(){shouldRead = true;}
+void resetTimer(){timerDone = true;}

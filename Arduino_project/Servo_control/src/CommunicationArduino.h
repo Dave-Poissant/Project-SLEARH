@@ -33,7 +33,7 @@ public:
         JsonVariant parse_msg;
         int newCommand = toAscii(' ');
         String currentPurpose = "none";
-        int currentPurposeInt = 3;
+        int currentPurposeInt = 2;
         int timeOnLetter = 2;
 
         // Lecture sur le port Seriel
@@ -42,7 +42,7 @@ public:
         // Si erreur dans le message
         if (error) {
             *command = newCommand;
-            *purpose = 3;
+            *purpose = currentPurposeInt;
             *time = timeOnLetter;
             return;
         }
@@ -58,15 +58,15 @@ public:
 
         if(currentPurpose == "educ")
         {
-            currentPurposeInt = 1;
+            currentPurposeInt = 0;
         }
         else if(currentPurpose == "quiz")
         {
-            currentPurposeInt = 2;
+            currentPurposeInt = 1;
         }
         else
         {
-            currentPurposeInt = 3;
+            currentPurposeInt = 2;
         }
         
         *command = newCommand;

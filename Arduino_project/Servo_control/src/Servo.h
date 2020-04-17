@@ -44,11 +44,8 @@ struct character{
 
 class Servo
 {
-private:
-    int lastCommand;
 public:
     Servo(){
-        int lastCommand = ' ';
         // Defining every character with the dedicated structure.
         charact[0] = {('0'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
         charact[1] = {('1'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
@@ -87,9 +84,8 @@ public:
     bool servoOut(int character, int increment){
         character = adjustCommand(character);
         int finger = charact[character].pattern[increment];
-        int moveOption = VERTICAL;
+        int moveOption = charact[character].angle[increment];
         moveFinger(finger,moveOption);
-        lastCommand = character;
         if(increment < NB_FINGERS-1){return false;}
         else{return true;}
     }
@@ -97,9 +93,8 @@ public:
     bool reverseMove(int character, int decrement){
         character = adjustCommand(character);
         int finger = charact[character].pattern[decrement];
-        int moveOption = charact[character].angle[decrement];
+        int moveOption = VERTICAL;
         moveFinger(finger,moveOption);
-        lastCommand = character;
         if(decrement > 0){return false;}
         else{return true;}
     }
@@ -176,13 +171,13 @@ public:
         */
         //servoOut('5');
         
-        for(int i=0;i<1;i++){
+        for(int i=0;i<NB_LETTERS;i++){
             int command = charact[i].id;
             for(int increment=0;increment<NB_FINGERS; increment++){
                 servoOut(command,increment);
                 delay(200);
             }
-            delay(1500);
+            delay(5000);
             for(int decrement=NB_FINGERS-1;decrement>0; decrement--){
                 reverseMove(command,decrement);
                 delay(200);
