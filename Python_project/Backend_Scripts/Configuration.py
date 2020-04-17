@@ -10,10 +10,9 @@ class Configuration:
                                  "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         self._purpose = Purpose.Purpose.Education
         self._semi_auto = False
-        self._wait_time = 2 #seconds - Wait time between letter exectition
+        self._wait_time = 2  # seconds - Wait time between letter exectition
         self.debug = False
         self.debug_level = 1
-
 
     def set_debug(self, _bool, _level):
         self.debug = _bool
@@ -41,5 +40,12 @@ class Configuration:
 
     def get_purpose(self):
         return self._purpose
+
+    def get_purpose_string(self):
+        if self.get_purpose() == Purpose.Purpose.Education:
+            return "educ"
+        elif self.get_purpose() == Purpose.Purpose.Quiz:
+            return "quiz"
+
 
 Instance = Configuration()

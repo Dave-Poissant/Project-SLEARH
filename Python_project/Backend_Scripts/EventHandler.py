@@ -52,12 +52,14 @@ class EventHandler:
 
     def execute_event(self, event):
 
-        if Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz: #Quiz Purpose
+        if Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz:  # Quiz Purpose
 
             if Quiz.Instance.get_current_letter() is None:
                 Quiz.Instance.get_new_letter()
 
-                Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
+                Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()),
+                                                     Configuration.Instance.get_purpose_string(),
+                                                     Configuration.Instance.get_wait_time())
                 Communication.Instance.send_stream()
                 self.ui_adress.change_state_picture(True, Quiz.Instance.get_current_letter())
                 self.ui_adress.change_hand_ready_state(False)
@@ -73,8 +75,10 @@ class EventHandler:
             if not event.is_type(EventType.EventType.quiz_answer):
                 Logger.Log("'" + str(event.get_type()) + "' is not a valid event type\n", 1)
             else:
-                if Quiz.Instance.validate_answer(event.get_name()): #Send new letter to hand if is valid answer
-                    Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()))
+                if Quiz.Instance.validate_answer(event.get_name()):  # Send new letter to hand if is valid answer
+                    Communication.Instance.update_stream(ord(Quiz.Instance.get_current_letter()),
+                                                         Configuration.Instance.get_purpose_string(),
+                                                         Configuration.Instance.get_wait_time())
                     Communication.Instance.send_stream()
                     self.ui_adress.change_state_picture(True, Quiz.Instance.get_current_letter())
                     self.ui_adress.change_hand_ready_state(False)
@@ -113,7 +117,9 @@ class EventHandler:
                 if self.trigger:
                     Logger.Log("Executing letter '" + event.get_name() + "'...\n", 2)
 
-                    Communication.Instance.update_stream(ord(event.get_name()))
+                    Communication.Instance.update_stream(ord(event.get_name()),
+                                                         Configuration.Instance.get_purpose_string(),
+                                                         Configuration.Instance.get_wait_time())
                     Communication.Instance.send_stream()
                     self.ui_adress.change_state_picture(True, event.get_name())
                     self.ui_adress.change_hand_ready_state(False)
@@ -160,7 +166,6 @@ class EventHandler:
                 self.ui_adress.change_state_picture(False, '')
                 break
             time.sleep(0.1)
-
 
     def private_thread(self):
         while self.should_run:

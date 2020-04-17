@@ -65,9 +65,11 @@ class Communication:
         self.__private_thread__.join()
         print("Communication thread joined")
 
-    def update_stream(self, value):
+    def update_stream(self, command_value, purpose, time_on_letter):
         self.__stream__ = {
-            "command": value
+            "command": command_value,
+            "purpose": purpose,
+            "time": time_on_letter
         }
 
     def read_stream(self):
