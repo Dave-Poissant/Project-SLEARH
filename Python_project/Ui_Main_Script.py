@@ -52,6 +52,7 @@ class application(Frame):
         self.__purpose_option_state__ = IntVar()
         self.create_widgets()
         Quiz.Instance.set_ui_adress(self)
+        TextAnalyser.instance.set_ui_adress(self)
         EventHandler.Instance.set_ui_adress(self)
         Communication.Instance.set_ui_adress(self)
         Communication.Instance.start_thread()
@@ -344,8 +345,6 @@ class application(Frame):
         else:
             return
 
-
-
     def send_new_purpose_option(self):
         if self.get_purpose_option_state() == PurposeEnum.Quiz:
             if Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz:
@@ -365,6 +364,9 @@ class application(Frame):
 
     def no_connection_window(self):
         messagebox.showinfo("Warning!", "No connection to the hand.")
+
+    def not_handled_chars_window(self, string_chars):
+        messagebox.showinfo("Warning!", "Not handled character(s): " + string_chars)
 
     def enable_entry(self):
         self.text_entry.config(state="normal")
