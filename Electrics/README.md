@@ -1,10 +1,10 @@
 # Electrical Parts list
 
-  Name	              Description	                                Quantity
-  ------------------------------------------------------------------------
-  Arduino board	      Arduino Mega 2560	                              1
-  Servo driver	      PCA9685 16 channel PWM servo Driver	            1
-  Servo motors	      SG90 servo motor	                              12
+    Name	              Description	                                Quantity
+    ------------------------------------------------------------------------
+    Arduino board	      Arduino Mega 2560	                              1
+    Servo driver	      PCA9685 16 channel PWM servo Driver	            1
+    Servo motors	      SG90 servo motor	                              12
 
 # Electrical Connections:
 
