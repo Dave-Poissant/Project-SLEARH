@@ -48,6 +48,7 @@ class Quiz:
     def get_new_letter(self):
         self._last_letter = self._current_letter
         self._current_letter = self._random_letter()
+        return self._current_letter
 
     ##Method that returns a random letter from the Configuration.available_chars array
     #
