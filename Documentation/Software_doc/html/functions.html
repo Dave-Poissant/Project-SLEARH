@@ -67,9 +67,6 @@ $(function() {
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
 <h3><a id="index__5F"></a>- _ -</h3><ul>
-<li>__communication_thread__()
-: <a class="el" href="class_python__project_1_1_backend___scripts_1_1_communication_1_1_communication.html#a24f5f29ef17386fdeb92f4dbed92dd7a">Python_project.Backend_Scripts.Communication.Communication</a>
-</li>
 <li>__start_thread__()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#ad3f353b0452b27f8ad29897a12812d71">Python_project.Backend_Scripts.EventHandler.EventHandler</a>
 </li>
@@ -115,6 +112,9 @@ $(function() {
 <li>clear_queue()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#a9f5d92024573642f5a64bbb3dee5204c">Python_project.Backend_Scripts.EventHandler.EventHandler</a>
 , <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_queue_1_1_event_queue.html#a7ca846f94ff00f5b737ec07f522e8090">Python_project.Backend_Scripts.EventQueue.EventQueue</a>
+</li>
+<li>CommunicationArduino()
+: <a class="el" href="class_communication_arduino.html#a997b3774e1073af309aa896f89cb0e69">CommunicationArduino</a>
 </li>
 <li>connect_port()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_communication_1_1_communication.html#ad694f5bcff05c6b04a1f8478a01c1917">Python_project.Backend_Scripts.Communication.Communication</a>
@@ -168,6 +168,7 @@ $(function() {
 </li>
 <li>end_thread()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_communication_1_1_communication.html#ac52e003210e001c88d6df203d75090a6">Python_project.Backend_Scripts.Communication.Communication</a>
+, <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#a5a0fd75fffdf644600901d51c641b719">Python_project.Backend_Scripts.EventHandler.EventHandler</a>
 </li>
 <li>execute_event()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#ab04a75fc103675ddc553dfeb38205e7b">Python_project.Backend_Scripts.EventHandler.EventHandler</a>
@@ -191,6 +192,12 @@ $(function() {
 </li>
 <li>get_current_letter()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_quiz_1_1_quiz.html#ae3e132bc3c8a15b12ea680587823b4d2">Python_project.Backend_Scripts.Quiz.Quiz</a>
+</li>
+<li>get_debug_level()
+: <a class="el" href="class_python__project_1_1_backend___scripts_1_1_configuration_1_1_configuration.html#aec7f8826189d6e39a460340d4aa2f833">Python_project.Backend_Scripts.Configuration.Configuration</a>
+</li>
+<li>get_debug_state()
+: <a class="el" href="class_python__project_1_1_backend___scripts_1_1_configuration_1_1_configuration.html#a6e621f4cc06b8b4b329c81fc19c8bc6a">Python_project.Backend_Scripts.Configuration.Configuration</a>
 </li>
 <li>get_length()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_queue_1_1_event_queue.html#a3063bb42bb173f23d4416f05ef1bb6a8">Python_project.Backend_Scripts.EventQueue.EventQueue</a>
@@ -320,11 +327,17 @@ $(function() {
 
 
 <h3><a id="index_p"></a>- p -</h3><ul>
+<li>parse_char()
+: <a class="el" href="class_python__project_1_1_backend___scripts_1_1_text_analyser_1_1_text_analyser.html#ab8ef5e2183a3260e6cf94f4b2c43b7b8">Python_project.Backend_Scripts.TextAnalyser.TextAnalyser</a>
+</li>
 <li>pattern
 : <a class="el" href="structcharacter.html#a1a01564ff335ff5e900c97f1603bfa4d">character</a>
 </li>
 <li>print_queue()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#aed31dd13e5d8ca96c2ccbc2f88049fcb">Python_project.Backend_Scripts.EventHandler.EventHandler</a>
+</li>
+<li>private_thread()
+: <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#a99d2b5a89e87e06caf072f3f88cb7868">Python_project.Backend_Scripts.EventHandler.EventHandler</a>
 </li>
 <li>pulseWidth()
 : <a class="el" href="class_servo.html#afcb3292c021e71b6b5e82d4948c09266">Servo</a>
@@ -337,6 +350,9 @@ $(function() {
 </li>
 <li>purpose_label
 : <a class="el" href="class_python__project_1_1_ui___main___script_1_1application.html#abfd101e609372e2900c05c4fcc9a7af2">Python_project.Ui_Main_Script.application</a>
+</li>
+<li>push_event()
+: <a class="el" href="class_python__project_1_1_backend___scripts_1_1_text_analyser_1_1_text_analyser.html#ab40e4150df2d19bf873fffadf9f65c0d">Python_project.Backend_Scripts.TextAnalyser.TextAnalyser</a>
 </li>
 </ul>
 
@@ -351,6 +367,9 @@ $(function() {
 <h3><a id="index_r"></a>- r -</h3><ul>
 <li>read_stream()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_communication_1_1_communication.html#a92cea1501c08efd8312f67ed7c7a629c">Python_project.Backend_Scripts.Communication.Communication</a>
+</li>
+<li>readCommand()
+: <a class="el" href="class_communication_arduino.html#a55ba6c1dea00e2fd2b4d7823fbf5c422">CommunicationArduino</a>
 </li>
 <li>reset()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_quiz_1_1_quiz.html#ac8cc5112ab8def3e2c3630af99ee13d2">Python_project.Backend_Scripts.Quiz.Quiz</a>
@@ -382,6 +401,9 @@ $(function() {
 </li>
 <li>send_text()
 : <a class="el" href="class_python__project_1_1_ui___main___script_1_1application.html#ab8490ff5829b5927cf35b8b30e46507d">Python_project.Ui_Main_Script.application</a>
+</li>
+<li>sendState()
+: <a class="el" href="class_communication_arduino.html#a5f84e12e14f166c3e2c74256fb60597c">CommunicationArduino</a>
 </li>
 <li>Servo()
 : <a class="el" href="class_servo.html#a70b2b17657cf258cdcb57503bcf62cd2">Servo</a>
@@ -430,6 +452,10 @@ $(function() {
 </li>
 <li>setRepetition()
 : <a class="el" href="class_soft_timer.html#a7d78a755ec7c224a620e229ae2c1eb8e">SoftTimer</a>
+</li>
+<li>should_run
+: <a class="el" href="class_python__project_1_1_backend___scripts_1_1_communication_1_1_communication.html#a2dc5eb690b58a2738a874fc71070f42f">Python_project.Backend_Scripts.Communication.Communication</a>
+, <a class="el" href="class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#a332bca554d9e20122838c374b5b11973">Python_project.Backend_Scripts.EventHandler.EventHandler</a>
 </li>
 <li>start_thread()
 : <a class="el" href="class_python__project_1_1_backend___scripts_1_1_communication_1_1_communication.html#a86e4acf348f66bf2fcb6bf34d2224a01">Python_project.Backend_Scripts.Communication.Communication</a>

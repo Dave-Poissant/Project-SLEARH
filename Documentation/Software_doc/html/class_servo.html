@@ -82,10 +82,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a70b2b17657cf258cdcb57503bcf62cd2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_servo.html#a70b2b17657cf258cdcb57503bcf62cd2">Servo</a> ()</td></tr>
 <tr class="separator:a70b2b17657cf258cdcb57503bcf62cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace1cf418a52e8c8e352950eb25110c68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_servo.html#ace1cf418a52e8c8e352950eb25110c68">servoOut</a> (int <a class="el" href="structcharacter.html">character</a>, int increment)</td></tr>
-<tr class="memdesc:ace1cf418a52e8c8e352950eb25110c68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function of the servo class. param character the character to be displayed. param increment an integer instructing wich pattern and angle index to reach in the character's structure. This function will send the command to move a finger.  <a href="class_servo.html#ace1cf418a52e8c8e352950eb25110c68">More...</a><br /></td></tr>
+<tr class="memdesc:ace1cf418a52e8c8e352950eb25110c68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function of the servo class. This function will send the command to move a finger.  <a href="class_servo.html#ace1cf418a52e8c8e352950eb25110c68">More...</a><br /></td></tr>
 <tr class="separator:ace1cf418a52e8c8e352950eb25110c68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6b127a193e647aa2dce76652859dccc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_servo.html#aa6b127a193e647aa2dce76652859dccc">reverseMove</a> (int <a class="el" href="structcharacter.html">character</a>, int decrement)</td></tr>
-<tr class="memdesc:aa6b127a193e647aa2dce76652859dccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will move a finger to the vertical. param character the character previously displayed. param decrement an integer instructing wich finger to unfold.  <a href="class_servo.html#aa6b127a193e647aa2dce76652859dccc">More...</a><br /></td></tr>
+<tr class="memdesc:aa6b127a193e647aa2dce76652859dccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will move a finger to the vertical.  <a href="class_servo.html#aa6b127a193e647aa2dce76652859dccc">More...</a><br /></td></tr>
 <tr class="separator:aa6b127a193e647aa2dce76652859dccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac47a372c90ec01a3d782faa9e71c4492"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_servo.html#ac47a372c90ec01a3d782faa9e71c4492">moveFinger</a> (int finger, int moveOption)</td></tr>
 <tr class="memdesc:ac47a372c90ec01a3d782faa9e71c4492"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function sends the PWM to the servos of a finger.  <a href="class_servo.html#ac47a372c90ec01a3d782faa9e71c4492">More...</a><br /></td></tr>
@@ -239,7 +239,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This function will move a finger to the vertical. param character the character previously displayed. param decrement an integer instructing wich finger to unfold. </p>
+<p>This function will move a finger to the vertical. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">character</td><td>the character previously displayed. </td></tr>
+    <tr><td class="paramname">decrement</td><td>an integer instructing wich finger to unfold. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>true only once every finger has unfold. </dd></dl>
 
 </div>
@@ -270,7 +277,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Function of the servo class. param character the character to be displayed. param increment an integer instructing wich pattern and angle index to reach in the character's structure. This function will send the command to move a finger. </p>
+<p>Function of the servo class. This function will send the command to move a finger. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">character</td><td>the character to be displayed. </td></tr>
+    <tr><td class="paramname">increment</td><td>an integer instructing wich pattern and angle index to reach in the character's structure. </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>true only once every finger moved. </dd></dl>
 
 </div>

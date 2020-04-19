@@ -4,19 +4,18 @@
 #if !defined(COMMUNICATIONARDUINO)
 #define COMMUNICATIONARDUINO
 
-/** @class CommunicationArduino 
- * @brief Class containing functions related to the serial communication of the arduino.
- * 
- * This class contains the functions used to send information through serial port and read some.
- * @author POISSANT, DAVID-ALEXANDRE
- * @date 19/04/2020
- */
-
 #include <Arduino.h>
-#include <ArduinoJson.h>                               ///< Library needed to use Json wrapper for sending and receiving message through serial port.
+#include <ArduinoJson.h>
 
 class CommunicationArduino
 {
+    /** @class CommunicationArduino 
+     * @brief Class containing functions related to the serial communication of the arduino.
+     *
+     * This class contains the functions used to send information through serial port and read some.
+     * @author POISSANT, DAVID-ALEXANDRE
+     * @date 19/04/2020
+     */
 public:
     CommunicationArduino()
     {

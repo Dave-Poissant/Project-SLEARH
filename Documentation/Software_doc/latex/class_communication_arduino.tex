@@ -1,14 +1,76 @@
 \hypertarget{class_communication_arduino}{}\doxysection{Communication\+Arduino Class Reference}
 \label{class_communication_arduino}\index{CommunicationArduino@{CommunicationArduino}}
+
+
+Class containing functions related to the serial communication of the arduino.  
+
+
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_communication_arduino_a5f84e12e14f166c3e2c74256fb60597c}\label{class_communication_arduino_a5f84e12e14f166c3e2c74256fb60597c}} 
-void {\bfseries send\+State} (bool state)
+\mbox{\hyperlink{class_communication_arduino_a997b3774e1073af309aa896f89cb0e69}{Communication\+Arduino}} ()
 \item 
+void \mbox{\hyperlink{class_communication_arduino_a5f84e12e14f166c3e2c74256fb60597c}{send\+State}} (bool state)
+\begin{DoxyCompactList}\small\item\em Function of the \mbox{\hyperlink{class_communication_arduino}{Communication\+Arduino}} class. This function sends through the serial port the state in param. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_communication_arduino_a55ba6c1dea00e2fd2b4d7823fbf5c422}{read\+Command}} (int $\ast$command, int $\ast$purpose, int $\ast$time)
+\begin{DoxyCompactList}\small\item\em Function of the \mbox{\hyperlink{class_communication_arduino}{Communication\+Arduino}} class. This function reads the serial port for incoming commands. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class containing functions related to the serial communication of the arduino. 
+
+This class contains the functions used to send information through serial port and read some. \begin{DoxyAuthor}{Author}
+P\+O\+I\+S\+S\+A\+NT, D\+A\+V\+I\+D-\/\+A\+L\+E\+X\+A\+N\+D\+RE 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+19/04/2020 
+\end{DoxyDate}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_communication_arduino_a997b3774e1073af309aa896f89cb0e69}\label{class_communication_arduino_a997b3774e1073af309aa896f89cb0e69}} 
+\index{CommunicationArduino@{CommunicationArduino}!CommunicationArduino@{CommunicationArduino}}
+\index{CommunicationArduino@{CommunicationArduino}!CommunicationArduino@{CommunicationArduino}}
+\doxysubsubsection{\texorpdfstring{CommunicationArduino()}{CommunicationArduino()}}
+{\footnotesize\ttfamily Communication\+Arduino\+::\+Communication\+Arduino (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default constructor for the object servo.
+
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_communication_arduino_a55ba6c1dea00e2fd2b4d7823fbf5c422}\label{class_communication_arduino_a55ba6c1dea00e2fd2b4d7823fbf5c422}} 
-void {\bfseries read\+Command} (int $\ast$command, int $\ast$purpose, int $\ast$time)
-\end{DoxyCompactItemize}
+\index{CommunicationArduino@{CommunicationArduino}!readCommand@{readCommand}}
+\index{readCommand@{readCommand}!CommunicationArduino@{CommunicationArduino}}
+\doxysubsubsection{\texorpdfstring{readCommand()}{readCommand()}}
+{\footnotesize\ttfamily void Communication\+Arduino\+::read\+Command (\begin{DoxyParamCaption}\item[{int $\ast$}]{command,  }\item[{int $\ast$}]{purpose,  }\item[{int $\ast$}]{time }\end{DoxyParamCaption})}
+
+
+
+Function of the \mbox{\hyperlink{class_communication_arduino}{Communication\+Arduino}} class. This function reads the serial port for incoming commands. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & int$\ast$ The \char`\"{}command\char`\"{} variable\textquotesingle{}s adress in main.\+ino. \\
+\hline
+{\em purpose} & int$\ast$ The \char`\"{}purpose\char`\"{} variable\textquotesingle{}s adress in main.\+ino. \\
+\hline
+{\em time} & int$\ast$ The \char`\"{}time\char`\"{} variable\textquotesingle{}s adress in main.\+ino. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_communication_arduino_a5f84e12e14f166c3e2c74256fb60597c}\label{class_communication_arduino_a5f84e12e14f166c3e2c74256fb60597c}} 
+\index{CommunicationArduino@{CommunicationArduino}!sendState@{sendState}}
+\index{sendState@{sendState}!CommunicationArduino@{CommunicationArduino}}
+\doxysubsubsection{\texorpdfstring{sendState()}{sendState()}}
+{\footnotesize\ttfamily void Communication\+Arduino\+::send\+State (\begin{DoxyParamCaption}\item[{bool}]{state }\end{DoxyParamCaption})}
+
+
+
+Function of the \mbox{\hyperlink{class_communication_arduino}{Communication\+Arduino}} class. This function sends through the serial port the state in param. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & bool The state be send. \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}

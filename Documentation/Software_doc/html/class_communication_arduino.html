@@ -71,16 +71,115 @@ $(function() {
 <div class="title">CommunicationArduino Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class containing functions related to the serial communication of the arduino.  
+ <a href="class_communication_arduino.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5f84e12e14f166c3e2c74256fb60597c"><td class="memItemLeft" align="right" valign="top"><a id="a5f84e12e14f166c3e2c74256fb60597c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sendState</b> (bool state)</td></tr>
+<tr class="memitem:a997b3774e1073af309aa896f89cb0e69"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_arduino.html#a997b3774e1073af309aa896f89cb0e69">CommunicationArduino</a> ()</td></tr>
+<tr class="separator:a997b3774e1073af309aa896f89cb0e69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f84e12e14f166c3e2c74256fb60597c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_arduino.html#a5f84e12e14f166c3e2c74256fb60597c">sendState</a> (bool state)</td></tr>
+<tr class="memdesc:a5f84e12e14f166c3e2c74256fb60597c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function of the <a class="el" href="class_communication_arduino.html" title="Class containing functions related to the serial communication of the arduino.">CommunicationArduino</a> class. This function sends through the serial port the state in param.  <a href="class_communication_arduino.html#a5f84e12e14f166c3e2c74256fb60597c">More...</a><br /></td></tr>
 <tr class="separator:a5f84e12e14f166c3e2c74256fb60597c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55ba6c1dea00e2fd2b4d7823fbf5c422"><td class="memItemLeft" align="right" valign="top"><a id="a55ba6c1dea00e2fd2b4d7823fbf5c422"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>readCommand</b> (int *command, int *purpose, int *time)</td></tr>
+<tr class="memitem:a55ba6c1dea00e2fd2b4d7823fbf5c422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_communication_arduino.html#a55ba6c1dea00e2fd2b4d7823fbf5c422">readCommand</a> (int *command, int *purpose, int *time)</td></tr>
+<tr class="memdesc:a55ba6c1dea00e2fd2b4d7823fbf5c422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function of the <a class="el" href="class_communication_arduino.html" title="Class containing functions related to the serial communication of the arduino.">CommunicationArduino</a> class. This function reads the serial port for incoming commands.  <a href="class_communication_arduino.html#a55ba6c1dea00e2fd2b4d7823fbf5c422">More...</a><br /></td></tr>
 <tr class="separator:a55ba6c1dea00e2fd2b4d7823fbf5c422"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class containing functions related to the serial communication of the arduino. </p>
+<p>This class contains the functions used to send information through serial port and read some. </p><dl class="section author"><dt>Author</dt><dd>POISSANT, DAVID-ALEXANDRE </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>19/04/2020 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a997b3774e1073af309aa896f89cb0e69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a997b3774e1073af309aa896f89cb0e69">&#9670;&nbsp;</a></span>CommunicationArduino()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CommunicationArduino::CommunicationArduino </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Default constructor for the object servo.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a55ba6c1dea00e2fd2b4d7823fbf5c422"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55ba6c1dea00e2fd2b4d7823fbf5c422">&#9670;&nbsp;</a></span>readCommand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CommunicationArduino::readCommand </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>command</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>purpose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function of the <a class="el" href="class_communication_arduino.html" title="Class containing functions related to the serial communication of the arduino.">CommunicationArduino</a> class. This function reads the serial port for incoming commands. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">command</td><td>int* The "command" variable's adress in main.ino. </td></tr>
+    <tr><td class="paramname">purpose</td><td>int* The "purpose" variable's adress in main.ino. </td></tr>
+    <tr><td class="paramname">time</td><td>int* The "time" variable's adress in main.ino. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5f84e12e14f166c3e2c74256fb60597c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f84e12e14f166c3e2c74256fb60597c">&#9670;&nbsp;</a></span>sendState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CommunicationArduino::sendState </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function of the <a class="el" href="class_communication_arduino.html" title="Class containing functions related to the serial communication of the arduino.">CommunicationArduino</a> class. This function sends through the serial port the state in param. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>bool The state be send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Arduino_project/Servo_control/src/<a class="el" href="_communication_arduino_8h_source.html">CommunicationArduino.h</a></li>
 </ul>
