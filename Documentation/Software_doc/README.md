@@ -1,6 +1,6 @@
 # Follow this link to open code documentation:
 
-file://<LOCAL PATH WHERE THE PROJECT IS>/Project-SLEARH/Documentation/Software_doc/html/index.html/Project-SLEARH/Documentation/Software_doc/html/index.html
+file://*LOCAL PATH WHERE THE PROJECT IS*/Project-SLEARH/Documentation/Software_doc/html/index.html/Project-SLEARH/Documentation/Software_doc/html/index.html
 
 
 # Updating this link with doxygen:
