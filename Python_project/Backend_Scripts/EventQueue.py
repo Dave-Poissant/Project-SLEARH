@@ -54,7 +54,7 @@ class EventQueue:
                 return self._queue[0]
         return None
 
-    ## Method that return the last event in the queue
+    ##Method that return the last event in the queue
     #
     def last(self):
         with self._lock:

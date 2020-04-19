@@ -21,7 +21,7 @@ class Color(Enum):
 #
 def Log(_str, _lvl = 1, _color = None):
     os.system('color')
-    if Configuration.Instance.debug and _lvl <= Configuration.Instance.debug_level:
+    if Configuration.Instance.get_debug_state and _lvl <= Configuration.Instance.get_debug_level():
         if _color == None:
             print(_str)
         else:

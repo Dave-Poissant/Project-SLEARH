@@ -7,13 +7,13 @@ class Quiz:
         self._current_letter = None
         self._last_letter = None
         self._score = 0
-        self.ui_adress = None
+        self._ui_adress = None
 
     ##Method that store the adress of the UI in a pointer
     #@param adress Actual adress of the UI
     #
     def set_ui_adress(self, adress):
-        self.ui_adress = adress
+        self._ui_adress = adress
 
     ##Method that resets the quiz progression
     #
@@ -26,7 +26,7 @@ class Quiz:
     #
     def reset_score(self):
         self._score = 0
-        self.ui_adress.modify_quiz_score()
+        self._ui_adress.modify_quiz_score()
 
     ##Method that returns the current Quiz score
     #

@@ -11,16 +11,26 @@ class Configuration:
         self._purpose = Purpose.Purpose.Education
         self._semi_auto = False
         self._wait_time = 2  # seconds - Wait time between letter exectition
-        self.debug = False
-        self.debug_level = 1
+        self._debug = False
+        self._debug_level = 1
 
     ##Method that sets the debug level to print more or less logged messages
     #@param _bool Boolean to activate (True) or desactivate (False) logged messages
     #@param _level Int Sets the maximum level of debug needed for logged meesages to be printed
     #
     def set_debug(self, _bool, _level):
-        self.debug = _bool
-        self.debug_level = _level
+        self._debug = _bool
+        self._debug_level = _level
+
+    ##Method that returns the current debug state (Boolean)
+    #
+    def get_debug_state(self):
+        return self._debug
+
+    ##Method that returns the current debug level (Int)
+    #
+    def get_debug_level(self):
+        return self._debug_level
 
     ##Method that returns the current wait_time between letter execution in automatic mode
     #

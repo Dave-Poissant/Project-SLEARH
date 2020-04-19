@@ -47,10 +47,13 @@ class Communication:
 
     def __init__(self):
         self.__stream__ = {}
+
+        ## @public Communication attribute, Boolean that define if the private thread should run
+        #
         self.should_run = True
         self.__port_name__ = None
         self.__port__ = None
-        self.ui_adress = None
+        self._ui_adress = None
         self.__private_thread__ = threading.Thread(target=self.__communication_thread__)
         self.__private_thread__.setDaemon(True)
 
@@ -58,7 +61,7 @@ class Communication:
     #@param adress Actual UI adress
     #
     def set_ui_adress(self, adress):
-        self.ui_adress = adress
+        self._ui_adress = adress
 
     ##Method that starts the Communication's private thread
     #
@@ -160,7 +163,8 @@ class Communication:
             self.connect_port()
         print("Connected to " + str(self.__port__.name))
 
-    ##Communication private thread to keep the connection status up to date
+    #Communication private thread to keep the connection status up to date
+    #
     def __communication_thread__(self):
         was_connected = None
         while self.should_run:
@@ -168,18 +172,18 @@ class Communication:
             if self.find_port():
                 if self.__port__.isOpen():
                     if not was_connected:
-                        self.ui_adress.change_connected_state(True)
-                        self.ui_adress.change_hand_ready_state(True)
+                        self._ui_adress.change_connected_state(True)
+                        self._ui_adress.change_hand_ready_state(True)
                     else:
                         pass
                     was_connected = True
                 else:
-                    self.ui_adress.change_connected_state(False)
+                    self._ui_adress.change_connected_state(False)
                     was_connected = False
 
             else:
-                self.ui_adress.change_connected_state(False)
-                self.ui_adress.change_hand_ready_state(False)
+                self._ui_adress.change_connected_state(False)
+                self._ui_adress.change_hand_ready_state(False)
                 was_connected = False
                 print("Exist: False")
 

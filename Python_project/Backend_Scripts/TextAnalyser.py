@@ -8,21 +8,21 @@ from Backend_Scripts import Purpose
 class TextAnalyser:
 
     def __init__(self):
-        self.ui_adress = None
+        self._ui_adress = None
 
     ##Method that store the UI adress in a pointer
     #@param adress Actual adress of the UI
     #
     def set_ui_adress(self, adress):
-        self.ui_adress = adress
+        self._ui_adress = adress
 
-    #Method that adds an event to the event queue
+    ##Method that adds an event to the event queue
     #@param _event Event to be added to the queue
     #
     def push_event(self, _event):
         EventHandler.Instance.add_event(_event) 
 
-    #Method that checks each letter of a string and create related events
+    ##Method that checks each letter of a string and create related events
     #@param _str String to be parsed for chars (Events)
     #
     def parse_char(self, _str):
@@ -40,7 +40,7 @@ class TextAnalyser:
                         not_handled_chars = not_handled_chars + char
                         self.push_event(Event.Event(char, EventType.EventType.invalid_letter, True))
             if not_handled_chars != "":
-                self.ui_adress.not_handled_chars_window(not_handled_chars)
+                self._ui_adress.not_handled_chars_window(not_handled_chars)
 
         elif Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz:
             if len(_str) > 1:
