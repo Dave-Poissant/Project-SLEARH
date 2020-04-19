@@ -1,15 +1,28 @@
+/** @file Servo.h
+ * The file Servo.h contains the class Servo.
+ */
 #if !defined(COMMUNICATIONARDUINO)
 #define COMMUNICATIONARDUINO
 
+/** @class CommunicationArduino 
+ * @brief Class containing functions related to the serial communication of the arduino.
+ * 
+ * This class contains the functions used to send information through serial port and read some.
+ * @author POISSANT, DAVID-ALEXANDRE
+ * @date 19/04/2020
+ */
+
 #include <Arduino.h>
-#include <ArduinoJson.h>
+#include <ArduinoJson.h>                               ///< Library needed to use Json wrapper for sending and receiving message through serial port.
 
 class CommunicationArduino
 {
 public:
     CommunicationArduino()
     {
-
+        /** @brief Default constructor for the object servo.
+         * 
+         */
     };
 
     void sendState(bool state)
@@ -25,6 +38,10 @@ public:
         // Envoit
         Serial.println();
     };
+    /** @fn void sendState(bool state)
+     * @brief Function of the CommunicationArduino class. This function sends through the serial port the state in param.
+     * @param state bool The state be send.
+     */
 
     void readCommand(int *command, int *purpose, int *time)
     {
@@ -75,6 +92,12 @@ public:
 
         return;
     };
+    /** @fn void readCommand(int *command, int *purpose, int *time)
+     * @brief Function of the CommunicationArduino class. This function reads the serial port for incoming commands.
+     * @param command int* The "command" variable's adress in main.ino.
+     * @param purpose int* The "purpose" variable's adress in main.ino.
+     * @param time int* The "time" variable's adress in main.ino.
+     */
 };
 
 #endif // COMMUNICATIONARDUINO

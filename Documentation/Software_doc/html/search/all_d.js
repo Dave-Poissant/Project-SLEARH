@@ -1,19 +1,13 @@
 var searchData=
 [
-  ['send_5fbutton_54',['send_button',['../class_python__project_1_1_ui___main___script_1_1application.html#a04f2f19ffb2b1249d2a583bc7869b525',1,'Python_project::Ui_Main_Script::application']]],
-  ['send_5fnew_5fmode_5foption_55',['send_new_mode_option',['../class_python__project_1_1_ui___main___script_1_1application.html#abe2660ed590e6e5fa60b63e75711483a',1,'Python_project::Ui_Main_Script::application']]],
-  ['send_5fnew_5fpurpose_5foption_56',['send_new_purpose_option',['../class_python__project_1_1_ui___main___script_1_1application.html#ab47a9337759235c62902e6127734ec83',1,'Python_project::Ui_Main_Script::application']]],
-  ['send_5fnew_5fspeed_5fon_5fletter_57',['send_new_speed_on_letter',['../class_python__project_1_1_ui___main___script_1_1application.html#aacc892436bfa44e48a891fc01807b224',1,'Python_project::Ui_Main_Script::application']]],
-  ['send_5ftext_58',['send_text',['../class_python__project_1_1_ui___main___script_1_1application.html#ab8490ff5829b5927cf35b8b30e46507d',1,'Python_project::Ui_Main_Script::application']]],
-  ['servo_59',['Servo',['../class_servo.html',1,'']]],
-  ['set_5fmode_5foption_5fautomatic_60',['set_mode_option_automatic',['../class_python__project_1_1_ui___main___script_1_1application.html#aa4f765f8117e6a2ee5856df7e471cde2',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fmode_5foption_5fstate_61',['set_mode_option_state',['../class_python__project_1_1_ui___main___script_1_1application.html#ab69f8f090405c0586bc4dbbd5fa81281',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fmode_5foption_5fstep_62',['set_mode_option_step',['../class_python__project_1_1_ui___main___script_1_1application.html#af3976e37587abc69c1c13918d4e88078',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fpurpose_5foption_5feducation_63',['set_purpose_option_education',['../class_python__project_1_1_ui___main___script_1_1application.html#a3d05550d0e11d2383c568dfef8449fdf',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fpurpose_5foption_5fquiz_64',['set_purpose_option_quiz',['../class_python__project_1_1_ui___main___script_1_1application.html#a6d7e81d2fb4567088bec76642c604ae4',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fpurpose_5foption_5fstate_65',['set_purpose_option_state',['../class_python__project_1_1_ui___main___script_1_1application.html#ac67b9256b8bc2c5fb272598d67b57759',1,'Python_project::Ui_Main_Script::application']]],
-  ['setcallback_66',['setCallback',['../class_soft_timer.html#a1bee9f31c76a64aa963c934bbfd8e6a2',1,'SoftTimer']]],
-  ['setdelay_67',['setDelay',['../class_soft_timer.html#a6dbcb3a2a3f7399374d04f7f7e968133',1,'SoftTimer']]],
-  ['setrepetition_68',['setRepetition',['../class_soft_timer.html#a7d78a755ec7c224a620e229ae2c1eb8e',1,'SoftTimer']]],
-  ['softtimer_69',['SoftTimer',['../class_soft_timer.html',1,'']]]
+  ['project_2dslearh_89',['Project-SLEARH',['../md__r_e_a_d_m_e.html',1,'']]],
+  ['pattern_90',['pattern',['../structcharacter.html#a1a01564ff335ff5e900c97f1603bfa4d',1,'character']]],
+  ['print_5fqueue_91',['print_queue',['../class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#aed31dd13e5d8ca96c2ccbc2f88049fcb',1,'Python_project::Backend_Scripts::EventHandler::EventHandler']]],
+  ['pulsewidth_92',['pulseWidth',['../class_servo.html#afcb3292c021e71b6b5e82d4948c09266',1,'Servo']]],
+  ['purpose_93',['Purpose',['../class_python__project_1_1_backend___scripts_1_1_purpose_1_1_purpose.html',1,'Python_project::Backend_Scripts::Purpose']]],
+  ['purpose_5fchoices_5feducation_94',['purpose_choices_education',['../class_python__project_1_1_ui___main___script_1_1application.html#ae14190572badf6716c84577b0a2ed011',1,'Python_project::Ui_Main_Script::application']]],
+  ['purpose_5fchoices_5fquiz_95',['purpose_choices_quiz',['../class_python__project_1_1_ui___main___script_1_1application.html#a7d22c5989503ce2e6a1a37e43c393720',1,'Python_project::Ui_Main_Script::application']]],
+  ['purpose_5flabel_96',['purpose_label',['../class_python__project_1_1_ui___main___script_1_1application.html#abfd101e609372e2900c05c4fcc9a7af2',1,'Python_project::Ui_Main_Script::application']]],
+  ['purposeenum_97',['PurposeEnum',['../class_python__project_1_1_ui___main___script_1_1_purpose_enum.html',1,'Python_project::Ui_Main_Script']]],
+  ['pwm_98',['pwm',['../_servo_8h.html#a2c06cc8f85429bb0f7cb91917164dc54',1,'Servo.h']]]
 ];

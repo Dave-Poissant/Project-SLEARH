@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['purpose_5fchoices_5feducation_139',['purpose_choices_education',['../class_python__project_1_1_ui___main___script_1_1application.html#ae14190572badf6716c84577b0a2ed011',1,'Python_project::Ui_Main_Script::application']]],
-  ['purpose_5fchoices_5fquiz_140',['purpose_choices_quiz',['../class_python__project_1_1_ui___main___script_1_1application.html#a7d22c5989503ce2e6a1a37e43c393720',1,'Python_project::Ui_Main_Script::application']]],
-  ['purpose_5flabel_141',['purpose_label',['../class_python__project_1_1_ui___main___script_1_1application.html#abfd101e609372e2900c05c4fcc9a7af2',1,'Python_project::Ui_Main_Script::application']]]
+  ['next_257',['next',['../class_python__project_1_1_ui___main___script_1_1application.html#a3ca7faddb6078e56bd933cc78693b8a5',1,'Python_project::Ui_Main_Script::application']]],
+  ['next_5fletter_5fspeed_5fglider_258',['next_letter_speed_glider',['../class_python__project_1_1_ui___main___script_1_1application.html#a653ab06719f6762f56a5b6e5e4f28555',1,'Python_project::Ui_Main_Script::application']]]
 ];

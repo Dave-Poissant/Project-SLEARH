@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['next_136',['next',['../class_python__project_1_1_ui___main___script_1_1application.html#a3ca7faddb6078e56bd933cc78693b8a5',1,'Python_project::Ui_Main_Script::application']]],
-  ['next_5fletter_5fspeed_5fglider_137',['next_letter_speed_glider',['../class_python__project_1_1_ui___main___script_1_1application.html#a653ab06719f6762f56a5b6e5e4f28555',1,'Python_project::Ui_Main_Script::application']]]
+  ['line_5fbetween_5fcontrol_5foptions_5fcanvas_253',['line_between_control_options_canvas',['../class_python__project_1_1_ui___main___script_1_1application.html#a079f72089690e335e11e0d835915d4d5',1,'Python_project::Ui_Main_Script::application']]]
 ];

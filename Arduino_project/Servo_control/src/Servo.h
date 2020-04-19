@@ -25,7 +25,7 @@
 #define A90_DEGREE            2                             ///< Finger with second knuckle fold.
 #define FULLY_INCLINED        3                             ///< Finger with botch knuckles fold.
 
-/** @brief The next defined are the diffrent finger implemented.
+/** @brief The next defined are the different fingers implemented.
  *
  * The increment per finger is 2 because there are 2 motors per finger that requires to move.
  * This implementation eases the working principal of the function moveFinge(int,int).
@@ -114,10 +114,9 @@ public:
         else{return true;}
     }
     /** @fn bool servoOut(int character,int increment)
-     * @brief Function of the servo class.
-     * param character the character to be displayed.
-     * param increment an integer instructing wich pattern and angle index to reach in the character's structure.
-     * This function will send the command to move a finger.
+     * @brief Function of the servo class. This function will send the command to move a finger.
+     * @param character the character to be displayed.
+     * @param increment an integer instructing wich pattern and angle index to reach in the character's structure.
      * @return true only once every finger moved.
      */
 
@@ -131,8 +130,8 @@ public:
     }
     /** @fn bool reverseMove(int character,int decrement)
      * @brief This function will move a finger to the vertical.
-     * param character the character previously displayed.
-     * param decrement an integer instructing wich finger to unfold.
+     * @param character the character previously displayed.
+     * @param decrement an integer instructing wich finger to unfold.
      * @return true only once every finger has unfold.
      */
 

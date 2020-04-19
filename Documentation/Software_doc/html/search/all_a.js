@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['project_2dslearh_45',['Project-SLEARH',['../md__r_e_a_d_m_e.html',1,'']]],
-  ['purpose_46',['Purpose',['../class_python__project_1_1_backend___scripts_1_1_purpose_1_1_purpose.html',1,'Python_project::Backend_Scripts::Purpose']]],
-  ['purpose_5fchoices_5feducation_47',['purpose_choices_education',['../class_python__project_1_1_ui___main___script_1_1application.html#ae14190572badf6716c84577b0a2ed011',1,'Python_project::Ui_Main_Script::application']]],
-  ['purpose_5fchoices_5fquiz_48',['purpose_choices_quiz',['../class_python__project_1_1_ui___main___script_1_1application.html#a7d22c5989503ce2e6a1a37e43c393720',1,'Python_project::Ui_Main_Script::application']]],
-  ['purpose_5flabel_49',['purpose_label',['../class_python__project_1_1_ui___main___script_1_1application.html#abfd101e609372e2900c05c4fcc9a7af2',1,'Python_project::Ui_Main_Script::application']]],
-  ['purposeenum_50',['PurposeEnum',['../class_python__project_1_1_ui___main___script_1_1_purpose_enum.html',1,'Python_project::Ui_Main_Script']]]
+  ['min_5fpulse_5fwidth_71',['MIN_PULSE_WIDTH',['../_servo_8h.html#ad95c8286fc30ece77d632ad00a94d80e',1,'Servo.h']]],
+  ['mode_5fchoices_5fautomatic_72',['mode_choices_automatic',['../class_python__project_1_1_ui___main___script_1_1application.html#ada476673755c0991fc7945be77e70345',1,'Python_project::Ui_Main_Script::application']]],
+  ['mode_5fchoices_5fstep_73',['mode_choices_step',['../class_python__project_1_1_ui___main___script_1_1application.html#a95e68221d904a9582ea5c073627f147c',1,'Python_project::Ui_Main_Script::application']]],
+  ['mode_5flabel_74',['mode_label',['../class_python__project_1_1_ui___main___script_1_1application.html#ae4e2a7261b7bdc91986522deb1d07094',1,'Python_project::Ui_Main_Script::application']]],
+  ['modeenum_75',['ModeEnum',['../class_python__project_1_1_ui___main___script_1_1_mode_enum.html',1,'Python_project::Ui_Main_Script']]],
+  ['modify_5fquiz_5fscore_76',['modify_quiz_score',['../class_python__project_1_1_ui___main___script_1_1application.html#ab96629a23c684988eda1d8ad53e8d474',1,'Python_project::Ui_Main_Script::application']]],
+  ['movefinger_77',['moveFinger',['../class_servo.html#ac47a372c90ec01a3d782faa9e71c4492',1,'Servo']]]
 ];

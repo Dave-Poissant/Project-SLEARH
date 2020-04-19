@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['application_0',['application',['../class_python__project_1_1_ui___main___script_1_1application.html',1,'Python_project::Ui_Main_Script']]],
-  ['articulated_20robotic_20hand_20designed_20for_20sign_20language_20education_1',['Articulated robotic hand designed for sign language education',['../index.html',1,'']]]
+  ['_5f_5fcommunication_5fthread_5f_5f_0',['__communication_thread__',['../class_python__project_1_1_backend___scripts_1_1_communication_1_1_communication.html#a24f5f29ef17386fdeb92f4dbed92dd7a',1,'Python_project::Backend_Scripts::Communication::Communication']]],
+  ['_5f_5fstart_5fthread_5f_5f_1',['__start_thread__',['../class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#ad3f353b0452b27f8ad29897a12812d71',1,'Python_project::Backend_Scripts::EventHandler::EventHandler']]],
+  ['_5f_5fstr_5f_5f_2',['__str__',['../class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#a047bc0159d57bff6e3510f99e02d0276',1,'Python_project.Backend_Scripts.EventHandler.EventHandler.__str__()'],['../class_python__project_1_1_backend___scripts_1_1_event_queue_1_1_event_queue.html#a3febdb48e962aef832d0d5882b32394c',1,'Python_project.Backend_Scripts.EventQueue.EventQueue.__str__()']]]
 ];

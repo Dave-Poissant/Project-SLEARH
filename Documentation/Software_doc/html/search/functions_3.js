@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['get_5fmode_5foption_5fstate_105',['get_mode_option_state',['../class_python__project_1_1_ui___main___script_1_1application.html#ad05929ae31bec89286fb6956f088d68e',1,'Python_project::Ui_Main_Script::application']]],
-  ['get_5fpurpose_5foption_5fstate_106',['get_purpose_option_state',['../class_python__project_1_1_ui___main___script_1_1application.html#a51dde50af0254a64848dff6e653fd62e',1,'Python_project::Ui_Main_Script::application']]]
+  ['dequeue_177',['dequeue',['../class_python__project_1_1_backend___scripts_1_1_event_queue_1_1_event_queue.html#a4807e0e38ee89385358f998609ddbdcf',1,'Python_project::Backend_Scripts::EventQueue::EventQueue']]],
+  ['disable_178',['disable',['../class_soft_timer.html#a6f4253328afd48fdaac84b7f929404d1',1,'SoftTimer']]]
 ];

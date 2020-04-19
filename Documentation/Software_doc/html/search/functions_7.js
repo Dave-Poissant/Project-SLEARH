@@ -1,16 +1,8 @@
 var searchData=
 [
-  ['send_5fnew_5fmode_5foption_112',['send_new_mode_option',['../class_python__project_1_1_ui___main___script_1_1application.html#abe2660ed590e6e5fa60b63e75711483a',1,'Python_project::Ui_Main_Script::application']]],
-  ['send_5fnew_5fpurpose_5foption_113',['send_new_purpose_option',['../class_python__project_1_1_ui___main___script_1_1application.html#ab47a9337759235c62902e6127734ec83',1,'Python_project::Ui_Main_Script::application']]],
-  ['send_5fnew_5fspeed_5fon_5fletter_114',['send_new_speed_on_letter',['../class_python__project_1_1_ui___main___script_1_1application.html#aacc892436bfa44e48a891fc01807b224',1,'Python_project::Ui_Main_Script::application']]],
-  ['send_5ftext_115',['send_text',['../class_python__project_1_1_ui___main___script_1_1application.html#ab8490ff5829b5927cf35b8b30e46507d',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fmode_5foption_5fautomatic_116',['set_mode_option_automatic',['../class_python__project_1_1_ui___main___script_1_1application.html#aa4f765f8117e6a2ee5856df7e471cde2',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fmode_5foption_5fstate_117',['set_mode_option_state',['../class_python__project_1_1_ui___main___script_1_1application.html#ab69f8f090405c0586bc4dbbd5fa81281',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fmode_5foption_5fstep_118',['set_mode_option_step',['../class_python__project_1_1_ui___main___script_1_1application.html#af3976e37587abc69c1c13918d4e88078',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fpurpose_5foption_5feducation_119',['set_purpose_option_education',['../class_python__project_1_1_ui___main___script_1_1application.html#a3d05550d0e11d2383c568dfef8449fdf',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fpurpose_5foption_5fquiz_120',['set_purpose_option_quiz',['../class_python__project_1_1_ui___main___script_1_1application.html#a6d7e81d2fb4567088bec76642c604ae4',1,'Python_project::Ui_Main_Script::application']]],
-  ['set_5fpurpose_5foption_5fstate_121',['set_purpose_option_state',['../class_python__project_1_1_ui___main___script_1_1application.html#ac67b9256b8bc2c5fb272598d67b57759',1,'Python_project::Ui_Main_Script::application']]],
-  ['setcallback_122',['setCallback',['../class_soft_timer.html#a1bee9f31c76a64aa963c934bbfd8e6a2',1,'SoftTimer']]],
-  ['setdelay_123',['setDelay',['../class_soft_timer.html#a6dbcb3a2a3f7399374d04f7f7e968133',1,'SoftTimer']]],
-  ['setrepetition_124',['setRepetition',['../class_soft_timer.html#a7d78a755ec7c224a620e229ae2c1eb8e',1,'SoftTimer']]]
+  ['increment_5fscore_199',['increment_score',['../class_python__project_1_1_backend___scripts_1_1_quiz_1_1_quiz.html#a455fd7388e034df6e8178d3f07fc0481',1,'Python_project::Backend_Scripts::Quiz::Quiz']]],
+  ['is_5fempty_200',['is_empty',['../class_python__project_1_1_backend___scripts_1_1_event_handler_1_1_event_handler.html#a12974a4aaf0386beaec19fcf7f77d011',1,'Python_project.Backend_Scripts.EventHandler.EventHandler.is_empty()'],['../class_python__project_1_1_backend___scripts_1_1_event_queue_1_1_event_queue.html#a22aeaf1fc0864b353de398fb8cfcea9a',1,'Python_project.Backend_Scripts.EventQueue.EventQueue.is_empty()']]],
+  ['is_5fhigh_5fpriority_201',['is_high_priority',['../class_python__project_1_1_backend___scripts_1_1_event_1_1_event.html#a65c600cdbec1fe1db62bb4ce227e1eea',1,'Python_project::Backend_Scripts::Event::Event']]],
+  ['is_5fsemi_5fauto_202',['is_semi_auto',['../class_python__project_1_1_backend___scripts_1_1_configuration_1_1_configuration.html#a5b6429924b60405113a78af59a7706e3',1,'Python_project::Backend_Scripts::Configuration::Configuration']]],
+  ['is_5ftype_203',['is_type',['../class_python__project_1_1_backend___scripts_1_1_event_1_1_event.html#af18e6836e4c6a59f4a7de45a10e79056',1,'Python_project::Backend_Scripts::Event::Event']]]
 ];
