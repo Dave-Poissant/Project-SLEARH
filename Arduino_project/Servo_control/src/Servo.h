@@ -1,53 +1,75 @@
+/** @file Servo.h
+ * The file Servo.h contains the class Servo.
+ */
 #if !defined(SERVO)
 #define SERVO
+/** @class Servo 
+ * @brief Class containing functions related to the servomotors.
+ * 
+ * This class contains the structures of characters and the functions used to control the servo output.
+ * @author CHARBONNEAU, EMILE
+ * @date 19/04/2020
+ */
 
 #include <Arduino.h>
-#include <Adafruit_PWMServoDriver.h>
+#include <Adafruit_PWMServoDriver.h>                        ///< Library needed to control the PWM of servo drive.
 
 // Section to change when adding servos or characters:
-#define NB_LETTERS            32                          //Number of characters managed
-#define NB_MOTORS             10                          // Number of active motors
-#define NB_FINGERS            5                           // Number of active fingers
+#define NB_LETTERS            32                            ///< Number of characters managed.
+#define NB_MOTORS             10                            ///< Number of active motors.
+#define NB_FINGERS            5                             ///< Number of active fingers.
 
 // The next defined are the different articulated positions for a finger:
-#define VERTICAL              0
-#define HORIZONTAL            1
-#define A90_DEGREE            2
-#define FULLY_INCLINED        3                           //Value obtained from testing
+#define VERTICAL              0                             ///< Finger fully unfold.
+#define HORIZONTAL            1                             ///< Finger with first knuckle fold.
+#define A90_DEGREE            2                             ///< Finger with second knuckle fold.
+#define FULLY_INCLINED        3                             ///< Finger with botch knuckles fold.
 
-// The next defined are the diffrent finger implemented:
+/** @brief The next defined are the diffrent finger implemented.
+ *
+ * The increment per finger is 2 because there are 2 motors per finger that requires to move.
+ * This implementation eases the working principal of the function moveFinge(int,int).
+ */
 #define THUMB                 0
 #define INDEX                 2
 #define MIDDLE                4
 #define RING                  6
 #define LITTLE                8
 
-// Defining moving angles
-#define NOT_INCLINED          50                          //Angle for a straigth finger
-#define INCLINED              150                         //Angle for an inclined finger
+/**Defining moving angles.
+ */
+#define NOT_INCLINED          50                            ///< Angle for a straigth knuckle.
+#define INCLINED              150                           ///< Angle for an inclined knuckle.
 
-#define width                 2                           //Constante. 
+/**The next section contains defined PWM constants.
+ */
 #define MIN_PULSE_WIDTH       650
 #define MAX_PULSE_WIDTH       2350
 #define DEFAULT_PULSE_WIDTH   1500
 #define FREQUENCY             50
 
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();    // Setting up the pwm object with the default address for the driver (0x40)
-uint8_t servonum = 1;                                       // twelve servo objects can be created on most boards
-                                                            // our servo # counter:
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();    ///< Setting up the pwm object with the default address for the driver (0x40).
+uint8_t servonum = 1;                                       ///< Creation of a servo driver object (PCA9685).
 
-// Creating a structure for every character:
+/** @struct character 
+ * @brief Creating a structure that will hold informations relative to each character.
+ */
 struct character{
-  int id;                                                   // The character in question
-  int pattern[NB_FINGERS];                                  // The pattern in which order should the fingers move
-  int angle[NB_FINGERS];                                    // The angles the fingers should move to in accordance to the pattern
-} charact[NB_LETTERS];
+  int id;                                                   ///< The character in question converted in Ascii.
+  int pattern[NB_FINGERS];                                  ///< The pattern in which order should the fingers move.
+  int angle[NB_FINGERS];                                    ///< The angles the fingers should move to in accordance to the pattern.
+} charact[NB_LETTERS];                                      ///< Creating a structure instance charact wich is an array the size of 
 
 class Servo
 {
 public:
     Servo(){
-        // Defining every character with the dedicated structure.
+        /** @brief Default constructor for the object servo.
+         * 
+         * This constructor initializes each character coded below in accordance to the structure character.
+         * This is the structure to follow :
+         * charact[int] = {{('Character id')},{pattern},{Angles}};
+         */
         charact[0] = {('0'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
         charact[1] = {('1'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED}};
         charact[2] = {('2'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{FULLY_INCLINED,VERTICAL,VERTICAL,FULLY_INCLINED,FULLY_INCLINED}};
@@ -82,8 +104,7 @@ public:
         charact[31] = {('z'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,VERTICAL}};
     }
 
-    // This function will move a finger according to the character and the increment it receives.
-    // The increment defines which finger is it's turn to be moved.
+
     bool servoOut(int character, int increment){
         character = adjustCommand(character);
         int finger = charact[character].pattern[increment];
@@ -92,9 +113,14 @@ public:
         if(increment < NB_FINGERS-1){return false;}
         else{return true;}
     }
+    /** @fn bool servoOut(int character,int increment)
+     * @brief Function of the servo class.
+     * param character the character to be displayed.
+     * param increment an integer instructing wich pattern and angle index to reach in the character's structure.
+     * This function will send the command to move a finger.
+     * @return true only once every finger moved.
+     */
 
-    // This function will move a finger to it's initial position (vertical) according to the decrement it receives
-    // The decrement defines which finger is it's turn to be moved.
     bool reverseMove(int character, int decrement){
         character = adjustCommand(character);
         int finger = charact[character].pattern[decrement];
@@ -103,10 +129,13 @@ public:
         if(decrement > 0){return false;}
         else{return true;}
     }
+    /** @fn bool reverseMove(int character,int decrement)
+     * @brief This function will move a finger to the vertical.
+     * param character the character previously displayed.
+     * param decrement an integer instructing wich finger to unfold.
+     * @return true only once every finger has unfold.
+     */
 
-    // This function is called by the function servoOut(int,int) and reverseMove(int,int)
-    // This function will send the pwm for each motors of a finger to move.
-    // The different move options are defined at the top.
     int moveFinger(int finger, int moveOption){
         int nbMotor = 2;
         int angle[nbMotor];
@@ -137,21 +166,33 @@ public:
         else{}
         if(readyToMove){
             for(int i=0; i<nbMotor; i++){
-            pwm.setPWM(finger+i, 0, pulseWidth(angle[i]));
+                pwm.setPWM(finger+i, 0, pulseWidth(angle[i]));
             }
         }
         return 0;
     }
+    /** @fn int moveFinger(int finger, int moveOption)
+     * @brief This function sends the PWM to the servos of a finger.
+     * @param finger a finger to be moved.
+     * @param moveOption a selected moveOption.
+     * The different move options are : VERTICAL, HORIZONTAL, FULLY_INCLINED AND A90_DEGREE.
+     * @return 0 once every motor of the finger moved.
+     */
 
-    // This function returns the analog value required by the function setPWM to reach a certain angle.
     int pulseWidth(int angle){
         int pulse_wide, analog_value;
         pulse_wide   = map(angle, 0, 180, MIN_PULSE_WIDTH, MAX_PULSE_WIDTH);
         analog_value = int(float(pulse_wide) / 1000000 * FREQUENCY * 4096);
         return analog_value;
     }
+    /** @fn int pulseWidth(int angle)
+     * @brief This function returns the analog value to set the PWM.
+     * @param angle the desired angle shall the motor reach.
+     * This function calculates the analog value corresponding a received angle.
+     * This analog value will bet sent to the servo motor.
+     * @return the analog value of the angle.
+     */
 
-    // This function adjust the toAscii value of a character received so it is easily retrievable in the table of structure of characters.
     int adjustCommand(int command){
         int adjustedCommand = ' ';
         bool found = false;
@@ -168,28 +209,12 @@ public:
         }
         return adjustedCommand;
     }
-
-    // This function was used to test the different functionnality without the communication.
-    int test(){
-        bool testResult = 0;        
-        for(int i=0;i<NB_LETTERS;i++){
-            int command = charact[i].id;
-            for(int increment=0;increment<NB_FINGERS; increment++){
-                servoOut(command,increment);
-                delay(200);
-            }
-            delay(5000);
-            for(int decrement=NB_FINGERS-1;decrement>0; decrement--){
-                reverseMove(command,decrement);
-                delay(200);
-            }
-            delay(1000);
-            Serial.println(command);
-            Serial.println(charact[i].id);
-            Serial.println("");
-        }
-        return testResult;
-    }
+    /** @fn int adjustCommand(int command)
+     * @brief This function adjust the command.
+     * @param command the Ascii value of the desired character to display.
+     * The Ascii value is hashed to fit neatly in the charact[NB_LETTERS] array.
+     * @The charact[adjustedCommand] contains informations relative to command.
+    */
 };
 
 #endif
