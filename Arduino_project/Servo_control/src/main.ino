@@ -40,40 +40,38 @@ SoftTimer timerOnLetter;                                  // Monitors the time s
 Servo servo;
 
 // command variables:
-bool moveDone = false;
-bool reverseDone = false;
-bool newCommand = false;                                  //Normaly initialized to 0. Set to 1 for testing purposes.
+bool moveDone = false;                                    // Flag to control the main loop according to if the hand finished moving to the desired character
+bool reverseDone = false;                                 // Flag to control the main loop according to if the hand finished moving back to it's initial position
+bool newCommand = false;                                  // Normaly initialized to 0. Set to 1 for testing purposes.
 bool blinkState = false;                                  // built-in LED's blinkState
-int increment = 0;
-int decrement = NB_FINGERS-1;
-
-int lastCommand = toAscii(' ');
-int command = ' ';
-int purpose = UNFOUND;
-int timeOnLetter = 1;
-bool timerDone = false;
+int increment = 0;                                        // Increment to control which finger is it's turn to be moved
+int decrement = NB_FINGERS-1;                             // Decrement to control which finger is it's turn to be moved back to initial position
+int lastCommand = toAscii(' ');                           // Memorizing the last command achieved in this variable
+int command = ' ';                                        // Memorizing the character to be displayed by the hand
+int purpose = UNFOUND;                                    // Memorizing in which mode the application is used (Quiz or educationnal)
+int timeOnLetter = 1;                                     // Memorizing the time that has to be spent on each letter
+bool timerDone = false;                                   // Flag for the timer of the time spent on each letter
 
 
 // -------------------------------------Setup----------------------------------------
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(BAUD);
-
+  // Initializing the timer to send the state to the Pi
   timerSendMsg.setDelay(SEND_UPDATE_PERIODE);
   timerSendMsg.setCallback(sendTimerCallback);
   timerSendMsg.enable();
-
+  // Initializing the timer to handle the time spent on each letter
   timerOnLetter.setDelay(TIME_ON_LETTER);
   timerOnLetter.setCallback(resetTimer);
   timerOnLetter.enable();
-
+  // initializing the pwm
   pwm.begin();
   pwm.setPWMFreq(FREQUENCY);  // Analog servos run at ~60Hz updates. 
-
-  /*
+  // Placing every fingers to the initial position
   for(int increment = 0; increment<NB_FINGERS; increment++){
     servo.servoOut('5',increment);
-  }*/
+  }
 }
 
 void loop() {

@@ -22,6 +22,7 @@
 #define RING                  6
 #define LITTLE                8
 
+// Defining moving angles
 #define NOT_INCLINED          50                          //Angle for a straigth finger
 #define INCLINED              150                         //Angle for an inclined finger
 
@@ -37,9 +38,9 @@ uint8_t servonum = 1;                                       // twelve servo obje
 
 // Creating a structure for every character:
 struct character{
-  int id;
-  int pattern[NB_FINGERS];
-  int angle[NB_FINGERS];
+  int id;                                                   // The character in question
+  int pattern[NB_FINGERS];                                  // The pattern in which order should the fingers move
+  int angle[NB_FINGERS];                                    // The angles the fingers should move to in accordance to the pattern
 } charact[NB_LETTERS];
 
 class Servo
@@ -81,6 +82,8 @@ public:
         charact[31] = {('z'),{THUMB,INDEX,MIDDLE,RING,LITTLE},{VERTICAL,FULLY_INCLINED,FULLY_INCLINED,FULLY_INCLINED,VERTICAL}};
     }
 
+    // This function will move a finger according to the character and the increment it receives.
+    // The increment defines which finger is it's turn to be moved.
     bool servoOut(int character, int increment){
         character = adjustCommand(character);
         int finger = charact[character].pattern[increment];
@@ -90,6 +93,8 @@ public:
         else{return true;}
     }
 
+    // This function will move a finger to it's initial position (vertical) according to the decrement it receives
+    // The decrement defines which finger is it's turn to be moved.
     bool reverseMove(int character, int decrement){
         character = adjustCommand(character);
         int finger = charact[character].pattern[decrement];
@@ -99,6 +104,9 @@ public:
         else{return true;}
     }
 
+    // This function is called by the function servoOut(int,int) and reverseMove(int,int)
+    // This function will send the pwm for each motors of a finger to move.
+    // The different move options are defined at the top.
     int moveFinger(int finger, int moveOption){
         int nbMotor = 2;
         int angle[nbMotor];
@@ -129,13 +137,13 @@ public:
         else{}
         if(readyToMove){
             for(int i=0; i<nbMotor; i++){
-            //delay(500);
             pwm.setPWM(finger+i, 0, pulseWidth(angle[i]));
             }
         }
         return 0;
     }
 
+    // This function returns the analog value required by the function setPWM to reach a certain angle.
     int pulseWidth(int angle){
         int pulse_wide, analog_value;
         pulse_wide   = map(angle, 0, 180, MIN_PULSE_WIDTH, MAX_PULSE_WIDTH);
@@ -143,6 +151,7 @@ public:
         return analog_value;
     }
 
+    // This function adjust the toAscii value of a character received so it is easily retrievable in the table of structure of characters.
     int adjustCommand(int command){
         int adjustedCommand = ' ';
         bool found = false;
@@ -160,17 +169,9 @@ public:
         return adjustedCommand;
     }
 
+    // This function was used to test the different functionnality without the communication.
     int test(){
-        bool testResult = 0;
-        /*
-        for(int i=0;i<NB_FINGERS; i++){
-            //pwm.setPWM(i, 0, pulseWidth(50));
-            servoOut('b',i);
-            delay(100);
-        }
-        */
-        //servoOut('5');
-        
+        bool testResult = 0;        
         for(int i=0;i<NB_LETTERS;i++){
             int command = charact[i].id;
             for(int increment=0;increment<NB_FINGERS; increment++){
@@ -186,9 +187,7 @@ public:
             Serial.println(command);
             Serial.println(charact[i].id);
             Serial.println("");
-            //servoOut(adjustedCommand,0);
         }
-        
         return testResult;
     }
 };
