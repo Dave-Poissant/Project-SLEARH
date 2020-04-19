@@ -1,0 +1,65 @@
+Articulated robotic hand designed for sign language education\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysection{Preriquisites\+:}\label{md__r_e_a_d_m_e_autotoc_md4}
+Hardware\+:
+\begin{DoxyItemize}
+\item Arduino Mega 2560;
+\item 1 usb to printer type cable;
+\item 1 drive for the motors ( (P\+C\+A-\/96 85) link\+: \href{https://www.sunfounder.com/pca9685-16-channel-12-bit-pwm-servo-driver.html}{\texttt{ https\+://www.\+sunfounder.\+com/pca9685-\/16-\/channel-\/12-\/bit-\/pwm-\/servo-\/driver.\+html}});
+\item 12 electrical step motors ((Tower\+Pro S\+G90 Mini-\/engrenage Micro \mbox{\hyperlink{class_servo}{Servo}} 9g) link\+: \href{https://lamassue.fr/product/towerpro-sg90-mini-engrenage-micro-servo-9g/}{\texttt{ https\+://lamassue.\+fr/product/towerpro-\/sg90-\/mini-\/engrenage-\/micro-\/servo-\/9g/}});
+\item Raspberry\+Pi 3B+;
+\item Micro-\/\+SD card (for R\+Pi image);
+\end{DoxyItemize}
+
+Software;
+\begin{DoxyItemize}
+\item Python 3.\+7(installed for this git\+Project, but not necessarily needed);
+\item Python Library\+:
+\begin{DoxyItemize}
+\item py\+Serial;
+\item tkinter;
+\end{DoxyItemize}
+\item Arduino I\+DE for the compiler;
+\item Arduino Library\+:
+\begin{DoxyItemize}
+\item Adafruit\+\_\+\+P\+W\+M\+Servo\+Driver.\+h;
+\item Arduino\+Json.\+h;
+\item Wire.\+h; (But they all should be downloaded with the plateformio.\+ini)
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysection{Steps to start your project\+:}\label{md__r_e_a_d_m_e_autotoc_md5}
+
+\begin{DoxyItemize}
+\item Read the Mechanics/\+R\+E\+A\+D\+M\+E.\+md for informations on how to build the hand;
+\item Read the Electrics/\+R\+E\+A\+D\+M\+E.\+md for informations on how to plug the motors and the drive on the arduino;
+\item Install your favorite python I\+DE;
+\item Open this git repo in a new project and create a python Run\+Tool for U\+I\+\_\+\+Main\+\_\+\+Script.\+py script (that\textquotesingle{}s where the application starts);
+\item Install py\+Serial on your computer (it will appears in your python $<$python path$>$/\+Lib/$\ast$); (Now, your python side of the project should be up to run)
+\item Install Vs\+Code on your computer;
+\item Install plateformio and Arduino\+I\+DE in your vscode;
+\item Set your Arduino\+\_\+debug.\+exe path in your Vs\+Code setups;
+\item Build the project one first time (and it should load all the needed libraries); (Now, your Arduino side of the project should be up to run)
+\item Plug the Arduino to your computer and start the U\+I\+\_\+\+Main\+\_\+\+Script.\+py to start the application and the Arduino thread!
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysection{Steps to be able to run to application on the Raspberry Pi 3b+}\label{md__r_e_a_d_m_e_autotoc_md6}
+
+\begin{DoxyItemize}
+\item Flash your Micro-\/\+SD card with an up to date R\+Pi image running a linux operating system (you can flash your Micro-\/\+SD card with this tool\+: \href{https://www.balena.io/etcher/}{\texttt{ https\+://www.\+balena.\+io/etcher/}});
+\item Connect your Micro-\/\+SD card in your R\+Pi and open it with an internet cable or via V\+M\+Ware for example;
+\item On the first R\+Pi\textquotesingle{}s run, set your preferences;
+\item Now, open a terminal and instal python 3.\+6 (or niewer, this could take some time) (this link could be usefull\+: \href{https://github.com/instabot-py/instabot.py/wiki/Installing-Python-3.7-on-Raspberry-Pi}{\texttt{ https\+://github.\+com/instabot-\/py/instabot.\+py/wiki/\+Installing-\/\+Python-\/3.\+7-\/on-\/\+Raspberry-\/\+Pi}});
+\item Install the Py\+Serial library with\+: \$ sudo apt-\/get install pyserial
+\item If you\textquotesingle{}re connected to your R\+Pi via V\+M\+Ware or ssh, run this command\+:
+\begin{DoxyItemize}
+\item \$ export D\+I\+S\+P\+L\+AY=\+:0
+\end{DoxyItemize}
+\item Create your project directory where you want it on your R\+Pi\+:
+\begin{DoxyItemize}
+\item \$ cd \char`\"{}\+D\+I\+R\+E\+C\+T\+O\+R\+Y P\+A\+T\+H\char`\"{}
+\item \$ mkdir \char`\"{}\+P\+R\+O\+J\+E\+C\+T N\+A\+M\+E\char`\"{}
+\item \$ cd \char`\"{}\+P\+R\+O\+J\+E\+C\+T N\+A\+M\+E\char`\"{}
+\item \$ git clone \char`\"{}\+T\+H\+E P\+R\+O\+J\+E\+C\+T\textquotesingle{}\+S L\+I\+N\+K\char`\"{}
+\item \$ git pull
+\end{DoxyItemize}
+\item The project should now be copied locally onto your R\+Pi;
+\item Now go to the project\textquotesingle{}s Ui\+\_\+\+Main\+\_\+script.\+py path on your R\+Pi and run the program through a terminal\+:
+\begin{DoxyItemize}
+\item \$ python Ui\+\_\+\+Main\+\_\+\+Script.\+py
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysection{Now Have Fun !}\label{md__r_e_a_d_m_e_autotoc_md7}
