@@ -1,0 +1,119 @@
+\hypertarget{_servo_8h}{}\doxysection{C\+:/\+Users/emile/\+Desktop/\+Projet\+\_\+\+S\+L\+E\+A\+R\+H/\+Project-\/\+S\+L\+E\+A\+R\+H/\+Arduino\+\_\+project/\+Servo\+\_\+control/src/\+Servo.h File Reference}
+\label{_servo_8h}\index{C:/Users/emile/Desktop/Projet\_SLEARH/Project-\/SLEARH/Arduino\_project/Servo\_control/src/Servo.h@{C:/Users/emile/Desktop/Projet\_SLEARH/Project-\/SLEARH/Arduino\_project/Servo\_control/src/Servo.h}}
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Adafruit\+\_\+\+P\+W\+M\+Servo\+Driver.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcharacter}{character}}
+\begin{DoxyCompactList}\small\item\em Creating a structure that will hold informations relative to each character. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_servo}{Servo}}
+\begin{DoxyCompactList}\small\item\em Class containing functions related to the servomotors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{_servo_8h_aaca986e925b5803014fb56ca5476f776}{N\+B\+\_\+\+L\+E\+T\+T\+E\+RS}}~32
+\begin{DoxyCompactList}\small\item\em $<$ Library needed to control the P\+WM of servo drive. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a4ada7b8a93f9587c7198a0f8133feab8}\label{_servo_8h_a4ada7b8a93f9587c7198a0f8133feab8}} 
+\#define \mbox{\hyperlink{_servo_8h_a4ada7b8a93f9587c7198a0f8133feab8}{N\+B\+\_\+\+M\+O\+T\+O\+RS}}~10
+\begin{DoxyCompactList}\small\item\em Number of active motors. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a656e668a7dd58ea87bd5d160092e9eab}\label{_servo_8h_a656e668a7dd58ea87bd5d160092e9eab}} 
+\#define \mbox{\hyperlink{_servo_8h_a656e668a7dd58ea87bd5d160092e9eab}{N\+B\+\_\+\+F\+I\+N\+G\+E\+RS}}~5
+\begin{DoxyCompactList}\small\item\em Number of active fingers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a91b21b229126b2c997c247835568107b}\label{_servo_8h_a91b21b229126b2c997c247835568107b}} 
+\#define \mbox{\hyperlink{_servo_8h_a91b21b229126b2c997c247835568107b}{V\+E\+R\+T\+I\+C\+AL}}~0
+\begin{DoxyCompactList}\small\item\em Finger fully unfold. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a583cfe7670aa69f02d684bb5c5d3799e}\label{_servo_8h_a583cfe7670aa69f02d684bb5c5d3799e}} 
+\#define \mbox{\hyperlink{_servo_8h_a583cfe7670aa69f02d684bb5c5d3799e}{H\+O\+R\+I\+Z\+O\+N\+T\+AL}}~1
+\begin{DoxyCompactList}\small\item\em Finger with first knuckle fold. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a78ee865464a79d2cea4fad579f8d1ce7}\label{_servo_8h_a78ee865464a79d2cea4fad579f8d1ce7}} 
+\#define \mbox{\hyperlink{_servo_8h_a78ee865464a79d2cea4fad579f8d1ce7}{A90\+\_\+\+D\+E\+G\+R\+EE}}~2
+\begin{DoxyCompactList}\small\item\em Finger with second knuckle fold. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a9aadd6c95910426cd7c1eb32eef9a499}\label{_servo_8h_a9aadd6c95910426cd7c1eb32eef9a499}} 
+\#define \mbox{\hyperlink{_servo_8h_a9aadd6c95910426cd7c1eb32eef9a499}{F\+U\+L\+L\+Y\+\_\+\+I\+N\+C\+L\+I\+N\+ED}}~3
+\begin{DoxyCompactList}\small\item\em Finger with botch knuckles fold. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{_servo_8h_a197f7315bdae60aecb1ce2554d0fc00f}{T\+H\+U\+MB}}~0
+\begin{DoxyCompactList}\small\item\em The next defined are the diffrent finger implemented. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_ac6885dbfb371c33e523c7fb046118b36}\label{_servo_8h_ac6885dbfb371c33e523c7fb046118b36}} 
+\#define {\bfseries I\+N\+D\+EX}~2
+\item 
+\mbox{\Hypertarget{_servo_8h_aca9273d6ac9c58c83cbd0820cb8356e1}\label{_servo_8h_aca9273d6ac9c58c83cbd0820cb8356e1}} 
+\#define {\bfseries M\+I\+D\+D\+LE}~4
+\item 
+\mbox{\Hypertarget{_servo_8h_ad527dfe00a4d572cfea624cab49cab47}\label{_servo_8h_ad527dfe00a4d572cfea624cab49cab47}} 
+\#define {\bfseries R\+I\+NG}~6
+\item 
+\mbox{\Hypertarget{_servo_8h_a52a5535e44924946e6462997112e7441}\label{_servo_8h_a52a5535e44924946e6462997112e7441}} 
+\#define {\bfseries L\+I\+T\+T\+LE}~8
+\item 
+\#define \mbox{\hyperlink{_servo_8h_a042248631dacf4087c8823fce027919c}{N\+O\+T\+\_\+\+I\+N\+C\+L\+I\+N\+ED}}~50
+\begin{DoxyCompactList}\small\item\em Angle for a straigth knuckle. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a810ab81986936202dd04a5d8053f0974}\label{_servo_8h_a810ab81986936202dd04a5d8053f0974}} 
+\#define \mbox{\hyperlink{_servo_8h_a810ab81986936202dd04a5d8053f0974}{I\+N\+C\+L\+I\+N\+ED}}~150
+\begin{DoxyCompactList}\small\item\em Angle for an inclined knuckle. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{_servo_8h_ad95c8286fc30ece77d632ad00a94d80e}{M\+I\+N\+\_\+\+P\+U\+L\+S\+E\+\_\+\+W\+I\+D\+TH}}~650
+\item 
+\mbox{\Hypertarget{_servo_8h_a57a10261e6511f97317cee9076692315}\label{_servo_8h_a57a10261e6511f97317cee9076692315}} 
+\#define {\bfseries M\+A\+X\+\_\+\+P\+U\+L\+S\+E\+\_\+\+W\+I\+D\+TH}~2350
+\item 
+\mbox{\Hypertarget{_servo_8h_a7eada57cb49e7b1766a813e4635d79bd}\label{_servo_8h_a7eada57cb49e7b1766a813e4635d79bd}} 
+\#define {\bfseries D\+E\+F\+A\+U\+L\+T\+\_\+\+P\+U\+L\+S\+E\+\_\+\+W\+I\+D\+TH}~1500
+\item 
+\mbox{\Hypertarget{_servo_8h_a84142cd3e3bf14c4ecd4b6707a808c39}\label{_servo_8h_a84142cd3e3bf14c4ecd4b6707a808c39}} 
+\#define {\bfseries F\+R\+E\+Q\+U\+E\+N\+CY}~50
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_servo_8h_a2c06cc8f85429bb0f7cb91917164dc54}\label{_servo_8h_a2c06cc8f85429bb0f7cb91917164dc54}} 
+Adafruit\+\_\+\+P\+W\+M\+Servo\+Driver \mbox{\hyperlink{_servo_8h_a2c06cc8f85429bb0f7cb91917164dc54}{pwm}} = Adafruit\+\_\+\+P\+W\+M\+Servo\+Driver()
+\begin{DoxyCompactList}\small\item\em Setting up the pwm object with the default address for the driver (0x40). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_a3d7b96fd7ed48f21e600920846b435f2}\label{_servo_8h_a3d7b96fd7ed48f21e600920846b435f2}} 
+uint8\+\_\+t \mbox{\hyperlink{_servo_8h_a3d7b96fd7ed48f21e600920846b435f2}{servonum}} = 1
+\begin{DoxyCompactList}\small\item\em Creation of a servo driver object (P\+C\+A9685). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_servo_8h_ae7b00f85eee9c392fd0e2085d0f4a375}\label{_servo_8h_ae7b00f85eee9c392fd0e2085d0f4a375}} 
+struct \mbox{\hyperlink{structcharacter}{character}} \mbox{\hyperlink{_servo_8h_ae7b00f85eee9c392fd0e2085d0f4a375}{charact}} \mbox{[}\mbox{\hyperlink{_servo_8h_aaca986e925b5803014fb56ca5476f776}{N\+B\+\_\+\+L\+E\+T\+T\+E\+RS}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Creating a structure instance charact wich is an array the size of. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The file \mbox{\hyperlink{_servo_8h}{Servo.\+h}} contains the class \mbox{\hyperlink{class_servo}{Servo}}. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_servo_8h_ad95c8286fc30ece77d632ad00a94d80e}\label{_servo_8h_ad95c8286fc30ece77d632ad00a94d80e}} 
+\index{Servo.h@{Servo.h}!MIN\_PULSE\_WIDTH@{MIN\_PULSE\_WIDTH}}
+\index{MIN\_PULSE\_WIDTH@{MIN\_PULSE\_WIDTH}!Servo.h@{Servo.h}}
+\doxysubsubsection{\texorpdfstring{MIN\_PULSE\_WIDTH}{MIN\_PULSE\_WIDTH}}
+{\footnotesize\ttfamily \#define M\+I\+N\+\_\+\+P\+U\+L\+S\+E\+\_\+\+W\+I\+D\+TH~650}
+
+The next section contains defined P\+WM constants. \mbox{\Hypertarget{_servo_8h_aaca986e925b5803014fb56ca5476f776}\label{_servo_8h_aaca986e925b5803014fb56ca5476f776}} 
+\index{Servo.h@{Servo.h}!NB\_LETTERS@{NB\_LETTERS}}
+\index{NB\_LETTERS@{NB\_LETTERS}!Servo.h@{Servo.h}}
+\doxysubsubsection{\texorpdfstring{NB\_LETTERS}{NB\_LETTERS}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+L\+E\+T\+T\+E\+RS~32}
+
+
+
+$<$ Library needed to control the P\+WM of servo drive. 
+
+Number of characters managed. \mbox{\Hypertarget{_servo_8h_a042248631dacf4087c8823fce027919c}\label{_servo_8h_a042248631dacf4087c8823fce027919c}} 
+\index{Servo.h@{Servo.h}!NOT\_INCLINED@{NOT\_INCLINED}}
+\index{NOT\_INCLINED@{NOT\_INCLINED}!Servo.h@{Servo.h}}
+\doxysubsubsection{\texorpdfstring{NOT\_INCLINED}{NOT\_INCLINED}}
+{\footnotesize\ttfamily \#define N\+O\+T\+\_\+\+I\+N\+C\+L\+I\+N\+ED~50}
+
+
+
+Angle for a straigth knuckle. 
+
+Defining moving angles. \mbox{\Hypertarget{_servo_8h_a197f7315bdae60aecb1ce2554d0fc00f}\label{_servo_8h_a197f7315bdae60aecb1ce2554d0fc00f}} 
+\index{Servo.h@{Servo.h}!THUMB@{THUMB}}
+\index{THUMB@{THUMB}!Servo.h@{Servo.h}}
+\doxysubsubsection{\texorpdfstring{THUMB}{THUMB}}
+{\footnotesize\ttfamily \#define T\+H\+U\+MB~0}
+
+
+
+The next defined are the diffrent finger implemented. 
+
+The increment per finger is 2 because there are 2 motors per finger that requires to move. This implementation eases the working principal of the function move\+Finge(int,int). 
