@@ -10,14 +10,21 @@ class TextAnalyser:
     def __init__(self):
         self.ui_adress = None
 
+    ##Method that store the UI adress in a pointer
+    #@param adress Actual adress of the UI
+    #
     def set_ui_adress(self, adress):
         self.ui_adress = adress
 
-    # Add an event to the event queue
+    #Method that adds an event to the event queue
+    #@param _event Event to be added to the queue
+    #
     def push_event(self, _event):
         EventHandler.Instance.add_event(_event) 
 
-    # Check each letter of a string and create related events
+    #Method that checks each letter of a string and create related events
+    #@param _str String to be parsed for chars (Events)
+    #
     def parse_char(self, _str):
         _str = _str.lower()
 
@@ -45,7 +52,9 @@ class TextAnalyser:
 
         return True
 
-    # Check if a char is available
+    #Method that checks if a char is available according to current configuration
+    #@param char Character to be validated
+    #
     def is_char_valid(self, char):
         return char in Configuration.Instance.get_available_chars()
 

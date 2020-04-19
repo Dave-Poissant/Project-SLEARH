@@ -54,17 +54,29 @@ class Communication:
         self.__private_thread__ = threading.Thread(target=self.__communication_thread__)
         self.__private_thread__.setDaemon(True)
 
+    ##Method that stores the UI adress in a pointer
+    #@param adress Actual UI adress
+    #
     def set_ui_adress(self, adress):
         self.ui_adress = adress
 
+    ##Method that starts the Communication's private thread
+    #
     def start_thread(self):
         self.__private_thread__.start()
 
+    ##Method that ends the Communitaion's private thread
+    #
     def end_thread(self):
         self.should_run = False
         self.__private_thread__.join()
         print("Communication thread joined")
 
+    ##Method that update the communication stream to the Arduino
+    #@param command_value String Letter to be exectued in ASCII
+    #@param purpose Current purpose of the application
+    #@param time_on_letter Time to wait on this letter before executing another one
+    #
     def update_stream(self, command_value, purpose, time_on_letter):
         self.__stream__ = {
             "command": command_value,
@@ -72,6 +84,8 @@ class Communication:
             "time": time_on_letter
         }
 
+    ##Method that read the communication stream sent by the Arduino
+    #
     def read_stream(self):
         try:
             if self.__port__ is not None:
@@ -93,6 +107,8 @@ class Communication:
             self.connect_port()
             return self.read_stream()
 
+    ##Method that send the uptaded communication stream to the Arduino
+    #
     def send_stream(self):
         encoded_message = json.dumps(self.__stream__)
 
@@ -110,6 +126,8 @@ class Communication:
         except serial.SerialException or FileNotFoundError or AttributeError as e:
             print("Could not send, because: " + e + ".")
 
+    ##Method that tries to find an active Arduino communication port
+    #
     def find_port(self):
         all_port = serial_ports()
         if len(all_port) < 1:
@@ -132,6 +150,8 @@ class Communication:
             self.connect_port()
         return True
 
+    ##Method that  tries to connect to the Arduino Communication port
+    #
     def connect_port(self):
         try:
             self.__port__ = serial.Serial(self.__port_name__, baudrate=9600)
@@ -140,6 +160,7 @@ class Communication:
             self.connect_port()
         print("Connected to " + str(self.__port__.name))
 
+    ##Communication private thread to keep the connection status up to date
     def __communication_thread__(self):
         was_connected = None
         while self.should_run:

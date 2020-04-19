@@ -6,6 +6,8 @@ from Backend_Scripts import Unit_Tests
 from Backend_Scripts import Event
 from Backend_Scripts import EventType
 
+##Debug Purposes
+#
     
 def func():
     config = Configuration.Instance

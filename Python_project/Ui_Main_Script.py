@@ -300,6 +300,7 @@ class application(Frame):
         self.set_purpose_option_education()
 
         ## @public UI attribute, representing the mode option label
+        #
         self.mode_label = Label(options_frame, text="Mode:")
         self.mode_label.grid(row=3, column=0, pady=2, stick=W)
         options_mode_choices_frame = Frame(options_frame)

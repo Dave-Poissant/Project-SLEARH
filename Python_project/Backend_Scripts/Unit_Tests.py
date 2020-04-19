@@ -12,7 +12,8 @@ config = Configuration.Instance
 textAnalyser = TextAnalyser.TextAnalyser()
 e_Handler = EventHandler.Instance
 
-
+##Method that return a string of valid characters
+#
 def get_valid_string():
     available_chars = config.get_available_chars()
     _str = ""
@@ -23,6 +24,8 @@ def get_valid_string():
 
 valid_string = get_valid_string()
 
+##Method that runs all unit tests and logs their results
+#
 def run():
     config.set_debug(True, 0)
     failed = 0
@@ -42,6 +45,10 @@ def run():
     
     Logger.Log("All done! " + "(" + str(passed) + " Passed) (" + str(failed) + " Failed)", 0, Logger.Color.BOLD)
 
+##Method that print the result for a test
+#@param test String, Name of the unit test to print
+#@param result Boolean Result of the unit test
+#
 def print_result(test, result):
     if result:
         Logger.Log(test + " test: " + Logger.Color.GREEN.value + "Passed" + Logger.Color.ENDC.value, 0)
@@ -49,6 +56,8 @@ def print_result(test, result):
         Logger.Log(test + " test: " + Logger.Color.RED.value + "Failed" + Logger.Color.ENDC.value, 0)
     return result
 
+##Unit test to validate the dequeue method
+#
 def queue_dequeue():
     e_Handler.clear_queue()
     sucess = True
@@ -66,7 +75,8 @@ def queue_dequeue():
 
     return print_result('Add/Dequeue Queue', sucess)
 
-
+##Unit test to validate that all valid char works as intended
+#
 def valid_char():
     e_Handler.clear_queue()
     sucess = True
@@ -82,6 +92,8 @@ def valid_char():
     
     return print_result("Valid characters", sucess)
 
+##Unit to test to validate that invalid chars are handled as intended
+#
 def invalid_char():
     e_Handler.clear_queue()
     sucess = True
@@ -97,6 +109,8 @@ def invalid_char():
 
     return print_result("Invalid characters", sucess)
 
+##Unit test to validate that the semi_auto mode works as intended
+#
 def semi_auto():
     e_Handler.clear_queue()
     sucess = True
@@ -120,7 +134,8 @@ def semi_auto():
    
     return print_result("Semi-auto", sucess)
 
-
+##Unit test to validate that the automatic mode works as intended
+#
 def auto():
     e_Handler.clear_queue()
     sucess = True
@@ -144,6 +159,8 @@ def auto():
    
     return print_result("Auto", sucess)
 
+##Unit test that validates that the queue status is as intended
+#
 def queue_status():
     e_Handler.clear_queue()
     sucess = True
@@ -159,6 +176,8 @@ def queue_status():
 
     return print_result("Queue Status", sucess)
 
+##Unit test that validates that the wait_time feature in auto mode works as intended
+#
 def wait_time():
     e_Handler.clear_queue()
     sucess = True
@@ -189,6 +208,9 @@ def wait_time():
 
     return print_result('Wait time', sucess)
 
+
+##Unit test that validate that the High_Priority feature works as intended
+#
 def high_priority():
     e_Handler.clear_queue()
     sucess = True

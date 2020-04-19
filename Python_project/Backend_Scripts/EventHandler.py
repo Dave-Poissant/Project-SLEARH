@@ -20,36 +20,59 @@ class EventHandler:
         self.trigger_warned = False
         self.ui_adress = None
 
+    ##Method that store the location of the UI in a pointer
+    #@params adress Actual adress of the UI
+    #
     def set_ui_adress(self, adress):
         self.ui_adress = adress
 
+    ##Method that starts the EventHandler private thread
+    #
     def __start_thread__(self):
         self._thread.start()
 
+    ##Method that print the current state of the EventQueue
+    #
     def __str__(self):
         return str(self._queue)
 
+    ##Method that clears all the event from the EventQueue
+    #
     def clear_queue(self):
         self._queue.clear_queue()
 
+    ##Method that log the current state of the EventQueue
+    #
     def print_queue(self):
         Logger.Log(self, 1)
         print("\n")
 
+    ##Method that set the trigger to True to execute the next event in queue while in semi-auto mode
+    #
     def next_letter(self):
         self.trigger = True
         self.trigger_warned = False
         Logger.Log('Trigger sent ...\n', 2)
 
+    ##Method that returns a Boolean to check is the EventQueue is empty of not
+    #
     def is_empty(self):
         return self._queue.is_empty()
 
+    ##Method that return the EventQueue
+    #
     def get_queue(self):
         return self._queue
 
+    ##Method to add an event to the EventQueue
+    #@params _event Event to be added to the queue
+    #
     def add_event(self, _event):
         self._queue.add(_event)
 
+    ##Method that handles the logic to execute an event according to the event_type and current configuration
+    #@param event Event to be executed
+    #
     def execute_event(self, event):
 
         if Configuration.Instance.get_purpose() == Purpose.Purpose.Quiz:  # Quiz Purpose
@@ -150,9 +173,11 @@ class EventHandler:
             else:
                 Logger.Log("Event type is invalid\n", 2)
 
+    ##Method that waits for the Arduino to send a ready state to the communication stream
+    #
     def wait_arduino_ready_state(self):
         ready = False
-        while not ready:  # Wait for the Arduino to send a ready state
+        while not ready:
             string_state = Communication.Instance.read_stream()
             if string_state == "true":
                 ready = True
@@ -167,11 +192,15 @@ class EventHandler:
                 break
             time.sleep(0.1)
 
+    #Method that runs the EventHandler's private thread as long as should_run is True
+    #
     def private_thread(self):
         while self.should_run:
             if not self._queue.is_empty():
                 self.execute_event(self._queue.first())
 
+    #Method that ends EventHandler's private thread
+    #
     def end_thread(self):
         self.should_run = False
         self._thread.join()
