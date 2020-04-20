@@ -1,5 +1,5 @@
-/** @file Servo.h
- * The file Servo.h contains the class Servo.
+/** @file CommunicationArduino.h
+ * The file CommunicationArduino.h contains the class CommunicationArduino.
  */
 #if !defined(COMMUNICATIONARDUINO)
 #define COMMUNICATIONARDUINO
